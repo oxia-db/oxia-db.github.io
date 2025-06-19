@@ -1,10 +1,5 @@
 import nextra from 'nextra'
 
-const nextConfig = {
-  plugins: {
-    "@tailwindcss/postcss": {},
-  }
-}
 const withNextra = nextra({
   latex: true,
   search: {

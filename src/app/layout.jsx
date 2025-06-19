@@ -2,7 +2,7 @@
 import { Layout, Navbar } from 'nextra-theme-docs'
 import { Head } from 'nextra/components'
 import { getPageMap } from 'nextra/page-map'
-import './globals.css'
+import 'nextra-theme-docs/style.css'
 
 export const metadata = {
   metadataBase: new URL('https://github.com/oxia-db'),
