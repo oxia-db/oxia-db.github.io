@@ -42,7 +42,7 @@ export default async function RootLayout({ children }) {
           // banner={<Banner storageKey="Nextra 2">Nextra 2 Alpha</Banner>}
           navbar={navbar}
           editLink="Edit this page on GitHub"
-          docsRepositoryBase="https://github.com/oxia-db/oxia-doc/blob/main"
+          docsRepositoryBase="https://github.com/oxia-db/oxia-docs/blob/main"
           sidebar={{ defaultMenuCollapseLevel: 1 }}
           pageMap={pageMap}
         >
