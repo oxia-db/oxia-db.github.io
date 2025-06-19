@@ -5,10 +5,10 @@ const config = nextra({
   search: {
     codeblocks: false
   },
-  contentDirBasePath: '/docs'
+  contentDirBasePath: '/'
 })({
   output: 'export',
-  basePath: "/oxia-docs",
+  basePath: "/",
   images: {
     unoptimized: true // mandatory, otherwise won't export
   }
