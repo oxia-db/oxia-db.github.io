@@ -8,7 +8,7 @@ const config = nextra({
   contentDirBasePath: '/'
 })({
   output: 'export',
-  basePath: "/",
+  basePath: "",
   images: {
     unoptimized: true // mandatory, otherwise won't export
   }
