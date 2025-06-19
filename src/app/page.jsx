@@ -3,7 +3,7 @@ export default function IndexPage() {
         <div className="home-content">
 
             <div align="center">
-                <img src="oxia-logo.svg" alt="oxia logo" width="250"/>
+                <img src="/oxia-logo.svg" alt="oxia logo" width="250"/>
             </div>
 
             <h1 className="headline" style={{
@@ -33,7 +33,7 @@ export default function IndexPage() {
                     What is Oxia?
                 </a>
 
-                <a href="/docs" style={{
+                <a href="/docs/getting-started" style={{
                     padding: '0.75rem 1.5rem',
                     backgroundColor: '#0070f3',
                     color: 'white',

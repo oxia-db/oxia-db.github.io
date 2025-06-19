@@ -1,8 +1,5 @@
 export default {
-
-  index: {
-    title: 'Getting Started'
-  },
+  'getting-started' : '',
   'what-is-oxia': '',
   features:'',
   deployment: '',
