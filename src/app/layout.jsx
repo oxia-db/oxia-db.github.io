@@ -9,7 +9,7 @@ export const metadata = {
   title: {
     template: '%s - Oxia'
   },
-  description: 'Oxia: Shading Based Metadata Store and Coordination System',
+  description: 'Oxia: Scalable metadata and Index storage',
   applicationName: 'oxia',
   generator: 'Next.js',
   appleWebApp: {
