@@ -1,5 +1,5 @@
 /* eslint-env node */
-import { Layout, Navbar } from 'nextra-theme-docs'
+import { Layout, Navbar, Footer } from 'nextra-theme-docs'
 import { Head } from 'nextra/components'
 import { getPageMap } from 'nextra/page-map'
 import 'nextra-theme-docs/style.css'
@@ -9,11 +9,11 @@ export const metadata = {
   title: {
     template: '%s - Oxia'
   },
-  description: 'Oxia: Scalable metadata and Index storage',
+  description: 'Oxia: Scalable Metadata and Index storage',
   applicationName: 'oxia',
   generator: 'Next.js',
   appleWebApp: {
-    title: 'Nextra'
+    title: 'Oxia'
   },
   other: {
     'msapplication-TileColor': '#fff'
@@ -24,12 +24,14 @@ export default async function RootLayout({ children }) {
   const navbar = (
     <Navbar
       logo={
-        <div>
-          <b>Oxia</b>{' '}
+        <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+          <img src="/oxia-logo.svg" alt="Oxia" style={{ height: '30px' }} /> {' '}
+          <b>Oxia</b> {' '}
           <span style={{ opacity: '60%' }}>Metadata Store and Coordination System</span>
         </div>
       }
-      // Next.js discord server
+
+      projectLink="https://github.com/oxia-db/oxia"
       // chatLink="https://discord.gg/hEM84NMkRv"
     />
   )
@@ -42,9 +44,14 @@ export default async function RootLayout({ children }) {
           // banner={<Banner storageKey="Nextra 2">Nextra 2 Alpha</Banner>}
           navbar={navbar}
           editLink="Edit this page on GitHub"
-          docsRepositoryBase="https://github.com/oxia-db/oxia-docs/blob/main"
+          docsRepositoryBase="https://github.com/oxia-db/oxia-db.github.io/blob/main"
           sidebar={{ defaultMenuCollapseLevel: 1 }}
           pageMap={pageMap}
+          footer={<Footer className="flex-col items-center md:items-start">
+            <p className="mt-6 text-xs">
+                Copyright {new Date().getFullYear()} StreamNative <a target="_blank" href="https://streamnative.io/">https://streamnative.io/</a>
+            </p>
+        </Footer>}
         >
           {children}
         </Layout>

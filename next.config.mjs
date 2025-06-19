@@ -5,7 +5,8 @@ const config = nextra({
   search: {
     codeblocks: false
   },
-  contentDirBasePath: '/docs'
+  contentDirBasePath: '/docs',
+  defaultShowCopyCode: true,
 })({
   output: 'export',
   basePath: "",
