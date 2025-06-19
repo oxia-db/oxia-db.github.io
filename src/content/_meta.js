@@ -4,9 +4,7 @@ export default {
   },
   features:'',
   deployment: '',
-  operations: '',
   architecture: '',
   correctness: '',
   consensus: '',
-  performance: ''
 }
