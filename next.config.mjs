@@ -8,7 +8,7 @@ const config = nextra({
   contentDirBasePath: '/docs'
 })({
   output: 'export',
-  basePath: process.env.PAGES_BASE_PATH,
+  basePath: "oxia-doc",
   images: {
     unoptimized: true // mandatory, otherwise won't export
   }
