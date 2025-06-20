@@ -1,0 +1,17 @@
+.rotate-image {
+    animation: spin 25s linear infinite;
+    transform-origin: center center;
+}
+
+@keyframes spin {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+.rotate-image:hover {
+    animation-play-state: paused;
+}
