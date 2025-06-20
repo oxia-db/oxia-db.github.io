@@ -1,4 +1,67 @@
+# What is Oxia?
+
+---
 
 
-# What is Oxia
+<div style={{display: "flex", justifyContent :"center", flexDirection: "column", alignItems : 'center'}}>
+    <img style={{width: '80%'}} src={"/banner.svg"} alt={"Banner"}/>
+    <span style={{fontSize: '0.7rem', marginTop: '0.2rem'}}>Original image credited to xkcd.com/2347, alterations by Qiang Zhao.</span>
+</div>
 
+Oxia is positioned as a modern, horizontally scalable metadata store and coordination system designed to address the
+limitations inherent in traditional systems within large-scale distributed environments.
+
+It is engineered to serve as a core infrastructure component, particularly for high-performance data streaming platforms.
+
+
+
+## Why Oxia?
+
+Oxia directly confronts the central challenge of balancing scalability, latency, and cost efficiency within contemporary
+data streaming infrastructures. Many organizations frequently encounter a dilemma, compelled to choose between scaling
+their data operations to meet demand and maintaining manageable costs.
+
+Oxia is specifically designed to alleviate issues observed in existing coordination systems such as Apache ZooKeeper, Etcd, and Consul.
+
+It achieves this through a set of key features, including:
+
+- [Sharding Based Architecture](https://en.wikipedia.org/wiki/Shard_(database_architecture))
+- [Standard Key-Value API](https://en.wikipedia.org/wiki/Key%E2%80%93value_database)
+- Full Features as Metadata Store
+- High W/R Performance Based on the [LSM-Tree](https://en.wikipedia.org/wiki/Log-structured_merge-tree)
+- Policy-Based Shard Placement
+- Automatic Operation and Disaster Recovery
+- Modern Observability based on the [Open-Telemetry](https://opentelemetry.io/)
+
+
+## Who is using Oxia?
+
+Oxia is suitable for a wide variety of use cases, including:
+
+<br/>
+<br/>
+
+import { Table } from 'nextra/components'
+
+<Table>
+    <thead>
+    <Table.Tr>
+        <Table.Th>Project Name</Table.Th>
+        <Table.Th>Usage</Table.Th>
+    </Table.Tr>
+    </thead>
+    <tbody>
+    <Table.Tr>
+        <Table.Td><a href={"https://pulsar.apache.org/"}>Apache Pulsar</a></Table.Td>
+        <Table.Td>metadata storage for supporting more than one million topics</Table.Td>
+    </Table.Tr>
+    <Table.Tr>
+        <Table.Td><a href={"https://bookkeeper.apache.org/docs/overview/"}>Apache Bookkeeper</a></Table.Td>
+        <Table.Td>metadata storage</Table.Td>
+    </Table.Tr>
+    <Table.Tr>
+        <Table.Td><a href={"https://streamnative.io/products/ursa"}>StreamNative Ursa</a></Table.Td>
+        <Table.Td>metadata storage and index storage</Table.Td>
+    </Table.Tr>
+    </tbody>
+</Table>

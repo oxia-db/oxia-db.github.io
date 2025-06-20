@@ -1,6 +1,6 @@
 export default {
-  'getting-started' : '',
   'what-is-oxia': '',
+  'getting-started' : '',
   features:'',
   deployment: '',
   clients: {
