@@ -1,7 +1,6 @@
 export default function IndexPage() {
     return (
-        <div className="home-content" style={{height: '86vh', marginTop: '8rem'}}>
-
+        <div className="home-content" style={{height: '76vh', marginTop: '8rem', display: "flex", flexDirection: "column", justifyContent: "start", alignItems: "center"}}>
             <div align="center">
                 <img src="/oxia-logo.svg" alt="oxia logo" width="250"/>
             </div>
