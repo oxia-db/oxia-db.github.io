@@ -47,11 +47,7 @@ export default async function RootLayout({ children }) {
           docsRepositoryBase="https://github.com/oxia-db/oxia-db.github.io/blob/main"
           sidebar={{ defaultMenuCollapseLevel: 1 }}
           pageMap={pageMap}
-          footer={<Footer className="flex-col items-center md:items-start">
-            <p className="mt-6 text-xs">
-                Copyright {new Date().getFullYear()} StreamNative <a target="_blank" href="https://streamnative.io/">https://streamnative.io/</a>
-            </p>
-        </Footer>}
+          footer={<Footer> Copyright  ©  {new Date().getFullYear()} &nbsp; <a target="_blank" href="https://streamnative.io/">  StreamNative</a> </Footer>}
         >
           {children}
         </Layout>
