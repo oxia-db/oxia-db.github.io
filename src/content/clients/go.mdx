@@ -1,0 +1,143 @@
+---
+sidebarTitle: Go
+---
+
+import {Tabs} from 'nextra/components'
+
+# Go Client SDK
+
+
+## Installing Go client SDK
+
+```shell
+go get github.com/oxia-db/oxia/oxia
+```
+
+GoDoc documenation is available at https://pkg.go.dev/github.com/oxia-db/oxia/oxia
+
+## Sync and Async APIs
+
+Oxia provides two API flavors in the client:
+ * ***Sync***: Easier and convenient to use
+ * ***Async***: Returns channels to track completion of the operations. Allows to have more operations outstanding
+and achieve higher throughput
+
+All the features are available in either API.
+
+## Client API
+
+### Initializing the client
+
+To use the Oxia client, you need to create a client instance. Once created, a client instance will be valid until
+it's explicitly closed, and it can be used from different go-routines.
+
+<Tabs items={['Sync', 'Async']}>
+    <Tabs.Tab>
+        ```go
+        client, err := oxia.NewSyncClient("localhost:6648")
+        ```
+    </Tabs.Tab>
+    <Tabs.Tab>
+        ```go
+        client, err := oxia.NewAsyncClient("localhost:6648")
+        ```
+    </Tabs.Tab>
+</Tabs>
+
+When creating the client is possible to pass several options, such as:
+
+```go
+client, err := oxia.NewSyncClient("localhost:6648",
+        oxia.WithNamespace("my-namespace"),
+        oxia.WithBatchLinger(10*time.Milliseconds)),
+        )
+```
+
+Available client options include:
+
+| Option                                                  | Description                                       | Default                        |
+|---------------------------------------------------------|---------------------------------------------------|--------------------------------|
+| `WithNamespace(namespace string){:go}`                  | Set the Oxia namespace to use                     | `"default"{:go}`               |
+| `WithBatchLinger(duration time.Duration){:go}`          | How long to wait before sending a batched request | `5ms{:go}`                     |
+| `WithMaxRequestsPerBatch(count int){:go}`               | Maximum number of requests in a batch             | `1000{:go}`                    |
+| `WithRequestTimeout(duration time.Duration){:go}`       | How long to wait for responses before cancelling  | `30s{:go}`                     |
+| `WithSessionTimeout(duration time.Duration){:go}`       | Session timeout for ephemeral records             | `15s{:go}`                     |
+| `WithMeterProvider(provider metric.MeterProvider){:go}` | Custom OpenTelemetry meter provider               | `noop.NewMeterProvider(){:go}` |
+| `WithGlobalMeterProvider(){:go}`                        | Use the global OpenTelemetry meter provider       | -                              |
+| `WithIdentity(identity string){:go}`                    | Set a custom client identity                      | Random UUID                    |
+| `WithTLS(config *tls.Config){:go}`                      | Configure TLS for secure connections              | `nil{:go}`                     |
+| `WithAuthentication(auth auth.Authentication){:go}`     | Configure authentication                          | `nil{:go}`                     |
+
+### Writing records
+
+
+<Tabs items={['Sync', 'Async']}>
+    <Tabs.Tab>
+        ```go
+        // Write a record to Oxia with the specified key and value, and with the expectation
+        // that the record does not already exist.
+        insertedKey1, res1, err := client.Put(context.Background(), "/my-key", []byte("value-1"), ExpectedRecordNotExists())
+
+        // Write a record with the expectation that it has not changed since the previous write.
+        // If there was any change, the operation will fail
+        insertedKey2, res2, err := client.Put(context.Background(), "/my-key", []byte("value-2"), ExpectedVersionId(res1.VersionId))
+        ```
+    </Tabs.Tab>
+    <Tabs.Tab>
+        ```go
+        // Write a record to Oxia with the specified key and value, and with the expectation
+        // that the record does not already exist.
+        // The client library will try to batch multiple operations into a single request, to
+        // achieve much better efficiency and performance
+        c1 := client.Put("/my-key-1", []byte("value-1"))
+        c2 := client.Put("/my-key-2", []byte("value-2"))
+        c3 := client.Put("/my-key-3", []byte("value-3"))
+
+        // Wait for the async operations to complete
+        r1 := <-c1
+        fmt.Printf("First operation complete: version: %#v - error: %#v\n", r1.Version.VersionId, r1.Err)
+
+        r2 := <-c2
+        fmt.Printf("First operation complete: version: %#v - error: %#v\n", r2.Version.VersionId, r2.Err)
+
+        r3 := <-c3
+        fmt.Printf("First operation complete: version: %#v - error: %#v\n", r3.Version.VersionId, r3.Err)
+        ```
+    </Tabs.Tab>
+</Tabs>
+
+### Reading records
+
+Reading the value of a record
+
+<Tabs items={['Sync', 'Async']}>
+    <Tabs.Tab>
+        ```go
+        key, value, version, err := client.Get(context.Background(), "/my-key")
+        ```
+    </Tabs.Tab>
+    <Tabs.Tab>
+        ```go
+        c1 := client.Get("my-key-1")
+        c2 := client.Get("my-key-2")
+
+        // Wait for the async operations to complete
+        r1 := <-c1
+        r2 := <-c2
+        ```
+    </Tabs.Tab>
+</Tabs>
+
+Available options for get operation:
+
+| Option                                   | Description                                                                                          | Default     |
+|------------------------------------------|------------------------------------------------------------------------------------------------------|-------------|
+| `ComparisonEqual(){:go}`                 | Sets the Get() operation to compare the stored key for equality                                      | Yes         |
+| `ComparisonFloor(){:go}`                 | Search for the record whose key is the highest key < =  to the supplied key                          |             |
+| `ComparisonCeiling(){:go}`               | Search for the record whose key is the lowest key >= to the supplied key.                            |             |
+| `ComparisonLower(){:go}`                 | Search for the record whose key is strictly < to the supplied key.                                   |             |
+| `ComparisonHigher(){:go}`                | Search for the record whose key is strictly > to the supplied key.                                   |             |
+| `IncludeValue(include bool){:go}`        | Whether to include the value in the response, or just the version id                                 | `true{:go}` |
+| `UseIndex(indexName string){:go}`        | Specify a different secondar index to search for the key                                             |             |
+| `PartitionKey(partitionKey string){:go}` | Overrides the partition routing with the specified `partitionKey` instead of the regular record key. |             |
+
