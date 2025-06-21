@@ -1,0 +1,76 @@
+import {Tabs} from 'nextra/components'
+
+# Namespaces
+
+Oxia can partition the data in different namespaces. Application can use namespaces to isolate different use cases
+
+Each namespace has its own independent set of shards and
+
+## Using a namespace
+
+When creating an Oxia client, it's possible to specify the namespace to be used. If not provided,
+the client will use the `default` namespace.
+
+ <Tabs items={['Go', 'Java', 'CLI']}>
+        <Tabs.Tab>
+            ```go
+            client, err := oxia.NewClient("localhost:6648", oxia.WithNamespace("my-namespace"))
+            ```
+        </Tabs.Tab>
+        <Tabs.Tab>
+            ```java
+            SyncOxiaClient client = OxiaClientBuilder.create("localhost:6648")
+                .namespace("my-namespace")
+                .syncClient();
+            ```
+        </Tabs.Tab>
+        <Tabs.Tab>
+            ```shell
+            oxia client --namespace my-namespace put my-key my-value
+            ```
+        </Tabs.Tab>
+    </Tabs>
+
+
+## Creating a new namespace
+
+Edit the coordinator configuration. Eg. on Kubernetes it would be stored in a config map
+
+```shell
+kubectl --namespace oxia edit configmap oxia-coordinator
+```
+
+Add a section for `my-new-namespace`, specifying the initial shard count and replication factor.
+
+```yaml {6-8}
+  config.yaml: |
+    namespaces:
+      - name: default
+        initialShardCount: 3
+        replicationFactor: 3
+      - name: my-new-namespace
+        initialShardCount: 5
+        replicationFactor: 3
+    servers:
+      - public: oxia-0.oxia-svc.oxia.svc.cluster.local:6648
+        internal: oxia-0.oxia-svc:6649
+      - public: oxia-1.oxia-svc.oxia.svc.cluster.local:6648
+        internal: oxia-1.oxia-svc:6649
+      - public: oxia-2.oxia-svc.oxia.svc.cluster.local:6648
+        internal: oxia-2.oxia-svc:6649
+```
+
+The Oxia coordinator will automatically detect the change and will create the shards for the namespace.
+
+### Namespace configuration
+
+| Name                   | Description                                                    | Default |
+|------------------------|----------------------------------------------------------------|---------|
+| `initialShardCount`    | Number of shards to split the namespace                        |         |
+| `replicationFactor`    | Replication factor for the shards                              |         |
+| `notificationsEnabled` | Whether the namespace should have notification feature enabled | `true`  |
+
+## Deleting a namespace
+
+Once the namespace is removed from the `config.yaml`, the Oxia coordinator will again immediately
+pick up the change and will instruct the Oxia servers to remove the shards for this namespace.
