@@ -1,0 +1,62 @@
+import {Tabs} from 'nextra/components'
+
+# Notifications
+
+Oxia allows applications to get a feed of all the changes happening in a given namespace. This is
+similar to a database change-data-capture (CDC).
+
+Once a notification object is created, a client is guaranteed to receive notification of
+all the changes happening in Oxia after that point, even in the presence of an arbitrary number
+of failures.
+
+## Subscribing to notifications
+
+ <Tabs items={['Go', 'Java', 'CLI']}>
+        <Tabs.Tab>
+            ```go
+            notifications, err := client.GetNotifications()
+            defer notifications.Close()
+
+            for notification := range notifications.Ch() {
+                fmt.Println(notification)
+            }
+            ```
+        </Tabs.Tab>
+        <Tabs.Tab>
+            ```java
+            client.notifications(notification -> {
+                System.out.println("Got notification: " + notification);
+            });
+            ```
+        </Tabs.Tab>
+        <Tabs.Tab>
+            ```shell
+            oxia client notifications
+            ```
+        </Tabs.Tab>
+    </Tabs>
+
+### Notification event types
+
+| Name                   | Description                            |
+|------------------------|----------------------------------------|
+| `KeyCreated`           | A record that didn't exist was created |
+| `KeyModified`          | An existing record was modified        |
+| `KeyDeleted`           | A record was deleted                   |
+| `KeyRangeRangeDeleted` | A range of keys was deleted            |
+
+Notification event fields:
+
+| Name          | Type               | Description                                                                                                  |
+|---------------|--------------------|--------------------------------------------------------------------------------------------------------------|
+| `Type`        | `NotificationType` | The type of the modification                                                                                 |
+| `Key`	        | `string`           | The Key of the record to which the notification is referring                                                 |
+| `VersionId`   | `int64`            | The current VersionId of the record, or -1 for a KeyDeleted event                                            |
+| `KeyRangeEnd` | `string`           | In case of a KeyRangeRangeDeleted notification, this would represent the end (excluded) of the range of keys |
+
+## Disabling notifications
+
+Notifications are enabled by default on namespaces. Since there is some overhead for preparing the notifications
+feed, if an application doesn't need this feature it can be disabled.
+
+In the coordinator `config.yaml`, set `notificationsEnabled=false` on the specific namespace configuration.
