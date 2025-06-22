@@ -76,11 +76,11 @@ Available client options include:
         ```go
         // Write a record to Oxia with the specified key and value, and with the expectation
         // that the record does not already exist.
-        insertedKey1, res1, err := client.Put(context.Background(), "/my-key", []byte("value-1"), ExpectedRecordNotExists())
+        insertedKey1, res1, err := client.Put(context.Background(), "my-key", []byte("value-1"), oxia.ExpectedRecordNotExists())
 
         // Write a record with the expectation that it has not changed since the previous write.
         // If there was any change, the operation will fail
-        insertedKey2, res2, err := client.Put(context.Background(), "/my-key", []byte("value-2"), ExpectedVersionId(res1.VersionId))
+        insertedKey2, res2, err := client.Put(context.Background(), "my-key", []byte("value-2"), oxia.ExpectedVersionId(res1.VersionId))
         ```
     </Tabs.Tab>
     <Tabs.Tab>

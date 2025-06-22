@@ -1,0 +1,110 @@
+---
+sidebarTitle: Ephemerals
+---
+
+import {Tabs} from 'nextra/components'
+
+# Ephemeral records
+
+Oxia records can be optionally marked as *ephemerals*.
+
+Ephemeral records have their lifecycle tied to a particular client instance, and they
+are automatically deleted when the client instance is closed.
+These records are also deleted if the client cannot communicate with the Oxia
+service for some extended amount of time, and the session between the client and
+the service "expires".
+
+Application can control the session behavior by setting the session timeout
+appropriately with [WithSessionTimeout] option when creating the client instance.
+
+Oxia can partition the data in different namespaces. Application can use namespaces to isolate different use cases
+and also have more visibility in the metrics, which are going to be labeled with the namespace as well.
+
+Each namespace has its own independent key-space and set of shards.
+
+## Use cases
+
+Ephemeral records can be used to implement many system coordination tasks, such as:
+
+ 1. Service discovery
+ 2. Leader election
+ 3. Distributed resource locks
+
+## Using ephemeral records
+
+When creating/modifying a record, applications can specify the "ephemeral" option:
+
+<Tabs items={['Go', 'Java']}>
+    <Tabs.Tab>
+        ```go
+        insertedKey, res, err := client.Put(context.Background(),
+                                    "my-key", []byte("my-value"),
+                                    oxia.Ephemeral())
+        ```
+    </Tabs.Tab>
+    <Tabs.Tab>
+        ```java
+        PutResult pr = client.put("my-key", "my-value".getBytes(),
+                                    Set.of(PutOption.AsEphemeralRecord));
+        ```
+    </Tabs.Tab>
+</Tabs>
+
+
+## Oxia session management
+
+An ephemeral record is tied to a particular session. Oxia client SDK will automatically
+create a session the first time there is an attempt to write ephemeral records.
+
+The session is internally managed by the client SDK, which will also take care of the
+heartbeat communications with the server.
+
+A session is deleted when:
+
+ 1. Client instance is gracefully closed, deleting the session
+ 2. Client crashed, causing the Oxia server to expire the session
+ 3. Client is partitioned from Oxia, causing the Oxia server to expire the session
+
+When a session is deleted or expired, all the ephemeral records tied to that session
+are automatically deleted.
+
+If a client is subscribed to the notifications, it will receive the corresponding events.
+
+In case of network partitioning, the client SDK is internally proceeding to create a
+new session.
+
+### Session ID and client identity
+
+A client can optionally specify a client identifier that will be tied to the session.
+
+<Tabs items={['Go', 'Java']}>
+    <Tabs.Tab>
+        ```go
+        client, err := oxia.NewClient("localhost:6648", oxia.WithIdentity("my-client-identity"))
+        ```
+    </Tabs.Tab>
+    <Tabs.Tab>
+        ```java
+        SyncOxiaClient client = OxiaClientBuilder.create("localhost:6648")
+                                    .clientIdentifier("my-client-identifier")
+                                    .syncClient();
+        ```
+    </Tabs.Tab>
+</Tabs>
+
+The client identity is stored as part of the version object, for ephemeral records, and will
+allow applications to detect ephemeral records that were written by the same logical client
+instance before a crash.
+
+```json
+{
+  "key": "my-key",
+  "version_id": 2145,
+  "created_timestamp": "2025-06-22T10:21:00.107-07:00",
+  "modified_timestamp": "2025-06-22T10:21:00.107-07:00",
+  "modifications_count": 0,
+  "ephemeral": true,
+  "session_id": 1677,
+  "client_identity": "my-client-identity"
+}
+```
