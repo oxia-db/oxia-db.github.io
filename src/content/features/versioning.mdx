@@ -40,7 +40,7 @@ The versioning is usually used for **Optimistic Concurrency Control (OCC)**. Ins
         // read version
         var result = client.get("a");
 
-        // case-1: expect not exist
+        // case-1: expect not exists
         var result = client.put("a", "a2".getBytes(UTF_8), Set.of(IfRecordDoesNotExist);
 
         // case-2: expect by version
