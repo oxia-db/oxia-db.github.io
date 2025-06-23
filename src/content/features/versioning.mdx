@@ -4,7 +4,7 @@ import {Tabs} from 'nextra/components'
 
 ![versioning](/features/versioning.png)
 
-Oxia will assign a version to all mutable operations, excluding those using put with`SequenceKeysDeltas.`
+Oxia will assign a version to all mutable operations.
 
 Therefore, you can use this assigned version as the expected value for subsequent mutable operations to support `CompareThenSet-like` atomic operations.
 
