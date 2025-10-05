@@ -15,7 +15,7 @@ The versioning is usually used for **Optimistic Concurrency Control (OCC)**. Ins
 
 ## Using Versioning
 
-<Tabs items={['Go', 'Java']}>
+<Tabs items={['Go', 'Java', 'Python']}>
     <Tabs.Tab>
         ```go
         // read version
@@ -45,6 +45,18 @@ The versioning is usually used for **Optimistic Concurrency Control (OCC)**. Ins
 
         // case-2: expect by version
         var result = client.put("a", "a2".getBytes(UTF_8), Set.of(IfVersionIdEquals(version)));
+        ```
+    </Tabs.Tab>
+    <Tabs.Tab>
+        ```python
+        // read version
+        key, value, version = client.get("a")
+
+        // case-1: expect not exists
+        key, version = client.put("a", "a2", expected_version_id=oxia.EXPECTED_RECORD_DOES_NOT_EXIST)
+
+        // case-2: expect by version
+        key, version = client.put("a", "a2", expected_version_id=version.version_id())
         ```
     </Tabs.Tab>
 </Tabs>

@@ -34,7 +34,7 @@ Ephemeral records can be used to implement many system coordination tasks, such 
 
 When creating/modifying a record, applications can specify the "ephemeral" option:
 
-<Tabs items={['Go', 'Java']}>
+<Tabs items={['Go', 'Java', 'Python']}>
     <Tabs.Tab>
         ```go
         insertedKey, res, err := client.Put(context.Background(),
@@ -46,6 +46,11 @@ When creating/modifying a record, applications can specify the "ephemeral" optio
         ```java
         PutResult pr = client.put("my-key", "my-value".getBytes(),
                                     Set.of(PutOption.AsEphemeralRecord));
+        ```
+    </Tabs.Tab>
+    <Tabs.Tab>
+        ```python
+        key, version := client.Put("my-key", "my-value", ephemeral=True)
         ```
     </Tabs.Tab>
 </Tabs>
@@ -77,7 +82,7 @@ new session.
 
 A client can optionally specify a client identifier that will be tied to the session.
 
-<Tabs items={['Go', 'Java']}>
+<Tabs items={['Go', 'Java', 'Python']}>
     <Tabs.Tab>
         ```go
         client, err := oxia.NewClient("localhost:6648", oxia.WithIdentity("my-client-identity"))
@@ -86,8 +91,13 @@ A client can optionally specify a client identifier that will be tied to the ses
     <Tabs.Tab>
         ```java
         SyncOxiaClient client = OxiaClientBuilder.create("localhost:6648")
-                                    .clientIdentifier("my-client-identifier")
+                                    .clientIdentifier("my-client-identity")
                                     .syncClient();
+        ```
+    </Tabs.Tab>
+    <Tabs.Tab>
+        ```python
+        client = OxiaClient("localhost:6648", client_identifier="my-client-identity")
         ```
     </Tabs.Tab>
 </Tabs>

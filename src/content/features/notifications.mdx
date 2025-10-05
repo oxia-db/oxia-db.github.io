@@ -11,7 +11,7 @@ of failures.
 
 ## Subscribing to notifications
 
- <Tabs items={['Go', 'Java', 'CLI']}>
+ <Tabs items={['Go', 'Java', 'Python', 'CLI']}>
         <Tabs.Tab>
             ```go
             notifications, err := client.GetNotifications()
@@ -27,6 +27,12 @@ of failures.
             client.notifications(notification -> {
                 System.out.println("Got notification: " + notification);
             });
+            ```
+        </Tabs.Tab>
+        <Tabs.Tab>
+            ```python
+            for n in client.get_notifications():
+                print(n)
             ```
         </Tabs.Tab>
         <Tabs.Tab>
