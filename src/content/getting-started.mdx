@@ -53,32 +53,31 @@ import {Steps, Tabs} from 'nextra/components'
 
     ### Interacting with Oxia
 
-    <Tabs items={['CLI', 'Go', 'Java', 'Python']}>
-        <Tabs.Tab>
-            There is a convenient CLI tool that allows you to interact with the records stored in Oxia.
+    There is a convenient CLI tool that allows you to interact with the records stored in Oxia.
 
-            ```shell
-            # Write or update a record
-            $ oxia client put my-key my-value
-            {"key":"my-key","version_id":2132,"created_timestamp":"2025-06-17T17:09:26.043-07:00","modified_timestamp":"2025-06-17T17:09:26.043-07:00","modifications_count":0,"ephemeral":false,"session_id":0,"client_identity":""}
+    ```shell
+    # Write or update a record
+    $ oxia client put my-key my-value
+    {"key":"my-key","version_id":2132,"created_timestamp":"2025-06-17T17:09:26.043-07:00","modified_timestamp":"2025-06-17T17:09:26.043-07:00","modifications_count":0,"ephemeral":false,"session_id":0,"client_identity":""}
 
 
-            # Read the value of a key
-            $ oxia client get my-key
-            my-value
+    # Read the value of a key
+    $ oxia client get my-key
+    my-value
 
-            # Read value with version information
-            $ oxia client get my-key -v
-            my-value
-            ---
-            {"key":"my-key","version_id":2132,"created_timestamp":"2025-06-17T17:09:26.043-07:00","modified_timestamp":"2025-06-17T17:09:26.043-07:00","modifications_count":0,"ephemeral":false,"session_id":0,"client_identity":""}
-            ```
-        </Tabs.Tab>
-        <Tabs.Tab>
-            todo...
-        </Tabs.Tab>
-        <Tabs.Tab>
-            todo...
-        </Tabs.Tab>
-    </Tabs>
+    # Read value with version information
+    $ oxia client get my-key -v
+    my-value
+    ---
+    {"key":"my-key","version_id":2132,"created_timestamp":"2025-06-17T17:09:26.043-07:00","modified_timestamp":"2025-06-17T17:09:26.043-07:00","modifications_count":0,"ephemeral":false,"session_id":0,"client_identity":""}
+    ```
+
+    ### Using client SDKs
+
+    Oxia has several client SDKs that can be used:
+
+     1. [Java SDK](/docs/clients/java)
+     1. [Go SDK](/docs/clients/go)
+     1. [Python SDK](/docs/clients/python)
+
 </Steps>
