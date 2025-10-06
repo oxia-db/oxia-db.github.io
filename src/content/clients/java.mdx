@@ -1,0 +1,137 @@
+---
+sidebarTitle: Java
+---
+
+import {Tabs} from 'nextra/components'
+
+# Java Client SDK
+
+
+## Installing Java client SDK
+
+<Tabs items={['Maven', 'Gradle']}>
+    <Tabs.Tab>
+        ```xml
+        <dependency>
+            <groupId>io.github.oxia-db</groupId>
+            <artifactId>oxia-client</artifactId>
+            <version>${VERSION}</version>
+        </dependency>
+        ```
+    </Tabs.Tab>
+    <Tabs.Tab>
+        ```java
+        implementation("io.github.oxia-db:oxia-client:${VERSION}")
+        ```
+    </Tabs.Tab>
+</Tabs>
+
+Javadoc documentation is available at https://oxia-db.github.io/oxia-client-java/apidocs/latest
+
+## Sync and Async APIs
+
+Oxia provides two API flavors in the client:
+ * ***Sync***: Easier and convenient to use. Methods are blocking and return the result of the operation.
+ * ***Async***: Returns futures to track completion of the operations. Allows having more operations outstanding
+and achieving higher throughput.
+
+## Client API
+
+### Initializing the client
+
+To use the Oxia client, you need to create a client instance. Once created, a client instance will be valid until
+it's explicitly closed, and it can be used from different threads.
+
+<Tabs items={['Sync', 'Async']}>
+    <Tabs.Tab>
+        ```java
+        SyncOxiaClient client = OxiaClientBuilder.create(oxia.getServiceAddress())
+                .namespace("my-namespace")
+                .syncClient();
+        ```
+    </Tabs.Tab>
+    <Tabs.Tab>
+        ```java
+        AsyncOxiaClient client = OxiaClientBuilder.create(oxia.getServiceAddress())
+                .namespace("my-namespace")
+                .asyncClient()
+                .get();
+        ```
+    </Tabs.Tab>
+</Tabs>
+
+For the full list of options when creating an Oxia clint, please refer to the [OxiaClientBuilder Javadocs](https://oxia-db.github.io/oxia-client-java/apidocs/latest/io/oxia/client/api/OxiaClientBuilder.html).
+
+### Writing records
+
+<Tabs items={['Sync', 'Async']}>
+    <Tabs.Tab>
+        ```java
+        // Write a record to Oxia with the specified key and value, and with the expectation
+        // that the record does not already exist.
+        PutResult res = client.put("my-key", "my-value".getBytes(), Set.of(IfRecordDoesNotExist));
+
+        // Write a record with the expectation that it has not changed since the previous write.
+        // If there was any change, the operation will fail
+        client.put("my-key", "my-value-2".getBytes(),
+                    Set.of(IfVersionIdEquals(res.version().versionId())));
+        ```
+    </Tabs.Tab>
+    <Tabs.Tab>
+        ```java
+        // Write a record to Oxia with the specified key and value, and with the expectation
+        // that the record does not already exist.
+        client.put("my-string", "my-value".getBytes(), Set.of(IfRecordDoesNotExist))
+                .thenAccept(res -> {
+                    log.info("Put result: {}", res);
+                }).exceptionally(ex -> {
+                    log.warn("Put failed", ex);
+                    return null;
+                });
+
+        // Write a record with the expectation that it has not changed since the previous write.
+        // If there was any change, the operation will fail
+        client.put("my-key", "my-value-2".getBytes(),
+                    Set.of(IfVersionIdEquals(res.version().versionId())))
+                .thenAccept(res -> {
+                    log.info("Put result: {}", res);
+                }).exceptionally(ex -> {
+                    log.warn("Put failed", ex);
+                    return null;
+                });
+        ```
+    </Tabs.Tab>
+</Tabs>
+
+All the options for the put operation are available in the
+[Javadocs](https://oxia-db.github.io/oxia-client-java/apidocs/latest/io/oxia/client/api/PutOption.html).
+
+### Reading records
+
+Reading the value of a record
+
+<Tabs items={['Sync', 'Async']}>
+    <Tabs.Tab>
+        ```java
+        GetResult res = client.get("my-key");
+        log.info("Got key: {} - value: {} - version: {}",
+                    res.getKey(), res.getValue(), res.getVersion());
+        ```
+    </Tabs.Tab>
+    <Tabs.Tab>
+        ```java
+        aclient.get("my-key")
+                .thenAccept(res -> {
+                    log.info("Got key: {} - value: {} - version: {}",
+                            res.getKey(), res.getValue(), res.getVersion());
+                }).exceptionally(ex -> {
+                    log.warn("Get failed", ex);
+                    return null;
+                });
+        ```
+    </Tabs.Tab>
+</Tabs>
+
+All the options for the get operation are available in the
+[Javadocs](https://oxia-db.github.io/oxia-client-java/apidocs/latest/io/oxia/client/api/GetOption.html).
+
