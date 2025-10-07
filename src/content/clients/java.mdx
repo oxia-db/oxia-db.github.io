@@ -45,14 +45,14 @@ it's explicitly closed, and it can be used from different threads.
 <Tabs items={['Sync', 'Async']}>
     <Tabs.Tab>
         ```java
-        SyncOxiaClient client = OxiaClientBuilder.create(oxia.getServiceAddress())
+        SyncOxiaClient client = OxiaClientBuilder.create("localhost:6648")
                 .namespace("my-namespace")
                 .syncClient();
         ```
     </Tabs.Tab>
     <Tabs.Tab>
         ```java
-        AsyncOxiaClient client = OxiaClientBuilder.create(oxia.getServiceAddress())
+        AsyncOxiaClient client = OxiaClientBuilder.create("localhost:6648")
                 .namespace("my-namespace")
                 .asyncClient()
                 .get();
