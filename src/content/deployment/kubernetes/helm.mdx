@@ -13,14 +13,14 @@ $ kubectl create namespace oxia
 
 $ git clone https://github.com/oxia-db/helm-charts.git
 
-$ cd oxia
+$ cd helm-charts
 
 $ helm upgrade --install oxia \
   --namespace oxia \
   --set image.repository=oxia/oxia \
   --set image.tag=latest \
   --set image.pullPolicy=IfNotPresent \
-  deploy/charts/oxia-cluster
+  charts/oxia-cluster
 ```
 
 ## Monitoring Oxia
