@@ -113,13 +113,13 @@ loadScripts(document, 'script');</script>
 <div class="table-header col-second">Method</div>
 <div class="table-header col-last">Description</div>
 <div class="col-first even-row-color"><code>static <a href="../PutOption.html" title="interface in io.oxia.client.api">PutOption</a></code></div>
-<div class="col-second even-row-color"><span class="type-name-label">PutOption.</span><code><a href="../PutOption.html#PartitionKey(java.lang.String)" class="member-name-link">PartitionKey</a><wbr>(@NonNull <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;partitionKey)</code></div>
+<div class="col-second even-row-color"><span class="type-name-label">PutOption.</span><code><a href="../PutOption.html#PartitionKey(java.lang.String)" class="member-name-link">PartitionKey</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;partitionKey)</code></div>
 <div class="col-last even-row-color">
 <div class="block">PartitionKey overrides the partition routing with the specified `partitionKey` instead of the
  regular record key.</div>
 </div>
 <div class="col-first odd-row-color"><code>static <a href="../PutOption.html" title="interface in io.oxia.client.api">PutOption</a></code></div>
-<div class="col-second odd-row-color"><span class="type-name-label">PutOption.</span><code><a href="../PutOption.html#SecondaryIndex(java.lang.String,java.lang.String)" class="member-name-link">SecondaryIndex</a><wbr>(@NonNull <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;indexName,
+<div class="col-second odd-row-color"><span class="type-name-label">PutOption.</span><code><a href="../PutOption.html#SecondaryIndex(java.lang.String,java.lang.String)" class="member-name-link">SecondaryIndex</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;indexName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;secondaryKey)</code></div>
 <div class="col-last odd-row-color">
 <div class="block">SecondaryIndex let the users specify additional keys to index the record Index names are
@@ -127,7 +127,7 @@ loadScripts(document, 'script');</script>
  <a href="../SyncOxiaClient.html#rangeScan(java.lang.String,java.lang.String,java.util.Set)"><code>SyncOxiaClient.rangeScan(String, String, Set)</code></a> requests.</div>
 </div>
 <div class="col-first even-row-color"><code>static <a href="../PutOption.html" title="interface in io.oxia.client.api">PutOption</a></code></div>
-<div class="col-second even-row-color"><span class="type-name-label">PutOption.</span><code><a href="../PutOption.html#SequenceKeysDeltas(java.util.List)" class="member-name-link">SequenceKeysDeltas</a><wbr>(@NonNull <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Long.html" title="class or interface in java.lang" class="external-link">Long</a>&gt;&nbsp;sequenceKeysDeltas)</code></div>
+<div class="col-second even-row-color"><span class="type-name-label">PutOption.</span><code><a href="../PutOption.html#SequenceKeysDeltas(java.util.List)" class="member-name-link">SequenceKeysDeltas</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Long.html" title="class or interface in java.lang" class="external-link">Long</a>&gt;&nbsp;sequenceKeysDeltas)</code></div>
 <div class="col-last even-row-color">
 <div class="block">SequenceKeysDeltas will request that the final record key to be assigned by the server, based
  on the prefix record key and appending one or more sequences.</div>
@@ -138,7 +138,7 @@ loadScripts(document, 'script');</script>
 <div class="table-header col-first">Modifier and Type</div>
 <div class="table-header col-second">Method</div>
 <div class="table-header col-last">Description</div>
-<div class="col-first even-row-color"><code>@NonNull <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/concurrent/CompletableFuture.html" title="class or interface in java.util.concurrent" class="external-link">CompletableFuture</a>&lt;<a href="../PutResult.html" title="class in io.oxia.client.api">PutResult</a>&gt;</code></div>
+<div class="col-first even-row-color"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/concurrent/CompletableFuture.html" title="class or interface in java.util.concurrent" class="external-link">CompletableFuture</a>&lt;<a href="../PutResult.html" title="class in io.oxia.client.api">PutResult</a>&gt;</code></div>
 <div class="col-second even-row-color"><span class="type-name-label">AsyncOxiaClient.</span><code><a href="../AsyncOxiaClient.html#put(java.lang.String,byte%5B%5D,java.util.Set)" class="member-name-link">put</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;key,
  byte[]&nbsp;value,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Set.html" title="class or interface in java.util" class="external-link">Set</a>&lt;<a href="../PutOption.html" title="interface in io.oxia.client.api">PutOption</a>&gt;&nbsp;options)</code></div>
@@ -147,8 +147,8 @@ loadScripts(document, 'script');</script>
  specified, at the instant when the put is applied.</div>
 </div>
 <div class="col-first odd-row-color"><code><a href="../PutResult.html" title="class in io.oxia.client.api">PutResult</a></code></div>
-<div class="col-second odd-row-color"><span class="type-name-label">SyncOxiaClient.</span><code><a href="../SyncOxiaClient.html#put(java.lang.String,byte%5B%5D,java.util.Set)" class="member-name-link">put</a><wbr>(@NonNull <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;key,
- byte @NonNull []&nbsp;value,
+<div class="col-second odd-row-color"><span class="type-name-label">SyncOxiaClient.</span><code><a href="../SyncOxiaClient.html#put(java.lang.String,byte%5B%5D,java.util.Set)" class="member-name-link">put</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;key,
+ byte[]&nbsp;value,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Set.html" title="class or interface in java.util" class="external-link">Set</a>&lt;<a href="../PutOption.html" title="interface in io.oxia.client.api">PutOption</a>&gt;&nbsp;options)</code></div>
 <div class="col-last odd-row-color">
 <div class="block">Conditionally associates a value with a key if the server's versionId of the record is as

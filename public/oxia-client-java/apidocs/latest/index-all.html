@@ -146,16 +146,11 @@ loadScripts(document, 'script');</script>
 </dd>
 <dt><a href="io/oxia/client/internal/DefaultImplementation.html#%3Cinit%3E()" class="member-name-link">DefaultImplementation()</a> - Constructor for class io.oxia.client.internal.<a href="io/oxia/client/internal/DefaultImplementation.html" title="class in io.oxia.client.internal">DefaultImplementation</a></dt>
 <dd>&nbsp;</dd>
-<dt><a href="io/oxia/client/api/SyncOxiaClient.html#delete(java.lang.String)" class="member-name-link">delete(String)</a> - Method in interface io.oxia.client.api.<a href="io/oxia/client/api/SyncOxiaClient.html" title="interface in io.oxia.client.api">SyncOxiaClient</a></dt>
+<dt><a href="io/oxia/client/api/AsyncOxiaClient.html#delete(java.lang.String)" class="member-name-link">delete(String)</a> - Method in interface io.oxia.client.api.<a href="io/oxia/client/api/AsyncOxiaClient.html" title="interface in io.oxia.client.api">AsyncOxiaClient</a></dt>
 <dd>
 <div class="block">Unconditionally deletes the record associated with the key if the record exists.</div>
 </dd>
-<dt><a href="io/oxia/client/api/SyncOxiaClient.html#delete(java.lang.String,java.util.Set)" class="member-name-link">delete(String, Set&lt;DeleteOption&gt;)</a> - Method in interface io.oxia.client.api.<a href="io/oxia/client/api/SyncOxiaClient.html" title="interface in io.oxia.client.api">SyncOxiaClient</a></dt>
-<dd>
-<div class="block">Conditionally deletes the record associated with the key if the record exists, and the server's
- versionId of the record is as specified, at the instant when the delete is applied.</div>
-</dd>
-<dt><a href="io/oxia/client/api/AsyncOxiaClient.html#delete(java.lang.String)" class="member-name-link">delete(String)</a> - Method in interface io.oxia.client.api.<a href="io/oxia/client/api/AsyncOxiaClient.html" title="interface in io.oxia.client.api">AsyncOxiaClient</a></dt>
+<dt><a href="io/oxia/client/api/SyncOxiaClient.html#delete(java.lang.String)" class="member-name-link">delete(String)</a> - Method in interface io.oxia.client.api.<a href="io/oxia/client/api/SyncOxiaClient.html" title="interface in io.oxia.client.api">SyncOxiaClient</a></dt>
 <dd>
 <div class="block">Unconditionally deletes the record associated with the key if the record exists.</div>
 </dd>
@@ -164,21 +159,26 @@ loadScripts(document, 'script');</script>
 <div class="block">Conditionally deletes the record associated with the key if the record exists, and the server's
  versionId of the record is as specified, at the instant when the delete is applied.</div>
 </dd>
+<dt><a href="io/oxia/client/api/SyncOxiaClient.html#delete(java.lang.String,java.util.Set)" class="member-name-link">delete(String, Set&lt;DeleteOption&gt;)</a> - Method in interface io.oxia.client.api.<a href="io/oxia/client/api/SyncOxiaClient.html" title="interface in io.oxia.client.api">SyncOxiaClient</a></dt>
+<dd>
+<div class="block">Conditionally deletes the record associated with the key if the record exists, and the server's
+ versionId of the record is as specified, at the instant when the delete is applied.</div>
+</dd>
 <dt><a href="io/oxia/client/api/DeleteOption.html" class="type-name-link" title="interface in io.oxia.client.api">DeleteOption</a> - Interface in <a href="io/oxia/client/api/package-summary.html">io.oxia.client.api</a></dt>
 <dd>&nbsp;</dd>
-<dt><a href="io/oxia/client/api/SyncOxiaClient.html#deleteRange(java.lang.String,java.lang.String)" class="member-name-link">deleteRange(String, String)</a> - Method in interface io.oxia.client.api.<a href="io/oxia/client/api/SyncOxiaClient.html" title="interface in io.oxia.client.api">SyncOxiaClient</a></dt>
-<dd>
-<div class="block">Deletes any records with keys within the specified range.</div>
-</dd>
-<dt><a href="io/oxia/client/api/SyncOxiaClient.html#deleteRange(java.lang.String,java.lang.String,java.util.Set)" class="member-name-link">deleteRange(String, String, Set&lt;DeleteRangeOption&gt;)</a> - Method in interface io.oxia.client.api.<a href="io/oxia/client/api/SyncOxiaClient.html" title="interface in io.oxia.client.api">SyncOxiaClient</a></dt>
-<dd>
-<div class="block">Deletes any records with keys within the specified range.</div>
-</dd>
 <dt><a href="io/oxia/client/api/AsyncOxiaClient.html#deleteRange(java.lang.String,java.lang.String)" class="member-name-link">deleteRange(String, String)</a> - Method in interface io.oxia.client.api.<a href="io/oxia/client/api/AsyncOxiaClient.html" title="interface in io.oxia.client.api">AsyncOxiaClient</a></dt>
 <dd>
 <div class="block">Deletes any records with keys within the specified range.</div>
 </dd>
+<dt><a href="io/oxia/client/api/SyncOxiaClient.html#deleteRange(java.lang.String,java.lang.String)" class="member-name-link">deleteRange(String, String)</a> - Method in interface io.oxia.client.api.<a href="io/oxia/client/api/SyncOxiaClient.html" title="interface in io.oxia.client.api">SyncOxiaClient</a></dt>
+<dd>
+<div class="block">Deletes any records with keys within the specified range.</div>
+</dd>
 <dt><a href="io/oxia/client/api/AsyncOxiaClient.html#deleteRange(java.lang.String,java.lang.String,java.util.Set)" class="member-name-link">deleteRange(String, String, Set&lt;DeleteRangeOption&gt;)</a> - Method in interface io.oxia.client.api.<a href="io/oxia/client/api/AsyncOxiaClient.html" title="interface in io.oxia.client.api">AsyncOxiaClient</a></dt>
+<dd>
+<div class="block">Deletes any records with keys within the specified range.</div>
+</dd>
+<dt><a href="io/oxia/client/api/SyncOxiaClient.html#deleteRange(java.lang.String,java.lang.String,java.util.Set)" class="member-name-link">deleteRange(String, String, Set&lt;DeleteRangeOption&gt;)</a> - Method in interface io.oxia.client.api.<a href="io/oxia/client/api/SyncOxiaClient.html" title="interface in io.oxia.client.api">SyncOxiaClient</a></dt>
 <dd>
 <div class="block">Deletes any records with keys within the specified range.</div>
 </dd>
@@ -273,19 +273,19 @@ loadScripts(document, 'script');</script>
 <dl class="index">
 <dt><a href="io/oxia/client/api/Authentication.html#generateCredentials()" class="member-name-link">generateCredentials()</a> - Method in interface io.oxia.client.api.<a href="io/oxia/client/api/Authentication.html" title="interface in io.oxia.client.api">Authentication</a></dt>
 <dd>&nbsp;</dd>
-<dt><a href="io/oxia/client/api/SyncOxiaClient.html#get(java.lang.String)" class="member-name-link">get(String)</a> - Method in interface io.oxia.client.api.<a href="io/oxia/client/api/SyncOxiaClient.html" title="interface in io.oxia.client.api">SyncOxiaClient</a></dt>
-<dd>
-<div class="block">Returns the record associated with the specified key.</div>
-</dd>
-<dt><a href="io/oxia/client/api/SyncOxiaClient.html#get(java.lang.String,java.util.Set)" class="member-name-link">get(String, Set&lt;GetOption&gt;)</a> - Method in interface io.oxia.client.api.<a href="io/oxia/client/api/SyncOxiaClient.html" title="interface in io.oxia.client.api">SyncOxiaClient</a></dt>
-<dd>
-<div class="block">Returns the record associated with the specified key.</div>
-</dd>
 <dt><a href="io/oxia/client/api/AsyncOxiaClient.html#get(java.lang.String)" class="member-name-link">get(String)</a> - Method in interface io.oxia.client.api.<a href="io/oxia/client/api/AsyncOxiaClient.html" title="interface in io.oxia.client.api">AsyncOxiaClient</a></dt>
 <dd>
 <div class="block">Returns the record associated with the specified key.</div>
 </dd>
+<dt><a href="io/oxia/client/api/SyncOxiaClient.html#get(java.lang.String)" class="member-name-link">get(String)</a> - Method in interface io.oxia.client.api.<a href="io/oxia/client/api/SyncOxiaClient.html" title="interface in io.oxia.client.api">SyncOxiaClient</a></dt>
+<dd>
+<div class="block">Returns the record associated with the specified key.</div>
+</dd>
 <dt><a href="io/oxia/client/api/AsyncOxiaClient.html#get(java.lang.String,java.util.Set)" class="member-name-link">get(String, Set&lt;GetOption&gt;)</a> - Method in interface io.oxia.client.api.<a href="io/oxia/client/api/AsyncOxiaClient.html" title="interface in io.oxia.client.api">AsyncOxiaClient</a></dt>
+<dd>
+<div class="block">Returns the record associated with the specified key.</div>
+</dd>
+<dt><a href="io/oxia/client/api/SyncOxiaClient.html#get(java.lang.String,java.util.Set)" class="member-name-link">get(String, Set&lt;GetOption&gt;)</a> - Method in interface io.oxia.client.api.<a href="io/oxia/client/api/SyncOxiaClient.html" title="interface in io.oxia.client.api">SyncOxiaClient</a></dt>
 <dd>
 <div class="block">Returns the record associated with the specified key.</div>
 </dd>
@@ -461,19 +461,19 @@ loadScripts(document, 'script');</script>
 </dl>
 <h2 class="title" id="I:L">L</h2>
 <dl class="index">
-<dt><a href="io/oxia/client/api/SyncOxiaClient.html#list(java.lang.String,java.lang.String)" class="member-name-link">list(String, String)</a> - Method in interface io.oxia.client.api.<a href="io/oxia/client/api/SyncOxiaClient.html" title="interface in io.oxia.client.api">SyncOxiaClient</a></dt>
-<dd>
-<div class="block">Lists any existing keys within the specified range.</div>
-</dd>
-<dt><a href="io/oxia/client/api/SyncOxiaClient.html#list(java.lang.String,java.lang.String,java.util.Set)" class="member-name-link">list(String, String, Set&lt;ListOption&gt;)</a> - Method in interface io.oxia.client.api.<a href="io/oxia/client/api/SyncOxiaClient.html" title="interface in io.oxia.client.api">SyncOxiaClient</a></dt>
-<dd>
-<div class="block">Lists any existing keys within the specified range.</div>
-</dd>
 <dt><a href="io/oxia/client/api/AsyncOxiaClient.html#list(java.lang.String,java.lang.String)" class="member-name-link">list(String, String)</a> - Method in interface io.oxia.client.api.<a href="io/oxia/client/api/AsyncOxiaClient.html" title="interface in io.oxia.client.api">AsyncOxiaClient</a></dt>
 <dd>
 <div class="block">Lists any existing keys within the specified range.</div>
 </dd>
+<dt><a href="io/oxia/client/api/SyncOxiaClient.html#list(java.lang.String,java.lang.String)" class="member-name-link">list(String, String)</a> - Method in interface io.oxia.client.api.<a href="io/oxia/client/api/SyncOxiaClient.html" title="interface in io.oxia.client.api">SyncOxiaClient</a></dt>
+<dd>
+<div class="block">Lists any existing keys within the specified range.</div>
+</dd>
 <dt><a href="io/oxia/client/api/AsyncOxiaClient.html#list(java.lang.String,java.lang.String,java.util.Set)" class="member-name-link">list(String, String, Set&lt;ListOption&gt;)</a> - Method in interface io.oxia.client.api.<a href="io/oxia/client/api/AsyncOxiaClient.html" title="interface in io.oxia.client.api">AsyncOxiaClient</a></dt>
+<dd>
+<div class="block">Lists any existing keys within the specified range.</div>
+</dd>
+<dt><a href="io/oxia/client/api/SyncOxiaClient.html#list(java.lang.String,java.lang.String,java.util.Set)" class="member-name-link">list(String, String, Set&lt;ListOption&gt;)</a> - Method in interface io.oxia.client.api.<a href="io/oxia/client/api/SyncOxiaClient.html" title="interface in io.oxia.client.api">SyncOxiaClient</a></dt>
 <dd>
 <div class="block">Lists any existing keys within the specified range.</div>
 </dd>
@@ -658,22 +658,22 @@ loadScripts(document, 'script');</script>
 <div class="block">PartitionKey overrides the partition routing with the specified `partitionKey` instead of the
  regular record key.</div>
 </dd>
-<dt><a href="io/oxia/client/api/SyncOxiaClient.html#put(java.lang.String,byte%5B%5D)" class="member-name-link">put(String, byte[])</a> - Method in interface io.oxia.client.api.<a href="io/oxia/client/api/SyncOxiaClient.html" title="interface in io.oxia.client.api">SyncOxiaClient</a></dt>
-<dd>
-<div class="block">Associates a value with a key if the server's versionId of the record is as specified, at the
- instant when the put is applied.</div>
-</dd>
-<dt><a href="io/oxia/client/api/SyncOxiaClient.html#put(java.lang.String,byte%5B%5D,java.util.Set)" class="member-name-link">put(String, byte[], Set&lt;PutOption&gt;)</a> - Method in interface io.oxia.client.api.<a href="io/oxia/client/api/SyncOxiaClient.html" title="interface in io.oxia.client.api">SyncOxiaClient</a></dt>
-<dd>
-<div class="block">Conditionally associates a value with a key if the server's versionId of the record is as
- specified, at the instant when the put is applied.</div>
-</dd>
 <dt><a href="io/oxia/client/api/AsyncOxiaClient.html#put(java.lang.String,byte%5B%5D)" class="member-name-link">put(String, byte[])</a> - Method in interface io.oxia.client.api.<a href="io/oxia/client/api/AsyncOxiaClient.html" title="interface in io.oxia.client.api">AsyncOxiaClient</a></dt>
 <dd>
 <div class="block">Conditionally associates a value with a key if the server's versionId of the record is as
  specified, at the instant when the put is applied.</div>
 </dd>
+<dt><a href="io/oxia/client/api/SyncOxiaClient.html#put(java.lang.String,byte%5B%5D)" class="member-name-link">put(String, byte[])</a> - Method in interface io.oxia.client.api.<a href="io/oxia/client/api/SyncOxiaClient.html" title="interface in io.oxia.client.api">SyncOxiaClient</a></dt>
+<dd>
+<div class="block">Associates a value with a key if the server's versionId of the record is as specified, at the
+ instant when the put is applied.</div>
+</dd>
 <dt><a href="io/oxia/client/api/AsyncOxiaClient.html#put(java.lang.String,byte%5B%5D,java.util.Set)" class="member-name-link">put(String, byte[], Set&lt;PutOption&gt;)</a> - Method in interface io.oxia.client.api.<a href="io/oxia/client/api/AsyncOxiaClient.html" title="interface in io.oxia.client.api">AsyncOxiaClient</a></dt>
+<dd>
+<div class="block">Conditionally associates a value with a key if the server's versionId of the record is as
+ specified, at the instant when the put is applied.</div>
+</dd>
+<dt><a href="io/oxia/client/api/SyncOxiaClient.html#put(java.lang.String,byte%5B%5D,java.util.Set)" class="member-name-link">put(String, byte[], Set&lt;PutOption&gt;)</a> - Method in interface io.oxia.client.api.<a href="io/oxia/client/api/SyncOxiaClient.html" title="interface in io.oxia.client.api">SyncOxiaClient</a></dt>
 <dd>
 <div class="block">Conditionally associates a value with a key if the server's versionId of the record is as
  specified, at the instant when the put is applied.</div>

@@ -80,13 +80,13 @@ loadScripts(document, 'script');</script>
 <div class="table-header col-second">Method</div>
 <div class="table-header col-last">Description</div>
 <div class="col-first even-row-color"><code>static <a href="../RangeScanOption.html" title="interface in io.oxia.client.api">RangeScanOption</a></code></div>
-<div class="col-second even-row-color"><span class="type-name-label">RangeScanOption.</span><code><a href="../RangeScanOption.html#PartitionKey(java.lang.String)" class="member-name-link">PartitionKey</a><wbr>(@NonNull <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;partitionKey)</code></div>
+<div class="col-second even-row-color"><span class="type-name-label">RangeScanOption.</span><code><a href="../RangeScanOption.html#PartitionKey(java.lang.String)" class="member-name-link">PartitionKey</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;partitionKey)</code></div>
 <div class="col-last even-row-color">
 <div class="block">PartitionKey overrides the partition routing with the specified `partitionKey` instead of the
  regular record key.</div>
 </div>
 <div class="col-first odd-row-color"><code>static <a href="../RangeScanOption.html" title="interface in io.oxia.client.api">RangeScanOption</a></code></div>
-<div class="col-second odd-row-color"><span class="type-name-label">RangeScanOption.</span><code><a href="../RangeScanOption.html#UseIndex(java.lang.String)" class="member-name-link">UseIndex</a><wbr>(@NonNull <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;secondaryIndexName)</code></div>
+<div class="col-second odd-row-color"><span class="type-name-label">RangeScanOption.</span><code><a href="../RangeScanOption.html#UseIndex(java.lang.String)" class="member-name-link">UseIndex</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;secondaryIndexName)</code></div>
 <div class="col-last odd-row-color">
 <div class="block">UseIndex let the users specify a different index to follow for the range scan operation</div>
 </div>
@@ -97,16 +97,16 @@ loadScripts(document, 'script');</script>
 <div class="table-header col-second">Method</div>
 <div class="table-header col-last">Description</div>
 <div class="col-first even-row-color"><code>void</code></div>
-<div class="col-second even-row-color"><span class="type-name-label">AsyncOxiaClient.</span><code><a href="../AsyncOxiaClient.html#rangeScan(java.lang.String,java.lang.String,io.oxia.client.api.RangeScanConsumer,java.util.Set)" class="member-name-link">rangeScan</a><wbr>(@NonNull <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;startKeyInclusive,
- @NonNull <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;endKeyExclusive,
- @NonNull <a href="../RangeScanConsumer.html" title="interface in io.oxia.client.api">RangeScanConsumer</a>&nbsp;consumer,
- @NonNull <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Set.html" title="class or interface in java.util" class="external-link">Set</a>&lt;<a href="../RangeScanOption.html" title="interface in io.oxia.client.api">RangeScanOption</a>&gt;&nbsp;options)</code></div>
+<div class="col-second even-row-color"><span class="type-name-label">AsyncOxiaClient.</span><code><a href="../AsyncOxiaClient.html#rangeScan(java.lang.String,java.lang.String,io.oxia.client.api.RangeScanConsumer,java.util.Set)" class="member-name-link">rangeScan</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;startKeyInclusive,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;endKeyExclusive,
+ <a href="../RangeScanConsumer.html" title="interface in io.oxia.client.api">RangeScanConsumer</a>&nbsp;consumer,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Set.html" title="class or interface in java.util" class="external-link">Set</a>&lt;<a href="../RangeScanOption.html" title="interface in io.oxia.client.api">RangeScanOption</a>&gt;&nbsp;options)</code></div>
 <div class="col-last even-row-color">
 <div class="block">Scan any existing records within the specified range of keys.</div>
 </div>
 <div class="col-first odd-row-color"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Iterable.html" title="class or interface in java.lang" class="external-link">Iterable</a>&lt;<a href="../GetResult.html" title="class in io.oxia.client.api">GetResult</a>&gt;</code></div>
-<div class="col-second odd-row-color"><span class="type-name-label">SyncOxiaClient.</span><code><a href="../SyncOxiaClient.html#rangeScan(java.lang.String,java.lang.String,java.util.Set)" class="member-name-link">rangeScan</a><wbr>(@NonNull <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;startKeyInclusive,
- @NonNull <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;endKeyExclusive,
+<div class="col-second odd-row-color"><span class="type-name-label">SyncOxiaClient.</span><code><a href="../SyncOxiaClient.html#rangeScan(java.lang.String,java.lang.String,java.util.Set)" class="member-name-link">rangeScan</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;startKeyInclusive,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;endKeyExclusive,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Set.html" title="class or interface in java.util" class="external-link">Set</a>&lt;<a href="../RangeScanOption.html" title="interface in io.oxia.client.api">RangeScanOption</a>&gt;&nbsp;options)</code></div>
 <div class="col-last odd-row-color">
 <div class="block">Scan any existing records within the specified range of keys.</div>

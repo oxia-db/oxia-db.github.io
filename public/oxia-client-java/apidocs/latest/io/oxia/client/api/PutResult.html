@@ -83,7 +83,7 @@ loadScripts(document, 'script');</script>
 <dd><code><span id="param-version">version</span></code> - Metadata for the record associated with the key specified in the call.</dd>
 </dl>
 <hr>
-<div class="type-signature"><span class="modifiers">public record </span><span class="element-name type-name-label">PutResult</span>(@NonNull <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;key, @NonNull <a href="Version.html" title="class in io.oxia.client.api">Version</a>&nbsp;version)
+<div class="type-signature"><span class="modifiers">public record </span><span class="element-name type-name-label">PutResult</span>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;key, <a href="Version.html" title="class in io.oxia.client.api">Version</a>&nbsp;version)
 <span class="extends-implements">extends <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Record.html" title="class or interface in java.lang" class="external-link">Record</a></span></div>
 <div class="block">The result of a client get request.</div>
 </section>
@@ -97,8 +97,8 @@ loadScripts(document, 'script');</script>
 <div class="summary-table two-column-summary">
 <div class="table-header col-first">Constructor</div>
 <div class="table-header col-last">Description</div>
-<div class="col-constructor-name even-row-color"><code><a href="#%3Cinit%3E(java.lang.String,io.oxia.client.api.Version)" class="member-name-link">PutResult</a><wbr>(@NonNull <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;key,
- @NonNull <a href="Version.html" title="class in io.oxia.client.api">Version</a>&nbsp;version)</code></div>
+<div class="col-constructor-name even-row-color"><code><a href="#%3Cinit%3E(java.lang.String,io.oxia.client.api.Version)" class="member-name-link">PutResult</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;key,
+ <a href="Version.html" title="class in io.oxia.client.api">Version</a>&nbsp;version)</code></div>
 <div class="col-last even-row-color">
 <div class="block">Creates an instance of a <code>PutResult</code> record class.</div>
 </div>
@@ -126,7 +126,7 @@ loadScripts(document, 'script');</script>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Returns a hash code value for this object.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>@NonNull <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#key()" class="member-name-link">key</a>()</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Returns the value of the <a href="#param-key"><code>key</code></a> record component.</div>
@@ -136,7 +136,7 @@ loadScripts(document, 'script');</script>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Returns a string representation of this record class.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>@NonNull <a href="Version.html" title="class in io.oxia.client.api">Version</a></code></div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="Version.html" title="class in io.oxia.client.api">Version</a></code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#version()" class="member-name-link">version</a>()</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Returns the value of the <a href="#param-version"><code>version</code></a> record component.</div>
@@ -161,10 +161,8 @@ loadScripts(document, 'script');</script>
 <li>
 <section class="detail" id="&lt;init&gt;(java.lang.String,io.oxia.client.api.Version)">
 <h3>PutResult</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="element-name">PutResult</span><wbr><span class="parameters">(@NonNull
- @NonNull <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;key,
- @NonNull
- @NonNull <a href="Version.html" title="class in io.oxia.client.api">Version</a>&nbsp;version)</span></div>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="element-name">PutResult</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;key,
+ <a href="Version.html" title="class in io.oxia.client.api">Version</a>&nbsp;version)</span></div>
 <div class="block">Creates an instance of a <code>PutResult</code> record class.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
@@ -225,8 +223,7 @@ loadScripts(document, 'script');</script>
 <li>
 <section class="detail" id="key()">
 <h3>key</h3>
-<div class="member-signature"><span class="annotations">@NonNull
-</span><span class="modifiers">public</span>&nbsp;<span class="return-type">@NonNull <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">key</span>()</div>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">key</span>()</div>
 <div class="block">Returns the value of the <a href="#param-key"><code>key</code></a> record component.</div>
 <dl class="notes">
 <dt>Returns:</dt>
@@ -237,8 +234,7 @@ loadScripts(document, 'script');</script>
 <li>
 <section class="detail" id="version()">
 <h3>version</h3>
-<div class="member-signature"><span class="annotations">@NonNull
-</span><span class="modifiers">public</span>&nbsp;<span class="return-type">@NonNull <a href="Version.html" title="class in io.oxia.client.api">Version</a></span>&nbsp;<span class="element-name">version</span>()</div>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="Version.html" title="class in io.oxia.client.api">Version</a></span>&nbsp;<span class="element-name">version</span>()</div>
 <div class="block">Returns the value of the <a href="#param-version"><code>version</code></a> record component.</div>
 <dl class="notes">
 <dt>Returns:</dt>

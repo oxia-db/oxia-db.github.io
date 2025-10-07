@@ -95,7 +95,7 @@ loadScripts(document, 'script');</script>
 <div class="col-second even-row-color"><span class="type-name-label">DeleteOption.</span><code><a href="../DeleteOption.html#IfVersionIdEquals(long)" class="member-name-link">IfVersionIdEquals</a><wbr>(long&nbsp;versionId)</code></div>
 <div class="col-last even-row-color">&nbsp;</div>
 <div class="col-first odd-row-color"><code>static <a href="../DeleteOption.html" title="interface in io.oxia.client.api">DeleteOption</a></code></div>
-<div class="col-second odd-row-color"><span class="type-name-label">DeleteOption.</span><code><a href="../DeleteOption.html#PartitionKey(java.lang.String)" class="member-name-link">PartitionKey</a><wbr>(@NonNull <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;partitionKey)</code></div>
+<div class="col-second odd-row-color"><span class="type-name-label">DeleteOption.</span><code><a href="../DeleteOption.html#PartitionKey(java.lang.String)" class="member-name-link">PartitionKey</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;partitionKey)</code></div>
 <div class="col-last odd-row-color">
 <div class="block">PartitionKey overrides the partition routing with the specified `partitionKey` instead of the
  regular record key.</div>
@@ -106,7 +106,7 @@ loadScripts(document, 'script');</script>
 <div class="table-header col-first">Modifier and Type</div>
 <div class="table-header col-second">Method</div>
 <div class="table-header col-last">Description</div>
-<div class="col-first even-row-color"><code>@NonNull <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/concurrent/CompletableFuture.html" title="class or interface in java.util.concurrent" class="external-link">CompletableFuture</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Boolean.html" title="class or interface in java.lang" class="external-link">Boolean</a>&gt;</code></div>
+<div class="col-first even-row-color"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/concurrent/CompletableFuture.html" title="class or interface in java.util.concurrent" class="external-link">CompletableFuture</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Boolean.html" title="class or interface in java.lang" class="external-link">Boolean</a>&gt;</code></div>
 <div class="col-second even-row-color"><span class="type-name-label">AsyncOxiaClient.</span><code><a href="../AsyncOxiaClient.html#delete(java.lang.String,java.util.Set)" class="member-name-link">delete</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;key,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Set.html" title="class or interface in java.util" class="external-link">Set</a>&lt;<a href="../DeleteOption.html" title="interface in io.oxia.client.api">DeleteOption</a>&gt;&nbsp;options)</code></div>
 <div class="col-last even-row-color">
@@ -114,8 +114,8 @@ loadScripts(document, 'script');</script>
  versionId of the record is as specified, at the instant when the delete is applied.</div>
 </div>
 <div class="col-first odd-row-color"><code>boolean</code></div>
-<div class="col-second odd-row-color"><span class="type-name-label">SyncOxiaClient.</span><code><a href="../SyncOxiaClient.html#delete(java.lang.String,java.util.Set)" class="member-name-link">delete</a><wbr>(@NonNull <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;key,
- @NonNull <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Set.html" title="class or interface in java.util" class="external-link">Set</a>&lt;<a href="../DeleteOption.html" title="interface in io.oxia.client.api">DeleteOption</a>&gt;&nbsp;options)</code></div>
+<div class="col-second odd-row-color"><span class="type-name-label">SyncOxiaClient.</span><code><a href="../SyncOxiaClient.html#delete(java.lang.String,java.util.Set)" class="member-name-link">delete</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;key,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Set.html" title="class or interface in java.util" class="external-link">Set</a>&lt;<a href="../DeleteOption.html" title="interface in io.oxia.client.api">DeleteOption</a>&gt;&nbsp;options)</code></div>
 <div class="col-last odd-row-color">
 <div class="block">Conditionally deletes the record associated with the key if the record exists, and the server's
  versionId of the record is as specified, at the instant when the delete is applied.</div>
