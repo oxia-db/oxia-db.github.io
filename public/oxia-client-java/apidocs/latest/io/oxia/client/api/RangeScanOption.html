@@ -75,6 +75,9 @@ loadScripts(document, 'script');</script>
 <hr>
 <div class="type-signature"><span class="modifiers">public sealed interface </span><span class="element-name type-name-label">RangeScanOption</span>
 <span class="permits">permits <a href="OptionPartitionKey.html" title="class in io.oxia.client.api">OptionPartitionKey</a>, <a href="OptionSecondaryIndexName.html" title="class in io.oxia.client.api">OptionSecondaryIndexName</a></span></div>
+<div class="block">RangeScanOption is a sealed interface that represents options for controlling range scan
+ operations. It allows specifying additional preferences such as the partition key or secondary
+ index name.</div>
 </section>
 <section class="summary">
 <ul class="summary-list">
@@ -124,6 +127,8 @@ loadScripts(document, 'script');</script>
 <dl class="notes">
 <dt>Parameters:</dt>
 <dd><code>partitionKey</code> - the partition key to use</dd>
+<dt>Returns:</dt>
+<dd>the RangeScanOption.</dd>
 </dl>
 </section>
 </li>
@@ -136,6 +141,7 @@ loadScripts(document, 'script');</script>
 <dt>Parameters:</dt>
 <dd><code>secondaryIndexName</code> - the name of the secondary index to use</dd>
 <dt>Returns:</dt>
+<dd>the RangeScanOption.</dd>
 </dl>
 </section>
 </li>

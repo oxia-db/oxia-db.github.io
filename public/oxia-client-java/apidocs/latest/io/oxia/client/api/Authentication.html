@@ -74,6 +74,8 @@ loadScripts(document, 'script');</script>
 <section class="class-description" id="class-description">
 <hr>
 <div class="type-signature"><span class="modifiers">public interface </span><span class="element-name type-name-label">Authentication</span></div>
+<div class="block">Represents an interface for implementing authentication mechanisms. The implementations of this
+ interface are expected to provide a way to generate credentials in the form of key-value pairs.</div>
 </section>
 <section class="summary">
 <ul class="summary-list">
@@ -90,7 +92,9 @@ loadScripts(document, 'script');</script>
 <div class="table-header col-last">Description</div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;</code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#generateCredentials()" class="member-name-link">generateCredentials</a>()</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">&nbsp;</div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">
+<div class="block">Generates a set of credentials represented as key-value pairs.</div>
+</div>
 </div>
 </div>
 </div>
@@ -109,6 +113,13 @@ loadScripts(document, 'script');</script>
 <section class="detail" id="generateCredentials()">
 <h3>generateCredentials</h3>
 <div class="member-signature"><span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;</span>&nbsp;<span class="element-name">generateCredentials</span>()</div>
+<div class="block">Generates a set of credentials represented as key-value pairs.</div>
+<dl class="notes">
+<dt>Returns:</dt>
+<dd>a map containing the generated credentials, where the keys represent the credential
+     type (e.g., username, password) and the values represent the corresponding credential
+     values.</dd>
+</dl>
 </section>
 </li>
 </ul>

@@ -74,6 +74,8 @@ loadScripts(document, 'script');</script>
 <section class="class-description" id="class-description">
 <hr>
 <div class="type-signature"><span class="modifiers">public interface </span><span class="element-name type-name-label">RangeScanConsumer</span></div>
+<div class="block">Interface defining a consumer for Range Scan operations, allowing handling of chunked results,
+ errors, or completion signals for a range scan process.</div>
 </section>
 <section class="summary">
 <ul class="summary-list">
@@ -90,13 +92,19 @@ loadScripts(document, 'script');</script>
 <div class="table-header col-last">Description</div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code>void</code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#onCompleted()" class="member-name-link">onCompleted</a>()</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">&nbsp;</div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">
+<div class="block">Invoked when the range scan operation completes.</div>
+</div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code>void</code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#onError(java.lang.Throwable)" class="member-name-link">onError</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Throwable.html" title="class or interface in java.lang" class="external-link">Throwable</a>&nbsp;throwable)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">&nbsp;</div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">
+<div class="block">Invoked when an error occurs during the range scan operation.</div>
+</div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code>void</code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#onNext(io.oxia.client.api.GetResult)" class="member-name-link">onNext</a><wbr>(<a href="GetResult.html" title="class in io.oxia.client.api">GetResult</a>&nbsp;result)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">&nbsp;</div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">
+<div class="block">Invoked for each record returned by the range scan operation.</div>
+</div>
 </div>
 </div>
 </div>
@@ -115,18 +123,29 @@ loadScripts(document, 'script');</script>
 <section class="detail" id="onNext(io.oxia.client.api.GetResult)">
 <h3>onNext</h3>
 <div class="member-signature"><span class="return-type">void</span>&nbsp;<span class="element-name">onNext</span><wbr><span class="parameters">(<a href="GetResult.html" title="class in io.oxia.client.api">GetResult</a>&nbsp;result)</span></div>
+<div class="block">Invoked for each record returned by the range scan operation.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>result</code> - The GetResult for the record.</dd>
+</dl>
 </section>
 </li>
 <li>
 <section class="detail" id="onError(java.lang.Throwable)">
 <h3>onError</h3>
 <div class="member-signature"><span class="return-type">void</span>&nbsp;<span class="element-name">onError</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Throwable.html" title="class or interface in java.lang" class="external-link">Throwable</a>&nbsp;throwable)</span></div>
+<div class="block">Invoked when an error occurs during the range scan operation.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>throwable</code> - the exception that occurred.</dd>
+</dl>
 </section>
 </li>
 <li>
 <section class="detail" id="onCompleted()">
 <h3>onCompleted</h3>
 <div class="member-signature"><span class="return-type">void</span>&nbsp;<span class="element-name">onCompleted</span>()</div>
+<div class="block">Invoked when the range scan operation completes.</div>
 </section>
 </li>
 </ul>

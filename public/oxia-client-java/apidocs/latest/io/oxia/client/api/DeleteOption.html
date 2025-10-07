@@ -79,6 +79,7 @@ loadScripts(document, 'script');</script>
 <hr>
 <div class="type-signature"><span class="modifiers">public sealed interface </span><span class="element-name type-name-label">DeleteOption</span>
 <span class="permits">permits <a href="OptionPartitionKey.html" title="class in io.oxia.client.api">OptionPartitionKey</a>, <a href="OptionVersionId.html" title="interface in io.oxia.client.api">OptionVersionId</a></span></div>
+<div class="block">Options for deleting a record.</div>
 </section>
 <section class="summary">
 <ul class="summary-list">
@@ -94,7 +95,9 @@ loadScripts(document, 'script');</script>
 <div class="table-header col-last">Description</div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab1"><code>static <a href="DeleteOption.html" title="interface in io.oxia.client.api">DeleteOption</a></code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab1"><code><a href="#IfVersionIdEquals(long)" class="member-name-link">IfVersionIdEquals</a><wbr>(long&nbsp;versionId)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab1">&nbsp;</div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab1">
+<div class="block">Conditional delete will only succeed if the record's version matches the supplied versionId.</div>
+</div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab1"><code>static <a href="DeleteOption.html" title="interface in io.oxia.client.api">DeleteOption</a></code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab1"><code><a href="#PartitionKey(java.lang.String)" class="member-name-link">PartitionKey</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;partitionKey)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab1">
@@ -118,6 +121,13 @@ loadScripts(document, 'script');</script>
 <section class="detail" id="IfVersionIdEquals(long)">
 <h3>IfVersionIdEquals</h3>
 <div class="member-signature"><span class="modifiers">static</span>&nbsp;<span class="return-type"><a href="DeleteOption.html" title="interface in io.oxia.client.api">DeleteOption</a></span>&nbsp;<span class="element-name">IfVersionIdEquals</span><wbr><span class="parameters">(long&nbsp;versionId)</span></div>
+<div class="block">Conditional delete will only succeed if the record's version matches the supplied versionId.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>versionId</code> - the versionId to compare with the record's version.</dd>
+<dt>Returns:</dt>
+<dd>the delete option.</dd>
+</dl>
 </section>
 </li>
 <li>
@@ -132,6 +142,8 @@ loadScripts(document, 'script');</script>
 <dl class="notes">
 <dt>Parameters:</dt>
 <dd><code>partitionKey</code> - the partition key to use</dd>
+<dt>Returns:</dt>
+<dd>the delete option.</dd>
 </dl>
 </section>
 </li>

@@ -74,6 +74,7 @@ loadScripts(document, 'script');</script>
 <section class="class-description" id="class-description">
 <hr>
 <div class="type-signature"><span class="modifiers">public interface </span><span class="element-name type-name-label">OxiaClientBuilder</span></div>
+<div class="block">Builder for <a href="SyncOxiaClient.html" title="interface in io.oxia.client.api"><code>SyncOxiaClient</code></a> and <a href="AsyncOxiaClient.html" title="interface in io.oxia.client.api"><code>AsyncOxiaClient</code></a>.</div>
 </section>
 <section class="summary">
 <ul class="summary-list">
@@ -90,10 +91,14 @@ loadScripts(document, 'script');</script>
 <div class="table-header col-last">Description</div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/concurrent/CompletableFuture.html" title="class or interface in java.util.concurrent" class="external-link">CompletableFuture</a>&lt;<a href="AsyncOxiaClient.html" title="interface in io.oxia.client.api">AsyncOxiaClient</a>&gt;</code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#asyncClient()" class="member-name-link">asyncClient</a>()</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">&nbsp;</div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">
+<div class="block">Create an asynchronous client.</div>
+</div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="OxiaClientBuilder.html" title="interface in io.oxia.client.api">OxiaClientBuilder</a></code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#authentication(io.oxia.client.api.Authentication)" class="member-name-link">authentication</a><wbr>(<a href="Authentication.html" title="interface in io.oxia.client.api">Authentication</a>&nbsp;authentication)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">&nbsp;</div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">
+<div class="block">Configure the authentication plugin and its parameters.</div>
+</div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="OxiaClientBuilder.html" title="interface in io.oxia.client.api">OxiaClientBuilder</a></code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#authentication(java.lang.String,java.lang.String)" class="member-name-link">authentication</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;authPluginClassName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;authParamsString)</code></div>
@@ -102,29 +107,45 @@ loadScripts(document, 'script');</script>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="OxiaClientBuilder.html" title="interface in io.oxia.client.api">OxiaClientBuilder</a></code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#batchLinger(java.time.Duration)" class="member-name-link">batchLinger</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/time/Duration.html" title="class or interface in java.time" class="external-link">Duration</a>&nbsp;batchLinger)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">&nbsp;</div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">
+<div class="block">Specify the maximum time to wait for a batch to be sent.</div>
+</div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="OxiaClientBuilder.html" title="interface in io.oxia.client.api">OxiaClientBuilder</a></code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#clientIdentifier(java.lang.String)" class="member-name-link">clientIdentifier</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;clientIdentifier)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">&nbsp;</div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">
+<div class="block">Specify the client identifier for this client instance.</div>
+</div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="OxiaClientBuilder.html" title="interface in io.oxia.client.api">OxiaClientBuilder</a></code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#clientIdentifier(java.util.function.Supplier)" class="member-name-link">clientIdentifier</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/function/Supplier.html" title="class or interface in java.util.function" class="external-link">Supplier</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;&nbsp;clientIdentifier)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">&nbsp;</div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">
+<div class="block">Specify the client identifier for this client instance.</div>
+</div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="OxiaClientBuilder.html" title="interface in io.oxia.client.api">OxiaClientBuilder</a></code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#connectionBackoff(java.time.Duration,java.time.Duration)" class="member-name-link">connectionBackoff</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/time/Duration.html" title="class or interface in java.time" class="external-link">Duration</a>&nbsp;minDelay,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/time/Duration.html" title="class or interface in java.time" class="external-link">Duration</a>&nbsp;maxDelay)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">&nbsp;</div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">
+<div class="block">Configure the connection backoff policy.</div>
+</div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="OxiaClientBuilder.html" title="interface in io.oxia.client.api">OxiaClientBuilder</a></code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#connectionKeepAliveTime(java.time.Duration)" class="member-name-link">connectionKeepAliveTime</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/time/Duration.html" title="class or interface in java.time" class="external-link">Duration</a>&nbsp;connectionKeepAlive)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">&nbsp;</div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">
+<div class="block">Configure the keep alive interval for the connection.</div>
+</div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="OxiaClientBuilder.html" title="interface in io.oxia.client.api">OxiaClientBuilder</a></code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#connectionKeepAliveTimeout(java.time.Duration)" class="member-name-link">connectionKeepAliveTimeout</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/time/Duration.html" title="class or interface in java.time" class="external-link">Duration</a>&nbsp;connectionKeepAliveTimeout)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">&nbsp;</div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">
+<div class="block">Configure the keep alive timeout for the connection.</div>
+</div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab1"><code>static <a href="OxiaClientBuilder.html" title="interface in io.oxia.client.api">OxiaClientBuilder</a></code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab1"><code><a href="#create(java.lang.String)" class="member-name-link">create</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serviceAddress)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab1">&nbsp;</div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab1">
+<div class="block">Create a new client builder.</div>
+</div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="OxiaClientBuilder.html" title="interface in io.oxia.client.api">OxiaClientBuilder</a></code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#enableTls(boolean)" class="member-name-link">enableTls</a><wbr>(boolean&nbsp;enableTls)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">&nbsp;</div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">
+<div class="block">Configures whether to enable TLS (Transport Layer Security) for the client connection.</div>
+</div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="OxiaClientBuilder.html" title="interface in io.oxia.client.api">OxiaClientBuilder</a></code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#loadConfig(java.io.File)" class="member-name-link">loadConfig</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/io/File.html" title="class or interface in java.io" class="external-link">File</a>&nbsp;configFile)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">
@@ -142,25 +163,39 @@ loadScripts(document, 'script');</script>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="OxiaClientBuilder.html" title="interface in io.oxia.client.api">OxiaClientBuilder</a></code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#maxConnectionPerNode(int)" class="member-name-link">maxConnectionPerNode</a><wbr>(int&nbsp;connections)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">&nbsp;</div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">
+<div class="block">Configure the maximum number of connections to each Oxia server node.</div>
+</div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="OxiaClientBuilder.html" title="interface in io.oxia.client.api">OxiaClientBuilder</a></code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#maxRequestsPerBatch(int)" class="member-name-link">maxRequestsPerBatch</a><wbr>(int&nbsp;maxRequestsPerBatch)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">&nbsp;</div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">
+<div class="block">Specify the maximum number of requests to include in a batch.</div>
+</div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="OxiaClientBuilder.html" title="interface in io.oxia.client.api">OxiaClientBuilder</a></code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#namespace(java.lang.String)" class="member-name-link">namespace</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;namespace)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">&nbsp;</div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">
+<div class="block">Specify the Oxia namesace to use for this client instance.</div>
+</div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="OxiaClientBuilder.html" title="interface in io.oxia.client.api">OxiaClientBuilder</a></code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#openTelemetry(io.opentelemetry.api.OpenTelemetry)" class="member-name-link">openTelemetry</a><wbr>(io.opentelemetry.api.OpenTelemetry&nbsp;openTelemetry)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">&nbsp;</div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">
+<div class="block">Specify the OpenTelemetry instance to use for this client instance.</div>
+</div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="OxiaClientBuilder.html" title="interface in io.oxia.client.api">OxiaClientBuilder</a></code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#requestTimeout(java.time.Duration)" class="member-name-link">requestTimeout</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/time/Duration.html" title="class or interface in java.time" class="external-link">Duration</a>&nbsp;requestTimeout)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">&nbsp;</div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">
+<div class="block">Specify a custom timeout for all requests.</div>
+</div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="OxiaClientBuilder.html" title="interface in io.oxia.client.api">OxiaClientBuilder</a></code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#sessionTimeout(java.time.Duration)" class="member-name-link">sessionTimeout</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/time/Duration.html" title="class or interface in java.time" class="external-link">Duration</a>&nbsp;sessionTimeout)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">&nbsp;</div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">
+<div class="block">Specify the session timeout for this client instance.</div>
+</div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="SyncOxiaClient.html" title="interface in io.oxia.client.api">SyncOxiaClient</a></code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#syncClient()" class="member-name-link">syncClient</a>()</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">&nbsp;</div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">
+<div class="block">Create a synchronous client.</div>
+</div>
 </div>
 </div>
 </div>
@@ -179,6 +214,13 @@ loadScripts(document, 'script');</script>
 <section class="detail" id="create(java.lang.String)">
 <h3>create</h3>
 <div class="member-signature"><span class="modifiers">static</span>&nbsp;<span class="return-type"><a href="OxiaClientBuilder.html" title="interface in io.oxia.client.api">OxiaClientBuilder</a></span>&nbsp;<span class="element-name">create</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serviceAddress)</span></div>
+<div class="block">Create a new client builder.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>serviceAddress</code> - the address of the Oxia server</dd>
+<dt>Returns:</dt>
+<dd>the client builder instance</dd>
+</dl>
 </section>
 </li>
 <li>
@@ -186,9 +228,14 @@ loadScripts(document, 'script');</script>
 <h3>syncClient</h3>
 <div class="member-signature"><span class="return-type"><a href="SyncOxiaClient.html" title="interface in io.oxia.client.api">SyncOxiaClient</a></span>&nbsp;<span class="element-name">syncClient</span>()
                    throws <span class="exceptions"><a href="exceptions/OxiaException.html" title="class in io.oxia.client.api.exceptions">OxiaException</a></span></div>
+<div class="block">Create a synchronous client.
+
+ <p>This method is blocking while the client initializes and talks to the server.</div>
 <dl class="notes">
+<dt>Returns:</dt>
+<dd>the synchronous client instance</dd>
 <dt>Throws:</dt>
-<dd><code><a href="exceptions/OxiaException.html" title="class in io.oxia.client.api.exceptions">OxiaException</a></code></dd>
+<dd><code><a href="exceptions/OxiaException.html" title="class in io.oxia.client.api.exceptions">OxiaException</a></code> - if failed to create the client</dd>
 </dl>
 </section>
 </li>
@@ -196,60 +243,169 @@ loadScripts(document, 'script');</script>
 <section class="detail" id="asyncClient()">
 <h3>asyncClient</h3>
 <div class="member-signature"><span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/concurrent/CompletableFuture.html" title="class or interface in java.util.concurrent" class="external-link">CompletableFuture</a>&lt;<a href="AsyncOxiaClient.html" title="interface in io.oxia.client.api">AsyncOxiaClient</a>&gt;</span>&nbsp;<span class="element-name">asyncClient</span>()</div>
+<div class="block">Create an asynchronous client.</div>
+<dl class="notes">
+<dt>Returns:</dt>
+<dd>a future to retrieve the client instance, when ready</dd>
+</dl>
 </section>
 </li>
 <li>
 <section class="detail" id="requestTimeout(java.time.Duration)">
 <h3>requestTimeout</h3>
 <div class="member-signature"><span class="return-type"><a href="OxiaClientBuilder.html" title="interface in io.oxia.client.api">OxiaClientBuilder</a></span>&nbsp;<span class="element-name">requestTimeout</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/time/Duration.html" title="class or interface in java.time" class="external-link">Duration</a>&nbsp;requestTimeout)</span></div>
+<div class="block">Specify a custom timeout for all requests.
+
+ <p>Default is <code>30 secs</code>.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>requestTimeout</code> - the timeout duration</dd>
+<dt>Returns:</dt>
+<dd>the builder instance</dd>
+</dl>
 </section>
 </li>
 <li>
 <section class="detail" id="batchLinger(java.time.Duration)">
 <h3>batchLinger</h3>
 <div class="member-signature"><span class="return-type"><a href="OxiaClientBuilder.html" title="interface in io.oxia.client.api">OxiaClientBuilder</a></span>&nbsp;<span class="element-name">batchLinger</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/time/Duration.html" title="class or interface in java.time" class="external-link">Duration</a>&nbsp;batchLinger)</span></div>
+<div class="block">Specify the maximum time to wait for a batch to be sent.
+
+ <p>Default is <code>5 millis</code>
+
+ <p>A larger linger time might help in creating batches with more ops in them and thus might
+ improve the overall throughput.
+
+ <p>A shorter linger time might help in minimizing the latency.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>batchLinger</code> - the batch linger duration</dd>
+<dt>Returns:</dt>
+<dd>the builder instance</dd>
+</dl>
 </section>
 </li>
 <li>
 <section class="detail" id="maxRequestsPerBatch(int)">
 <h3>maxRequestsPerBatch</h3>
 <div class="member-signature"><span class="return-type"><a href="OxiaClientBuilder.html" title="interface in io.oxia.client.api">OxiaClientBuilder</a></span>&nbsp;<span class="element-name">maxRequestsPerBatch</span><wbr><span class="parameters">(int&nbsp;maxRequestsPerBatch)</span></div>
+<div class="block">Specify the maximum number of requests to include in a batch.
+
+ <p>Default is <code>1000</code>.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>maxRequestsPerBatch</code> - the maximum number of requests per batch</dd>
+<dt>Returns:</dt>
+<dd>the builder instance</dd>
+</dl>
 </section>
 </li>
 <li>
 <section class="detail" id="namespace(java.lang.String)">
 <h3>namespace</h3>
 <div class="member-signature"><span class="return-type"><a href="OxiaClientBuilder.html" title="interface in io.oxia.client.api">OxiaClientBuilder</a></span>&nbsp;<span class="element-name">namespace</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;namespace)</span></div>
+<div class="block">Specify the Oxia namesace to use for this client instance.
+
+ <p>Default is <code>"default"</code>.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>namespace</code> - the namespace to use</dd>
+<dt>Returns:</dt>
+<dd>the builder instance</dd>
+</dl>
 </section>
 </li>
 <li>
 <section class="detail" id="sessionTimeout(java.time.Duration)">
 <h3>sessionTimeout</h3>
 <div class="member-signature"><span class="return-type"><a href="OxiaClientBuilder.html" title="interface in io.oxia.client.api">OxiaClientBuilder</a></span>&nbsp;<span class="element-name">sessionTimeout</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/time/Duration.html" title="class or interface in java.time" class="external-link">Duration</a>&nbsp;sessionTimeout)</span></div>
+<div class="block">Specify the session timeout for this client instance.
+
+ <p>Default is <code>30 secs</code>.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>sessionTimeout</code> - the session timeout duration</dd>
+<dt>Returns:</dt>
+<dd>the builder instance</dd>
+<dt>See Also:</dt>
+<dd>
+<ul class="see-list">
+<li><a href="https://oxia-db.github.io/docs/features/ephemerals">Oxia Ephemeral Records</a></li>
+</ul>
+</dd>
+</dl>
 </section>
 </li>
 <li>
 <section class="detail" id="clientIdentifier(java.lang.String)">
 <h3>clientIdentifier</h3>
 <div class="member-signature"><span class="return-type"><a href="OxiaClientBuilder.html" title="interface in io.oxia.client.api">OxiaClientBuilder</a></span>&nbsp;<span class="element-name">clientIdentifier</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;clientIdentifier)</span></div>
+<div class="block">Specify the client identifier for this client instance.
+
+ <p>Default is a random UUID.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>clientIdentifier</code> - the client identifier</dd>
+<dt>Returns:</dt>
+<dd>the builder instance</dd>
+<dt>See Also:</dt>
+<dd>
+<ul class="see-list">
+<li><a href="https://oxia-db.github.io/docs/features/ephemerals#session-id-and-client-identity">Oxia
+     Client Identity</a></li>
+</ul>
+</dd>
+</dl>
 </section>
 </li>
 <li>
 <section class="detail" id="clientIdentifier(java.util.function.Supplier)">
 <h3>clientIdentifier</h3>
 <div class="member-signature"><span class="return-type"><a href="OxiaClientBuilder.html" title="interface in io.oxia.client.api">OxiaClientBuilder</a></span>&nbsp;<span class="element-name">clientIdentifier</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/function/Supplier.html" title="class or interface in java.util.function" class="external-link">Supplier</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;&nbsp;clientIdentifier)</span></div>
+<div class="block">Specify the client identifier for this client instance.
+
+ <p>Default is a random UUID.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>clientIdentifier</code> - the client identifier supplier</dd>
+<dt>Returns:</dt>
+<dd>the builder instance</dd>
+<dt>See Also:</dt>
+<dd>
+<ul class="see-list">
+<li><a href="https://oxia-db.github.io/docs/features/ephemerals#session-id-and-client-identity">Oxia
+     Client Identity</a></li>
+</ul>
+</dd>
+</dl>
 </section>
 </li>
 <li>
 <section class="detail" id="openTelemetry(io.opentelemetry.api.OpenTelemetry)">
 <h3>openTelemetry</h3>
 <div class="member-signature"><span class="return-type"><a href="OxiaClientBuilder.html" title="interface in io.oxia.client.api">OxiaClientBuilder</a></span>&nbsp;<span class="element-name">openTelemetry</span><wbr><span class="parameters">(io.opentelemetry.api.OpenTelemetry&nbsp;openTelemetry)</span></div>
+<div class="block">Specify the OpenTelemetry instance to use for this client instance.
+
+ <p>By default, the client will use the global OpenTelemetry instance if available.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>openTelemetry</code> - an OpenTelemetry instance</dd>
+<dt>Returns:</dt>
+<dd>the builder instance</dd>
+</dl>
 </section>
 </li>
 <li>
 <section class="detail" id="authentication(io.oxia.client.api.Authentication)">
 <h3>authentication</h3>
 <div class="member-signature"><span class="return-type"><a href="OxiaClientBuilder.html" title="interface in io.oxia.client.api">OxiaClientBuilder</a></span>&nbsp;<span class="element-name">authentication</span><wbr><span class="parameters">(<a href="Authentication.html" title="interface in io.oxia.client.api">Authentication</a>&nbsp;authentication)</span></div>
+<div class="block">Configure the authentication plugin and its parameters.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>authentication</code> - the authentication instance</dd>
+<dt>Returns:</dt>
+<dd>the builder instance</dd>
+</dl>
 </section>
 </li>
 <li>
@@ -257,24 +413,61 @@ loadScripts(document, 'script');</script>
 <h3>connectionBackoff</h3>
 <div class="member-signature"><span class="return-type"><a href="OxiaClientBuilder.html" title="interface in io.oxia.client.api">OxiaClientBuilder</a></span>&nbsp;<span class="element-name">connectionBackoff</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/time/Duration.html" title="class or interface in java.time" class="external-link">Duration</a>&nbsp;minDelay,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/time/Duration.html" title="class or interface in java.time" class="external-link">Duration</a>&nbsp;maxDelay)</span></div>
+<div class="block">Configure the connection backoff policy.
+
+ <p>Defaults are <code>min=100millis, max=30sec</code>.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>minDelay</code> - the minimum delay between retries</dd>
+<dd><code>maxDelay</code> - the maximum delay between retries</dd>
+<dt>Returns:</dt>
+<dd>the builder instance</dd>
+</dl>
 </section>
 </li>
 <li>
 <section class="detail" id="maxConnectionPerNode(int)">
 <h3>maxConnectionPerNode</h3>
 <div class="member-signature"><span class="return-type"><a href="OxiaClientBuilder.html" title="interface in io.oxia.client.api">OxiaClientBuilder</a></span>&nbsp;<span class="element-name">maxConnectionPerNode</span><wbr><span class="parameters">(int&nbsp;connections)</span></div>
+<div class="block">Configure the maximum number of connections to each Oxia server node.
+
+ <p>Default is <code>1</code>.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>connections</code> - the maximum number of connections</dd>
+<dt>Returns:</dt>
+<dd>the builder instance</dd>
+</dl>
 </section>
 </li>
 <li>
 <section class="detail" id="connectionKeepAliveTimeout(java.time.Duration)">
 <h3>connectionKeepAliveTimeout</h3>
 <div class="member-signature"><span class="return-type"><a href="OxiaClientBuilder.html" title="interface in io.oxia.client.api">OxiaClientBuilder</a></span>&nbsp;<span class="element-name">connectionKeepAliveTimeout</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/time/Duration.html" title="class or interface in java.time" class="external-link">Duration</a>&nbsp;connectionKeepAliveTimeout)</span></div>
+<div class="block">Configure the keep alive timeout for the connection.
+
+ <p>Default is <code>5 sec</code>.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>connectionKeepAliveTimeout</code> - the keep alive timeout duration</dd>
+<dt>Returns:</dt>
+<dd>the builder instance</dd>
+</dl>
 </section>
 </li>
 <li>
 <section class="detail" id="connectionKeepAliveTime(java.time.Duration)">
 <h3>connectionKeepAliveTime</h3>
 <div class="member-signature"><span class="return-type"><a href="OxiaClientBuilder.html" title="interface in io.oxia.client.api">OxiaClientBuilder</a></span>&nbsp;<span class="element-name">connectionKeepAliveTime</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/time/Duration.html" title="class or interface in java.time" class="external-link">Duration</a>&nbsp;connectionKeepAlive)</span></div>
+<div class="block">Configure the keep alive interval for the connection.
+
+ <p>Default is <code>10 sec</code>.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>connectionKeepAlive</code> - the keep alive interval duration</dd>
+<dt>Returns:</dt>
+<dd>the builder instance</dd>
+</dl>
 </section>
 </li>
 <li>
@@ -299,6 +492,13 @@ loadScripts(document, 'script');</script>
 <section class="detail" id="enableTls(boolean)">
 <h3>enableTls</h3>
 <div class="member-signature"><span class="return-type"><a href="OxiaClientBuilder.html" title="interface in io.oxia.client.api">OxiaClientBuilder</a></span>&nbsp;<span class="element-name">enableTls</span><wbr><span class="parameters">(boolean&nbsp;enableTls)</span></div>
+<div class="block">Configures whether to enable TLS (Transport Layer Security) for the client connection.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>enableTls</code> - true to enable TLS, false to disable it</dd>
+<dt>Returns:</dt>
+<dd>the builder instance for method chaining</dd>
+</dl>
 </section>
 </li>
 <li>

@@ -84,6 +84,10 @@ loadScripts(document, 'script');</script>
 <hr>
 <div class="type-signature"><span class="modifiers">public enum </span><span class="element-name type-name-label">AuthenticationType</span>
 <span class="extends-implements">extends <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Enum.html" title="class or interface in java.lang" class="external-link">Enum</a>&lt;<a href="AuthenticationType.html" title="enum class in io.oxia.client.api">AuthenticationType</a>&gt;</span></div>
+<div class="block">Enum representing the type of authentication used for accessing resources.
+
+ <p>This enum defines the supported authentication methods that can be used to authorize and
+ authenticate a client or request against a service.</div>
 </section>
 <section class="summary">
 <ul class="summary-list">
@@ -105,7 +109,9 @@ loadScripts(document, 'script');</script>
 <div class="table-header col-first">Enum Constant</div>
 <div class="table-header col-last">Description</div>
 <div class="col-first even-row-color"><code><a href="#Bearer" class="member-name-link">Bearer</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-last even-row-color">
+<div class="block">Represents the Bearer authentication method.</div>
+</div>
 </div>
 </section>
 </li>
@@ -155,6 +161,11 @@ the order they are declared.</div>
 <section class="detail" id="Bearer">
 <h3>Bearer</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="AuthenticationType.html" title="enum class in io.oxia.client.api">AuthenticationType</a></span>&nbsp;<span class="element-name">Bearer</span></div>
+<div class="block">Represents the Bearer authentication method.
+
+ <p>Bearer is an authentication mechanism that uses a token-based approach where the client
+ includes an access token in each request to provide proof of authorization. This method is
+ commonly used in OAuth 2.0 authentication frameworks.</div>
 </section>
 </li>
 </ul>

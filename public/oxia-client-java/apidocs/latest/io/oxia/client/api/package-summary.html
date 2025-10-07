@@ -44,7 +44,7 @@ loadScripts(document, 'script');</script>
 <div>
 <ul class="sub-nav-list">
 <li>Package:&nbsp;</li>
-<li>Description&nbsp;|&nbsp;</li>
+<li><a href="#package-description">Description</a>&nbsp;|&nbsp;</li>
 <li><a href="#related-package-summary">Related Packages</a>&nbsp;|&nbsp;</li>
 <li><a href="#class-summary">Classes and Interfaces</a></li>
 </ul>
@@ -64,6 +64,29 @@ loadScripts(document, 'script');</script>
 </div>
 <hr>
 <div class="package-signature">package <span class="element-name">io.oxia.client.api</span></div>
+<section class="package-description" id="package-description">
+<div class="block">The public API for interacting with Oxia.
+
+ <p>
+
+ <pre>
+     SyncOxiaClient client = OxiaClientBuilder.create("localhost:6648")
+         .namespace("my-namespace")
+         .syncClient();
+
+     PutResult res = client.put("my-key", "my-value".getBytes());
+
+     GetResult res = client.get("my-key");
+ </pre></div>
+<dl class="notes">
+<dt>See Also:</dt>
+<dd>
+<ul class="see-list">
+<li><a href="OxiaClientBuilder.html" title="interface in io.oxia.client.api"><code>OxiaClientBuilder</code></a></li>
+</ul>
+</dd>
+</dl>
+</section>
 <section class="summary">
 <ul class="summary-list">
 <li>
@@ -73,7 +96,9 @@ loadScripts(document, 'script');</script>
 <div class="table-header col-first">Package</div>
 <div class="table-header col-last">Description</div>
 <div class="col-first even-row-color"><a href="exceptions/package-summary.html">io.oxia.client.api.exceptions</a></div>
-<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-last even-row-color">
+<div class="block">Defines the exceptions that can be thrown by the Oxia client.</div>
+</div>
 </div>
 </div>
 </li>
@@ -89,27 +114,41 @@ loadScripts(document, 'script');</script>
 <div class="block">Asynchronous client for the Oxia service.</div>
 </div>
 <div class="col-first odd-row-color class-summary class-summary-tab1"><a href="Authentication.html" title="interface in io.oxia.client.api">Authentication</a></div>
-<div class="col-last odd-row-color class-summary class-summary-tab1">&nbsp;</div>
+<div class="col-last odd-row-color class-summary class-summary-tab1">
+<div class="block">Represents an interface for implementing authentication mechanisms.</div>
+</div>
 <div class="col-first even-row-color class-summary class-summary-tab3"><a href="AuthenticationType.html" title="enum class in io.oxia.client.api">AuthenticationType</a></div>
-<div class="col-last even-row-color class-summary class-summary-tab3">&nbsp;</div>
+<div class="col-last even-row-color class-summary class-summary-tab3">
+<div class="block">Enum representing the type of authentication used for accessing resources.</div>
+</div>
 <div class="col-first odd-row-color class-summary class-summary-tab1"><a href="DeleteOption.html" title="interface in io.oxia.client.api">DeleteOption</a></div>
-<div class="col-last odd-row-color class-summary class-summary-tab1">&nbsp;</div>
+<div class="col-last odd-row-color class-summary class-summary-tab1">
+<div class="block">Options for deleting a record.</div>
+</div>
 <div class="col-first even-row-color class-summary class-summary-tab1"><a href="DeleteRangeOption.html" title="interface in io.oxia.client.api">DeleteRangeOption</a></div>
-<div class="col-last even-row-color class-summary class-summary-tab1">&nbsp;</div>
+<div class="col-last even-row-color class-summary class-summary-tab1">
+<div class="block">Options for deleting a range of records.</div>
+</div>
 <div class="col-first odd-row-color class-summary class-summary-tab1"><a href="EncodedAuthenticationParameterSupport.html" title="interface in io.oxia.client.api">EncodedAuthenticationParameterSupport</a></div>
 <div class="col-last odd-row-color class-summary class-summary-tab1">
 <div class="block">Support for encoded authentication configuration parameters.</div>
 </div>
 <div class="col-first even-row-color class-summary class-summary-tab1"><a href="GetOption.html" title="interface in io.oxia.client.api">GetOption</a></div>
-<div class="col-last even-row-color class-summary class-summary-tab1">&nbsp;</div>
+<div class="col-last even-row-color class-summary class-summary-tab1">
+<div class="block">Options for getting a record.</div>
+</div>
 <div class="col-first odd-row-color class-summary class-summary-tab2"><a href="GetResult.html" title="class in io.oxia.client.api">GetResult</a></div>
 <div class="col-last odd-row-color class-summary class-summary-tab2">
 <div class="block">The result of a client get request.</div>
 </div>
 <div class="col-first even-row-color class-summary class-summary-tab1"><a href="GetSequenceUpdatesOption.html" title="interface in io.oxia.client.api">GetSequenceUpdatesOption</a></div>
-<div class="col-last even-row-color class-summary class-summary-tab1">&nbsp;</div>
+<div class="col-last even-row-color class-summary class-summary-tab1">
+<div class="block">Options for getting sequence updates.</div>
+</div>
 <div class="col-first odd-row-color class-summary class-summary-tab1"><a href="ListOption.html" title="interface in io.oxia.client.api">ListOption</a></div>
-<div class="col-last odd-row-color class-summary class-summary-tab1">&nbsp;</div>
+<div class="col-last odd-row-color class-summary class-summary-tab1">
+<div class="block">Options for listing records.</div>
+</div>
 <div class="col-first even-row-color class-summary class-summary-tab1"><a href="Notification.html" title="interface in io.oxia.client.api">Notification</a></div>
 <div class="col-last even-row-color class-summary class-summary-tab1">
 <div class="block">A notification from an Oxia server indicating a change to a record associated with a key.</div>
@@ -134,42 +173,51 @@ loadScripts(document, 'script');</script>
 <div class="col-last odd-row-color class-summary class-summary-tab4">&nbsp;</div>
 <div class="col-first even-row-color class-summary class-summary-tab3"><a href="OptionComparisonType.ComparisonType.html" title="enum class in io.oxia.client.api">OptionComparisonType.ComparisonType</a></div>
 <div class="col-last even-row-color class-summary class-summary-tab3">&nbsp;</div>
-<div class="col-first odd-row-color class-summary class-summary-tab4"><a href="OptionEphemeral.html" title="class in io.oxia.client.api">OptionEphemeral</a></div>
+<div class="col-first odd-row-color class-summary class-summary-tab4"><a href="OptionIncludeValue.html" title="class in io.oxia.client.api">OptionIncludeValue</a></div>
 <div class="col-last odd-row-color class-summary class-summary-tab4">&nbsp;</div>
-<div class="col-first even-row-color class-summary class-summary-tab4"><a href="OptionIncludeValue.html" title="class in io.oxia.client.api">OptionIncludeValue</a></div>
+<div class="col-first even-row-color class-summary class-summary-tab4"><a href="OptionPartitionKey.html" title="class in io.oxia.client.api">OptionPartitionKey</a></div>
 <div class="col-last even-row-color class-summary class-summary-tab4">&nbsp;</div>
-<div class="col-first odd-row-color class-summary class-summary-tab4"><a href="OptionPartitionKey.html" title="class in io.oxia.client.api">OptionPartitionKey</a></div>
+<div class="col-first odd-row-color class-summary class-summary-tab4"><a href="OptionSecondaryIndex.html" title="class in io.oxia.client.api">OptionSecondaryIndex</a></div>
 <div class="col-last odd-row-color class-summary class-summary-tab4">&nbsp;</div>
-<div class="col-first even-row-color class-summary class-summary-tab4"><a href="OptionSecondaryIndex.html" title="class in io.oxia.client.api">OptionSecondaryIndex</a></div>
+<div class="col-first even-row-color class-summary class-summary-tab4"><a href="OptionSecondaryIndexName.html" title="class in io.oxia.client.api">OptionSecondaryIndexName</a></div>
 <div class="col-last even-row-color class-summary class-summary-tab4">&nbsp;</div>
-<div class="col-first odd-row-color class-summary class-summary-tab4"><a href="OptionSecondaryIndexName.html" title="class in io.oxia.client.api">OptionSecondaryIndexName</a></div>
+<div class="col-first odd-row-color class-summary class-summary-tab4"><a href="OptionSequenceKeysDeltas.html" title="class in io.oxia.client.api">OptionSequenceKeysDeltas</a></div>
 <div class="col-last odd-row-color class-summary class-summary-tab4">&nbsp;</div>
-<div class="col-first even-row-color class-summary class-summary-tab4"><a href="OptionSequenceKeysDeltas.html" title="class in io.oxia.client.api">OptionSequenceKeysDeltas</a></div>
-<div class="col-last even-row-color class-summary class-summary-tab4">&nbsp;</div>
-<div class="col-first odd-row-color class-summary class-summary-tab1"><a href="OptionVersionId.html" title="interface in io.oxia.client.api">OptionVersionId</a></div>
-<div class="col-last odd-row-color class-summary class-summary-tab1">&nbsp;</div>
-<div class="col-first even-row-color class-summary class-summary-tab4"><a href="OptionVersionId.OptionRecordDoesNotExist.html" title="class in io.oxia.client.api">OptionVersionId.OptionRecordDoesNotExist</a></div>
-<div class="col-last even-row-color class-summary class-summary-tab4">&nbsp;</div>
-<div class="col-first odd-row-color class-summary class-summary-tab4"><a href="OptionVersionId.OptionVersionIdEqual.html" title="class in io.oxia.client.api">OptionVersionId.OptionVersionIdEqual</a></div>
-<div class="col-last odd-row-color class-summary class-summary-tab4">&nbsp;</div>
-<div class="col-first even-row-color class-summary class-summary-tab1"><a href="OxiaClientBuilder.html" title="interface in io.oxia.client.api">OxiaClientBuilder</a></div>
+<div class="col-first even-row-color class-summary class-summary-tab1"><a href="OptionVersionId.html" title="interface in io.oxia.client.api">OptionVersionId</a></div>
 <div class="col-last even-row-color class-summary class-summary-tab1">&nbsp;</div>
-<div class="col-first odd-row-color class-summary class-summary-tab1"><a href="PutOption.html" title="interface in io.oxia.client.api">PutOption</a></div>
-<div class="col-last odd-row-color class-summary class-summary-tab1">&nbsp;</div>
-<div class="col-first even-row-color class-summary class-summary-tab4"><a href="PutResult.html" title="class in io.oxia.client.api">PutResult</a></div>
-<div class="col-last even-row-color class-summary class-summary-tab4">
+<div class="col-first odd-row-color class-summary class-summary-tab4"><a href="OptionVersionId.OptionRecordDoesNotExist.html" title="class in io.oxia.client.api">OptionVersionId.OptionRecordDoesNotExist</a></div>
+<div class="col-last odd-row-color class-summary class-summary-tab4">&nbsp;</div>
+<div class="col-first even-row-color class-summary class-summary-tab4"><a href="OptionVersionId.OptionVersionIdEqual.html" title="class in io.oxia.client.api">OptionVersionId.OptionVersionIdEqual</a></div>
+<div class="col-last even-row-color class-summary class-summary-tab4">&nbsp;</div>
+<div class="col-first odd-row-color class-summary class-summary-tab1"><a href="OxiaClientBuilder.html" title="interface in io.oxia.client.api">OxiaClientBuilder</a></div>
+<div class="col-last odd-row-color class-summary class-summary-tab1">
+<div class="block">Builder for <a href="SyncOxiaClient.html" title="interface in io.oxia.client.api"><code>SyncOxiaClient</code></a> and <a href="AsyncOxiaClient.html" title="interface in io.oxia.client.api"><code>AsyncOxiaClient</code></a>.</div>
+</div>
+<div class="col-first even-row-color class-summary class-summary-tab1"><a href="PutOption.html" title="interface in io.oxia.client.api">PutOption</a></div>
+<div class="col-last even-row-color class-summary class-summary-tab1">
+<div class="block">The PutOption interface defines a set of options for customizing the behavior of a "put"
+ operation in a data store.</div>
+</div>
+<div class="col-first odd-row-color class-summary class-summary-tab4"><a href="PutResult.html" title="class in io.oxia.client.api">PutResult</a></div>
+<div class="col-last odd-row-color class-summary class-summary-tab4">
 <div class="block">The result of a client get request.</div>
 </div>
-<div class="col-first odd-row-color class-summary class-summary-tab1"><a href="RangeScanConsumer.html" title="interface in io.oxia.client.api">RangeScanConsumer</a></div>
-<div class="col-last odd-row-color class-summary class-summary-tab1">&nbsp;</div>
-<div class="col-first even-row-color class-summary class-summary-tab1"><a href="RangeScanOption.html" title="interface in io.oxia.client.api">RangeScanOption</a></div>
-<div class="col-last even-row-color class-summary class-summary-tab1">&nbsp;</div>
-<div class="col-first odd-row-color class-summary class-summary-tab1"><a href="SyncOxiaClient.html" title="interface in io.oxia.client.api">SyncOxiaClient</a></div>
+<div class="col-first even-row-color class-summary class-summary-tab1"><a href="RangeScanConsumer.html" title="interface in io.oxia.client.api">RangeScanConsumer</a></div>
+<div class="col-last even-row-color class-summary class-summary-tab1">
+<div class="block">Interface defining a consumer for Range Scan operations, allowing handling of chunked results,
+ errors, or completion signals for a range scan process.</div>
+</div>
+<div class="col-first odd-row-color class-summary class-summary-tab1"><a href="RangeScanOption.html" title="interface in io.oxia.client.api">RangeScanOption</a></div>
 <div class="col-last odd-row-color class-summary class-summary-tab1">
+<div class="block">RangeScanOption is a sealed interface that represents options for controlling range scan
+ operations.</div>
+</div>
+<div class="col-first even-row-color class-summary class-summary-tab1"><a href="SyncOxiaClient.html" title="interface in io.oxia.client.api">SyncOxiaClient</a></div>
+<div class="col-last even-row-color class-summary class-summary-tab1">
 <div class="block">Synchronous client for the Oxia service.</div>
 </div>
-<div class="col-first even-row-color class-summary class-summary-tab4"><a href="Version.html" title="class in io.oxia.client.api">Version</a></div>
-<div class="col-last even-row-color class-summary class-summary-tab4">
+<div class="col-first odd-row-color class-summary class-summary-tab4"><a href="Version.html" title="class in io.oxia.client.api">Version</a></div>
+<div class="col-last odd-row-color class-summary class-summary-tab4">
 <div class="block">Oxia record metadata.</div>
 </div>
 </div>

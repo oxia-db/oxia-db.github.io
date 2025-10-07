@@ -55,7 +55,9 @@ loadScripts(document, 'script');</script>
 <div class="table-header col-first">Package</div>
 <div class="table-header col-last">Description</div>
 <div class="col-first even-row-color"><a href="#io.oxia.client.api">io.oxia.client.api</a></div>
-<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-last even-row-color">
+<div class="block">The public API for interacting with Oxia.</div>
+</div>
 </div>
 <section class="class-uses">
 <ul class="block-list">
@@ -77,23 +79,20 @@ loadScripts(document, 'script');</script>
 <div class="table-header col-second">Class</div>
 <div class="table-header col-last">Description</div>
 <div class="col-first even-row-color"><code>final record&nbsp;</code></div>
-<div class="col-second even-row-color"><code><a href="../OptionEphemeral.html" class="type-name-link" title="class in io.oxia.client.api">OptionEphemeral</a></code></div>
+<div class="col-second even-row-color"><code><a href="../OptionPartitionKey.html" class="type-name-link" title="class in io.oxia.client.api">OptionPartitionKey</a></code></div>
 <div class="col-last even-row-color">&nbsp;</div>
 <div class="col-first odd-row-color"><code>final record&nbsp;</code></div>
-<div class="col-second odd-row-color"><code><a href="../OptionPartitionKey.html" class="type-name-link" title="class in io.oxia.client.api">OptionPartitionKey</a></code></div>
+<div class="col-second odd-row-color"><code><a href="../OptionSecondaryIndex.html" class="type-name-link" title="class in io.oxia.client.api">OptionSecondaryIndex</a></code></div>
 <div class="col-last odd-row-color">&nbsp;</div>
 <div class="col-first even-row-color"><code>final record&nbsp;</code></div>
-<div class="col-second even-row-color"><code><a href="../OptionSecondaryIndex.html" class="type-name-link" title="class in io.oxia.client.api">OptionSecondaryIndex</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
-<div class="col-first odd-row-color"><code>final record&nbsp;</code></div>
-<div class="col-second odd-row-color"><code><a href="../OptionSequenceKeysDeltas.html" class="type-name-link" title="class in io.oxia.client.api">OptionSequenceKeysDeltas</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
-<div class="col-first even-row-color"><code>static final record&nbsp;</code></div>
-<div class="col-second even-row-color"><code><a href="../OptionVersionId.OptionRecordDoesNotExist.html" class="type-name-link" title="class in io.oxia.client.api">OptionVersionId.OptionRecordDoesNotExist</a></code></div>
+<div class="col-second even-row-color"><code><a href="../OptionSequenceKeysDeltas.html" class="type-name-link" title="class in io.oxia.client.api">OptionSequenceKeysDeltas</a></code></div>
 <div class="col-last even-row-color">&nbsp;</div>
 <div class="col-first odd-row-color"><code>static final record&nbsp;</code></div>
-<div class="col-second odd-row-color"><code><a href="../OptionVersionId.OptionVersionIdEqual.html" class="type-name-link" title="class in io.oxia.client.api">OptionVersionId.OptionVersionIdEqual</a></code></div>
+<div class="col-second odd-row-color"><code><a href="../OptionVersionId.OptionRecordDoesNotExist.html" class="type-name-link" title="class in io.oxia.client.api">OptionVersionId.OptionRecordDoesNotExist</a></code></div>
 <div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-first even-row-color"><code>static final record&nbsp;</code></div>
+<div class="col-second even-row-color"><code><a href="../OptionVersionId.OptionVersionIdEqual.html" class="type-name-link" title="class in io.oxia.client.api">OptionVersionId.OptionVersionIdEqual</a></code></div>
+<div class="col-last even-row-color">&nbsp;</div>
 </div>
 <div class="caption"><span>Fields in <a href="../package-summary.html">io.oxia.client.api</a> declared as <a href="../PutOption.html" title="interface in io.oxia.client.api">PutOption</a></span></div>
 <div class="summary-table three-column-summary">
@@ -102,10 +101,14 @@ loadScripts(document, 'script');</script>
 <div class="table-header col-last">Description</div>
 <div class="col-first even-row-color"><code>static final <a href="../PutOption.html" title="interface in io.oxia.client.api">PutOption</a></code></div>
 <div class="col-second even-row-color"><span class="type-name-label">PutOption.</span><code><a href="../PutOption.html#AsEphemeralRecord" class="member-name-link">AsEphemeralRecord</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-last even-row-color">
+<div class="block">Indicates that the record should be treated as ephemeral.</div>
+</div>
 <div class="col-first odd-row-color"><code>static final <a href="../PutOption.html" title="interface in io.oxia.client.api">PutOption</a></code></div>
 <div class="col-second odd-row-color"><span class="type-name-label">PutOption.</span><code><a href="../PutOption.html#IfRecordDoesNotExist" class="member-name-link">IfRecordDoesNotExist</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-last odd-row-color">
+<div class="block">Specifies that the operation should only proceed if the record does not already exist.</div>
+</div>
 </div>
 <div class="caption"><span>Methods in <a href="../package-summary.html">io.oxia.client.api</a> that return <a href="../PutOption.html" title="interface in io.oxia.client.api">PutOption</a></span></div>
 <div class="summary-table three-column-summary">
