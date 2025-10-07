@@ -1,1 +1,1 @@
-packageSearchIndex = [{"l":"All Packages","u":"allpackages-index.html"},{"l":"io.oxia.client.api"},{"l":"io.oxia.client.api.exceptions"}];updateSearchResults();
+packageSearchIndex = [{"l":"All Packages","u":"allpackages-index.html"},{"l":"io.oxia.client.api"},{"l":"io.oxia.client.api.exceptions"},{"l":"io.oxia.client.api.options"}];updateSearchResults();
