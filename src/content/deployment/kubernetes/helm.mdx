@@ -1,3 +1,7 @@
+---
+sidebarTitle: Helm
+---
+
 # Deploying in Kubernetes with Oxia cluster Helm chart
 
 ## Deploying the Oxia cluster
@@ -7,14 +11,14 @@ To deploy the Oxia cluster with Helm:
 ```shell
 $ kubectl create namespace oxia
 
-$ git clone https://github.com/oxia-db/oxia.git
+$ git clone https://github.com/oxia-db/helm-charts.git
 
 $ cd oxia
 
 $ helm upgrade --install oxia \
   --namespace oxia \
-  --set image.repository=streamnative/oxia \
-  --set image.tag=main \
+  --set image.repository=oxia/oxia \
+  --set image.tag=latest \
   --set image.pullPolicy=IfNotPresent \
   deploy/charts/oxia-cluster
 ```
@@ -29,7 +33,7 @@ The Helm Chart for the Oxia cluster uses a `monitoringEnabled` flag to decide wh
 install the service monitor. If you don't have Prometheus installed and don't want to install it, you can set
 `monitoringEnabled: false` to skip this part.
 
-Grafana's dashboards are available at [deploy/dashboards](/deploy/dashboards).
+Grafana's dashboards are available at [deploy/dashboards](https://github.com/oxia-db/oxia/tree/main/deploy/dashboards).
 These can just be imported in your existing Grafana instance.
 
 ### Deploying Prometheus Stack
