@@ -32,7 +32,7 @@ export default async function RootLayout({ children }) {
       }
 
       projectLink="https://github.com/oxia-db/oxia"
-      // chatLink="https://discord.gg/hEM84NMkRv"
+      // chatLink="https://cloud-native.slack.com/archives/C09KFHURYF8"
     />
   )
   const pageMap = await getPageMap()
@@ -47,7 +47,14 @@ export default async function RootLayout({ children }) {
           docsRepositoryBase="https://github.com/oxia-db/oxia-db.github.io/blob/main"
           sidebar={{ defaultMenuCollapseLevel: 1 }}
           pageMap={pageMap}
-          footer={<Footer> Copyright  ©  {new Date().getFullYear()} &nbsp; <a target="_blank" href="https://streamnative.io/">  StreamNative</a> </Footer>}
+          footer={
+              <Footer>
+                  Copyright  ©  2023-{new Date().getFullYear()} &nbsp; Oxia a Series of LF Projects, LLC
+                   &mdash;
+                    For website terms of use, trademark policy and other project policies please see
+                     &nbsp; <a href="https://lfprojects.org/policies">https://lfprojects.org/policies</a>.
+              </Footer>
+          }
         >
           {children}
         </Layout>
