@@ -1,6 +1,7 @@
 /* eslint-env node */
 import { Layout, Navbar, Footer } from 'nextra-theme-docs'
 import { Head } from 'nextra/components'
+import { SiSlack } from 'react-icons/si';
 import { getPageMap } from 'nextra/page-map'
 import 'nextra-theme-docs/style.css'
 
@@ -31,8 +32,9 @@ export default async function RootLayout({ children }) {
         </div>
       }
 
-      projectLink="https://github.com/oxia-db/oxia"
-      // chatLink="https://cloud-native.slack.com/archives/C09KFHURYF8"
+      projectLink="https://github.com/oxia-db"
+      chatLink="https://cloud-native.slack.com/archives/C09KFHURYF8"
+      chatIcon={<SiSlack />}
     />
   )
   const pageMap = await getPageMap()
