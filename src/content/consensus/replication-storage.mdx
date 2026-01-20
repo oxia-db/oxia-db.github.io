@@ -50,7 +50,7 @@ When a client sends a write operation to a shard leader.
 ### Overview
 
 On receiving a write operation the shard leader will first write to its own WAL as an entry. Once successful, it will
-then attempt to forward the entry to all of its followers who will in turn persist accept and persist it to their WALs,
+then attempt to forward the entry to all of its followers who will in turn accept and persist it to their WALs,
 and eventually their KV stores. The shard leader blocks until it has received acknowledgements from a majority of the 
 followers, and the entry can be committed. The leader then writes the entry to the KV store. The leader can now send the
 client a successful response.
@@ -66,7 +66,7 @@ managed by the `QuorumAckTracker`:
 - **Commit offset** — the most recent entry that is considered "fully committed", as it has received the required amount 
    of acknowledgements from followers (`Ack` with the correct `entry_id`).
 
-In the example bellow we see that `e4` has been successfully written to the logs of a quorum of followers, and that `e5`
+In the example below we see that `e4` has been successfully written to the logs of a quorum of followers, and that `e5`
 has been written to the leaders log. However, despite forwarding `e5` to followers, we have not as yet received
 sufficient follower acks to allow us to advance the `commit_offset`. The leader’s `head_offset` will always be at, or no
 more than one entry in advance of the `commit_offset`.
@@ -109,7 +109,7 @@ M--)CI: Append(node:F2, entry:[x,4], commit_offset:7))
 CI--)M: Ack(entry_id:8) from follower F1
 
 Note right of M: ACK majority reached,<br/>commit_offset=8
-Note over S,WAL: Up to this point any Get(x) world return 3
+Note over S,WAL: Up to this point any Get(x) would return 3
 M->>KV: WriteBatch([Put[x,4]])
 Note over KV: x → 4
 M->>S: Respond(Success)
@@ -125,7 +125,7 @@ M->>CI: Append(..., ..., commit_offset:8)
 
 ## Leader
 
-A leader will accept client  `Put` / `Get` / `Delete` requests for the shards it has been assigned — these will trigger
+A leader will accept client `Put` / `Get` / `Delete` requests for the shards it has been assigned — these will trigger
 a replication that hopefully results in a commit. Any read operation issued by the client will be served from the 
 leader’s underlying key-value store.
 

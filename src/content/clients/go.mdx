@@ -13,7 +13,7 @@ import {Tabs} from 'nextra/components'
 go get github.com/oxia-db/oxia/oxia
 ```
 
-GoDoc documenation is available at https://pkg.go.dev/github.com/oxia-db/oxia/oxia
+GoDoc documentation is available at https://pkg.go.dev/github.com/oxia-db/oxia/oxia
 
 ## Sync and Async APIs
 
@@ -138,6 +138,6 @@ Available options for get operation:
 | `ComparisonLower(){:go}`                 | Search for the record whose key is strictly < to the supplied key.                                   |             |
 | `ComparisonHigher(){:go}`                | Search for the record whose key is strictly > to the supplied key.                                   |             |
 | `IncludeValue(include bool){:go}`        | Whether to include the value in the response, or just the version id                                 | `true{:go}` |
-| `UseIndex(indexName string){:go}`        | Specify a different secondar index to search for the key                                             |             |
+| `UseIndex(indexName string){:go}`        | Specify a different secondary index to search for the key                                            |             |
 | `PartitionKey(partitionKey string){:go}` | Overrides the partition routing with the specified `partitionKey` instead of the regular record key. |             |
 
