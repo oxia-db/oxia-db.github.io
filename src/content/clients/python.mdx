@@ -60,9 +60,55 @@ All the options for the put operation are available in the
 
 Reading the value of a record
 
-```go
+```python
 key, value, version = client.get("my-key")
 ```
 All the options for the get operation are available in the
 [get() method docs](https://oxia-db.github.io/oxia-client-python/latest/oxia.Client.html#get).
+
+### Deleting records
+
+Delete a single record by key. Supports conditional deletes using version-based expectations.
+
+```python
+# Unconditional delete
+client.delete("my-key")
+
+# Conditional delete: only succeed if the version matches
+client.delete("my-key", expected_version_id=version.version_id())
+```
+
+All the options for the delete operation are available in the
+[delete() method docs](https://oxia-db.github.io/oxia-client-python/latest/oxia.Client.html#delete).
+
+### Deleting a range of records
+
+Delete all records whose keys fall within a specified range.
+
+```python
+# Delete all keys in the range [min_key_inclusive, max_key_exclusive)
+client.delete_range("/users/", "/users//")
+```
+
+### Listing keys
+
+List the keys within a specified range, without fetching the associated values.
+
+```python
+keys = client.list("/users/", "/users//")
+for key in keys:
+    print(key)
+```
+
+### Scanning records
+
+Scan records in a key range, returning both keys and values.
+
+```python
+for result in client.range_scan("/users/", "/users//"):
+    print(f"key: {result.key}, value: {result.value}, version: {result.version}")
+```
+
+For the complete list of options available on all operations, see the
+[PyDoc reference](https://oxia-db.github.io/oxia-client-python/latest/oxia.Client.html).
 

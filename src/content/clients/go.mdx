@@ -130,14 +130,149 @@ Reading the value of a record
 
 Available options for get operation:
 
-| Option                                   | Description                                                                                          | Default     |
-|------------------------------------------|------------------------------------------------------------------------------------------------------|-------------|
-| `ComparisonEqual(){:go}`                 | Sets the Get() operation to compare the stored key for equality                                      | Yes         |
-| `ComparisonFloor(){:go}`                 | Search for the record whose key is the highest key < =  to the supplied key                          |             |
-| `ComparisonCeiling(){:go}`               | Search for the record whose key is the lowest key >= to the supplied key.                            |             |
-| `ComparisonLower(){:go}`                 | Search for the record whose key is strictly < to the supplied key.                                   |             |
-| `ComparisonHigher(){:go}`                | Search for the record whose key is strictly > to the supplied key.                                   |             |
-| `IncludeValue(include bool){:go}`        | Whether to include the value in the response, or just the version id                                 | `true{:go}` |
-| `UseIndex(indexName string){:go}`        | Specify a different secondar index to search for the key                                             |             |
-| `PartitionKey(partitionKey string){:go}` | Overrides the partition routing with the specified `partitionKey` instead of the regular record key. |             |
+| Option                                   | Description                                                                                         | Default     |
+|------------------------------------------|-----------------------------------------------------------------------------------------------------|-------------|
+| `ComparisonEqual(){:go}`                 | Sets the Get() operation to compare the stored key for equality                                     | Yes         |
+| `ComparisonFloor(){:go}`                 | Search for the record whose key is the highest key < =  to the supplied key                         |             |
+| `ComparisonCeiling(){:go}`               | Search for the record whose key is the lowest key > = to the supplied key                           |             |
+| `ComparisonLower(){:go}`                 | Search for the record whose key is strictly &lt; to the supplied key                                |             |
+| `ComparisonHigher(){:go}`                | Search for the record whose key is strictly &gt; to the supplied key                                |             |
+| `IncludeValue(include bool){:go}`        | Whether to include the value in the response, or just the version id                                | `true{:go}` |
+| `UseIndex(indexName string){:go}`        | Specify a different secondary index to search for the key                                           |             |
+| `PartitionKey(partitionKey string){:go}` | Overrides the partition routing with the specified `partitionKey` instead of the regular record key  |             |
+
+### Deleting records
+
+Delete a single record by key. Supports conditional deletes using `ExpectedVersionId` for optimistic
+concurrency control.
+
+<Tabs items={['Sync', 'Async']}>
+    <Tabs.Tab>
+        ```go
+        // Unconditional delete
+        err := client.Delete(context.Background(), "/my-key")
+
+        // Conditional delete: only succeed if the version matches
+        err = client.Delete(context.Background(), "/my-key", oxia.ExpectedVersionId(version.VersionId))
+        ```
+    </Tabs.Tab>
+    <Tabs.Tab>
+        ```go
+        c1 := client.Delete("/my-key-1")
+        c2 := client.Delete("/my-key-2", oxia.ExpectedVersionId(version.VersionId))
+
+        // Wait for the async operations to complete
+        err1 := <-c1
+        err2 := <-c2
+        ```
+    </Tabs.Tab>
+</Tabs>
+
+Available options for delete operation:
+
+| Option                                   | Description                                                                                        | Default |
+|------------------------------------------|----------------------------------------------------------------------------------------------------|---------|
+| `ExpectedVersionId(versionId int64){:go}`| Only delete if the record's current version matches the expected one                               |         |
+| `PartitionKey(partitionKey string){:go}` | Overrides the partition routing with the specified `partitionKey` instead of the regular record key |         |
+
+### Deleting a range of records
+
+Delete all records whose keys fall within a specified range.
+
+<Tabs items={['Sync', 'Async']}>
+    <Tabs.Tab>
+        ```go
+        // Delete all keys in the range [minKeyInclusive, maxKeyExclusive)
+        err := client.DeleteRange(context.Background(), "/users/", "/users//")
+        ```
+    </Tabs.Tab>
+    <Tabs.Tab>
+        ```go
+        c := client.DeleteRange("/users/", "/users//")
+        err := <-c
+        ```
+    </Tabs.Tab>
+</Tabs>
+
+Available options for delete-range operation:
+
+| Option                                   | Description                                                                                        | Default |
+|------------------------------------------|----------------------------------------------------------------------------------------------------|---------|
+| `PartitionKey(partitionKey string){:go}` | Overrides the partition routing with the specified `partitionKey` instead of the regular record key |         |
+
+### Listing keys
+
+List the keys within a specified range, without fetching the associated values.
+
+<Tabs items={['Sync', 'Async']}>
+    <Tabs.Tab>
+        ```go
+        // List all keys in the range
+        keys, err := client.List(context.Background(), "/users/", "/users//")
+        for _, key := range keys {
+            fmt.Println(key)
+        }
+        ```
+    </Tabs.Tab>
+    <Tabs.Tab>
+        ```go
+        ch := client.List(context.Background(), "/users/", "/users//")
+        for result := range ch {
+            if result.Err != nil {
+                log.Fatal(result.Err)
+            }
+            for _, key := range result.Keys {
+                fmt.Println(key)
+            }
+        }
+        ```
+    </Tabs.Tab>
+</Tabs>
+
+Available options for list operation:
+
+| Option                                   | Description                                                                                        | Default      |
+|------------------------------------------|----------------------------------------------------------------------------------------------------|--------------|
+| `UseIndex(indexName string){:go}`        | List keys from a secondary index instead of the primary key space                                  |              |
+| `ShowInternalKeys(show bool){:go}`       | Whether to include Oxia's own internal keys in the results                                         | `false{:go}` |
+| `PartitionKey(partitionKey string){:go}` | Overrides the partition routing with the specified `partitionKey` instead of the regular record key |              |
+
+### Scanning records
+
+Scan records in a key range, returning both keys and values. Results are streamed through a channel.
+
+<Tabs items={['Sync', 'Async']}>
+    <Tabs.Tab>
+        ```go
+        ch := client.RangeScan(context.Background(), "/users/", "/users//")
+        for result := range ch {
+            if result.Err != nil {
+                log.Fatal(result.Err)
+            }
+            fmt.Printf("key: %s, value: %s, version: %d\n",
+                result.Key, string(result.Value), result.Version.VersionId)
+        }
+        ```
+    </Tabs.Tab>
+    <Tabs.Tab>
+        ```go
+        ch := client.RangeScan(context.Background(), "/users/", "/users//")
+        for result := range ch {
+            if result.Err != nil {
+                log.Fatal(result.Err)
+            }
+            fmt.Printf("key: %s, value: %s, version: %d\n",
+                result.Key, string(result.Value), result.Version.VersionId)
+        }
+        ```
+    </Tabs.Tab>
+</Tabs>
+
+Available options for range-scan operation:
+
+| Option                                   | Description                                                                                        | Default      |
+|------------------------------------------|----------------------------------------------------------------------------------------------------|--------------|
+| `UseIndex(indexName string){:go}`        | Scan records using a secondary index                                                               |              |
+| `ShowInternalKeys(show bool){:go}`       | Whether to include Oxia's own internal keys in the results                                         | `false{:go}` |
+| `PartitionKey(partitionKey string){:go}` | Overrides the partition routing with the specified `partitionKey` instead of the regular record key |              |
 

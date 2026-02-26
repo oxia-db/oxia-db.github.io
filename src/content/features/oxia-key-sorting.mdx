@@ -1,32 +1,104 @@
-# Keys Sorting
+---
+sidebarTitle: Key Sorting
+---
 
-Oxia uses a custom comparison operator for sorting the keys of the stored records. 
+import {Tabs} from 'nextra/components'
+
+# Key Sorting
+
+Oxia supports two key sorting modes that control how records are ordered in the database. The
+sorting mode is configured per-namespace and affects how range queries, list operations, and scans
+traverse the key space.
+
+## Sorting modes
+
+### Hierarchical (default)
+
+Hierarchical sorting assigns special meaning to the `/` character in keys. Keys with the same
+prefix and the same number of `/` segments are stored close together, enabling efficient traversal
+of small portions of the key space.
 
 In Oxia all the keys are independent of each other and there is no explicit tree-like structure
-with parent-children relations.
+with parent-children relations. However, this sorting makes it possible to do efficient range
+queries to retrieve the list of "first level children" of a given key.
 
-Having said that, Oxia assigns a special meaning to the `/` character in keys. This is done in
-order to ensure efficient traversal of small portions of the key space.
+For example, given the following keys, the storage order would be:
 
-Specifically, Oxia ensures that keys with a common prefix and the same number of `/` segments
-are sorted in such a way that they are stored close to each other in the database.
+1. `/xyz/A`
+2. `/xyz/B`
+3. `/xyz/C`
+4. `/xyz/A/1`
+5. `/xyz/A/2`
+6. `/xyz/B/1`
+7. `/xyz/A/1/a`
 
-For example, if we are considering the following keys and the order in which they will be stored:
- * `/xyz/A`
- * `/xyz/B`
- * `/xyz/C`
- * `/xyz/A/1`
- * `/xyz/A/2`
- * `/xyz/B/1`
- * `/xyz/A/1/a`
+Querying for the direct children of `/xyz/`:
 
-This sorting, aware of `/` characters, makes possible to do efficient range queries to 
-retrieve the list of "first level children" of a given key.
+<Tabs items={['Go', 'Java', 'Python', 'CLI']}>
+    <Tabs.Tab>
+        ```go
+        keys, _ := client.List(context.Background(), "/xyz/", "/xyz//")
+        // Returns: ["/xyz/A", "/xyz/B", "/xyz/C"]
+        ```
+    </Tabs.Tab>
+    <Tabs.Tab>
+        ```java
+        List<String> keys = client.list("/xyz/", "/xyz//");
+        // Returns: ["/xyz/A", "/xyz/B", "/xyz/C"]
+        ```
+    </Tabs.Tab>
+    <Tabs.Tab>
+        ```python
+        keys = client.list("/xyz/", "/xyz//")
+        # Returns: ["/xyz/A", "/xyz/B", "/xyz/C"]
+        ```
+    </Tabs.Tab>
+    <Tabs.Tab>
+        ```shell
+        $ oxia client list -s /xyz/ -e /xyz//
+        ```
+    </Tabs.Tab>
+</Tabs>
 
-For example, in Go: 
+This returns only the direct children (`/xyz/A`, `/xyz/B`, `/xyz/C`), doing the minimum scan in
+the database without visiting deeper entries like `/xyz/A/1`.
 
-```go
-client.List(context.Background(), "/xyz/", "/xyz//")
+### Natural
+
+Natural sorting uses standard byte-wise lexicographic ordering. Keys are compared byte by byte
+without any special handling of `/` or other characters.
+
+This mode is suitable for workloads where keys do not follow a hierarchical structure, or when
+standard lexicographic ordering is preferred.
+
+With natural sorting, the same keys from the example above would be stored in strict byte order:
+
+1. `/xyz/A`
+2. `/xyz/A/1`
+3. `/xyz/A/1/a`
+4. `/xyz/A/2`
+5. `/xyz/B`
+6. `/xyz/B/1`
+7. `/xyz/C`
+
+## Configuring key sorting
+
+The sorting mode is set per-namespace in the coordinator configuration file. If not specified,
+it defaults to `hierarchical`.
+
+```yaml {5}
+namespaces:
+  - name: my-namespace
+    initialShardCount: 4
+    replicationFactor: 3
+    keySorting: natural
 ```
 
-This will return a list with `["/xyz/A", "/xyz/B", "/xyz/C"]`, doing the minimum scan in the database.
+In standalone mode, the sorting mode can be set via the `--key-sorting` flag:
+
+```shell
+$ oxia standalone --key-sorting natural
+```
+
+The sorting mode is set when a namespace is first created and cannot be changed for an existing
+namespace.

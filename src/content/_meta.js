@@ -6,6 +6,9 @@ export default {
   clients: {
     title: 'Client SDKs',
   },
+  admin: {
+    title: 'Admin Operations',
+  },
   architecture: '',
   correctness: '',
   consensus: '',

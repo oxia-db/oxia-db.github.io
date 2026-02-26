@@ -135,3 +135,110 @@ Reading the value of a record
 All the options for the get operation are available in the
 [Javadocs](https://oxia-db.github.io/oxia-client-java/apidocs/latest/io/oxia/client/api/GetOption.html).
 
+### Deleting records
+
+Delete a single record by key. Supports conditional deletes using version-based expectations.
+
+<Tabs items={['Sync', 'Async']}>
+    <Tabs.Tab>
+        ```java
+        // Unconditional delete
+        client.delete("my-key");
+
+        // Conditional delete: only succeed if the version matches
+        client.delete("my-key", Set.of(IfVersionIdEquals(version.versionId())));
+        ```
+    </Tabs.Tab>
+    <Tabs.Tab>
+        ```java
+        client.delete("my-key")
+                .thenAccept(v -> {
+                    log.info("Delete succeeded");
+                }).exceptionally(ex -> {
+                    log.warn("Delete failed", ex);
+                    return null;
+                });
+        ```
+    </Tabs.Tab>
+</Tabs>
+
+All the options for the delete operation are available in the
+[Javadocs](https://oxia-db.github.io/oxia-client-java/apidocs/latest/io/oxia/client/api/DeleteOption.html).
+
+### Deleting a range of records
+
+Delete all records whose keys fall within a specified range.
+
+<Tabs items={['Sync', 'Async']}>
+    <Tabs.Tab>
+        ```java
+        // Delete all keys in the range [minKeyInclusive, maxKeyExclusive)
+        client.deleteRange("/users/", "/users//");
+        ```
+    </Tabs.Tab>
+    <Tabs.Tab>
+        ```java
+        client.deleteRange("/users/", "/users//")
+                .thenAccept(v -> {
+                    log.info("DeleteRange succeeded");
+                }).exceptionally(ex -> {
+                    log.warn("DeleteRange failed", ex);
+                    return null;
+                });
+        ```
+    </Tabs.Tab>
+</Tabs>
+
+### Listing keys
+
+List the keys within a specified range, without fetching the associated values.
+
+<Tabs items={['Sync', 'Async']}>
+    <Tabs.Tab>
+        ```java
+        List<String> keys = client.list("/users/", "/users//");
+        keys.forEach(key -> log.info("Key: {}", key));
+        ```
+    </Tabs.Tab>
+    <Tabs.Tab>
+        ```java
+        client.list("/users/", "/users//")
+                .thenAccept(keys -> {
+                    keys.forEach(key -> log.info("Key: {}", key));
+                }).exceptionally(ex -> {
+                    log.warn("List failed", ex);
+                    return null;
+                });
+        ```
+    </Tabs.Tab>
+</Tabs>
+
+### Scanning records
+
+Scan records in a key range, returning both keys and values.
+
+<Tabs items={['Sync', 'Async']}>
+    <Tabs.Tab>
+        ```java
+        List<GetResult> results = client.rangeScan("/users/", "/users//");
+        results.forEach(r -> log.info("Key: {} - Value: {} - Version: {}",
+                r.getKey(), new String(r.getValue()), r.getVersion()));
+        ```
+    </Tabs.Tab>
+    <Tabs.Tab>
+        ```java
+        client.rangeScan("/users/", "/users//")
+                .thenAccept(results -> {
+                    results.forEach(r -> log.info("Key: {} - Value: {}",
+                            r.getKey(), new String(r.getValue())));
+                }).exceptionally(ex -> {
+                    log.warn("RangeScan failed", ex);
+                    return null;
+                });
+        ```
+    </Tabs.Tab>
+</Tabs>
+
+For the complete list of options available on all operations, please refer to the
+[Javadocs](https://oxia-db.github.io/oxia-client-java/apidocs/latest/io/oxia/client/api/package-summary.html).
+
