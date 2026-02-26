@@ -1,0 +1,123 @@
+---
+sidebarTitle: Sequence Keys
+---
+
+import {Tabs} from 'nextra/components'
+
+# Sequence Keys
+
+Oxia supports server-side atomic key generation using sequence keys. Instead of the client choosing
+the full record key, the server appends one or more atomically incrementing sequence suffixes to a
+prefix key provided by the client.
+
+## Use cases
+
+- **Ordered event logs**: Append events to a log with guaranteed ordering and no key conflicts.
+- **Auto-incrementing IDs**: Generate unique, monotonically increasing identifiers for records.
+- **Queue-like patterns**: Produce entries with server-assigned sequence numbers for consumption.
+
+## How sequence keys work
+
+When writing a record with `SequenceKeysDeltas`, the client provides:
+1. A **prefix key** (the key passed to `Put`).
+2. One or more **deltas** that define how the sequence counters should be incremented.
+
+The server atomically increments the sequence counter for the given prefix and assigns the final key
+by appending the sequence value as a suffix. The resulting key is returned in the `Put` response.
+
+Sequence keys require a `PartitionKey` option to ensure all sequence operations for a given prefix
+are routed to the same shard.
+
+## Using sequence keys
+
+<Tabs items={['Go', 'Java', 'Python', 'CLI']}>
+    <Tabs.Tab>
+        ```go
+        // Write a record with a server-assigned sequence key.
+        // The final key will be something like "/events/00000000001"
+        insertedKey, version, err := client.Put(context.Background(),
+            "/events/",
+            []byte("event-data"),
+            oxia.SequenceKeysDeltas(1),
+            oxia.PartitionKey("/events/"),
+        )
+        fmt.Println("Inserted at:", insertedKey)
+        ```
+    </Tabs.Tab>
+    <Tabs.Tab>
+        ```java
+        // Write a record with a server-assigned sequence key.
+        PutResult res = client.put("/events/", "event-data".getBytes(),
+                Set.of(SequenceKeysDeltas(1), PartitionKey("/events/")));
+        log.info("Inserted at: {}", res.key());
+        ```
+    </Tabs.Tab>
+    <Tabs.Tab>
+        ```python
+        # Write a record with a server-assigned sequence key.
+        key, version = client.put("/events/", b"event-data",
+                                  sequence_keys_deltas=[1],
+                                  partition_key="/events/")
+        print("Inserted at:", key)
+        ```
+    </Tabs.Tab>
+    <Tabs.Tab>
+        ```shell
+        $ oxia client put /events/ -c --partition-key /events/ --sequence-keys-deltas 1 <<< "event-data"
+        ```
+    </Tabs.Tab>
+</Tabs>
+
+### Multiple deltas
+
+You can pass multiple deltas to increment several sequence counters in a single operation. Each
+delta corresponds to an additional suffix segment appended to the key.
+
+```go
+// Multi-level sequence: e.g. "/data/00000000005/00000000001"
+insertedKey, _, err := client.Put(context.Background(),
+    "/data/",
+    []byte("value"),
+    oxia.SequenceKeysDeltas(1, 1),
+    oxia.PartitionKey("/data/"),
+)
+```
+
+### Subscribing to sequence updates
+
+Clients can subscribe to receive updates whenever new sequence keys are generated for a given
+prefix. This is useful for consumers that need to react to new entries.
+
+<Tabs items={['Go', 'Java', 'Python', 'CLI']}>
+    <Tabs.Tab>
+        ```go
+        ch, err := client.GetSequenceUpdates(context.Background(),
+            "/events/",
+            oxia.PartitionKey("/events/"),
+        )
+        for key := range ch {
+            fmt.Println("New sequence key:", key)
+        }
+        ```
+    </Tabs.Tab>
+    <Tabs.Tab>
+        ```java
+        client.getSequenceUpdates("/events/", Set.of(PartitionKey("/events/")),
+                key -> {
+                    log.info("New sequence key: {}", key);
+                });
+        ```
+    </Tabs.Tab>
+    <Tabs.Tab>
+        ```python
+        for key in client.get_sequence_updates("/events/",
+                                               partition_key="/events/"):
+            print("New sequence key:", key)
+        ```
+    </Tabs.Tab>
+    <Tabs.Tab>
+        ```shell
+        $ oxia client sequence-updates /events/ --partition-key /events/
+        ```
+    </Tabs.Tab>
+</Tabs>

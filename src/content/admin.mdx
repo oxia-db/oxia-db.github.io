@@ -1,0 +1,63 @@
+---
+sidebarTitle: Admin Operations
+---
+
+# Admin Operations
+
+Oxia provides an admin interface for cluster management operations. The admin service runs on the
+coordinator and is accessible via the `oxia admin` CLI or the admin gRPC API.
+
+## Connecting to the admin service
+
+The coordinator exposes the admin service on a dedicated port (default: `6651`). All admin commands
+accept an `--admin-address` flag to specify the coordinator's admin endpoint.
+
+```shell
+$ oxia admin --admin-address localhost:6651 <subcommand>
+```
+
+## Listing namespaces
+
+List all namespaces configured in the cluster.
+
+```shell
+$ oxia admin list-namespaces
+```
+
+## Listing nodes
+
+List all data server nodes registered in the cluster, along with their public and internal
+addresses.
+
+```shell
+$ oxia admin list-nodes
+```
+
+## Splitting a shard
+
+Split an existing shard into two child shards. This operation redistributes the hash range of the
+original shard between the two new shards.
+
+By default, the shard is split at the midpoint of its hash range. You can optionally specify an
+explicit split point.
+
+```shell
+# Split shard 0 at the midpoint
+$ oxia admin split-shard --shard 0
+
+# Split shard 0 in a specific namespace
+$ oxia admin split-shard --namespace my-namespace --shard 0
+
+# Split at an explicit hash point
+$ oxia admin split-shard --shard 0 --split-point 2147483648
+```
+
+### Split shard flags
+
+| Flag              | Description                                              | Default     |
+|-------------------|----------------------------------------------------------|-------------|
+| `--namespace`     | Namespace of the shard to split                          | `"default"` |
+| `--shard`         | Shard ID to split (required)                             |             |
+| `--split-point`   | Explicit hash split point (defaults to midpoint of range)|             |
+
+After a successful split, the command returns the IDs of the two new child shards.

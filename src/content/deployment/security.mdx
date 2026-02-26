@@ -1,0 +1,127 @@
+---
+sidebarTitle: Security
+---
+
+# Security
+
+Oxia supports TLS encryption and OIDC-based authentication to secure communication between clients,
+data servers, and the coordinator.
+
+## TLS Configuration
+
+Oxia has three independent TLS configurations for different communication channels:
+
+| Channel      | Flag prefix        | Description                                        |
+|--------------|--------------------|----------------------------------------------------|
+| **Public**   | `--tls-`           | Client-to-server communication (port 6648)         |
+| **Internal** | `--internal-tls-`  | Coordinator-to-server communication (port 6649)    |
+| **Peer**     | `--peer-tls-`      | Server-to-server replication traffic               |
+
+### Server TLS flags
+
+Each TLS channel supports the following flags (shown with the `--tls-` prefix for the public
+channel):
+
+| Flag                          | Description                                 |
+|-------------------------------|---------------------------------------------|
+| `--tls-cert-file`             | Path to the TLS certificate file            |
+| `--tls-key-file`              | Path to the TLS private key file            |
+| `--tls-min-version`           | Minimum TLS version (e.g., `771` for 1.2)  |
+| `--tls-max-version`           | Maximum TLS version (e.g., `772` for 1.3)  |
+| `--tls-trusted-ca-file`       | Path to the trusted CA certificate          |
+| `--tls-insecure-skip-verify`  | Skip server certificate verification        |
+| `--tls-client-auth`           | Require client certificate (mutual TLS)     |
+
+### Example: enabling TLS on the data server
+
+```shell
+$ oxia server \
+    --tls-cert-file /etc/oxia/tls/server.crt \
+    --tls-key-file /etc/oxia/tls/server.key \
+    --tls-trusted-ca-file /etc/oxia/tls/ca.crt \
+    --internal-tls-cert-file /etc/oxia/tls/internal.crt \
+    --internal-tls-key-file /etc/oxia/tls/internal.key \
+    --internal-tls-trusted-ca-file /etc/oxia/tls/ca.crt
+```
+
+### Client TLS configuration
+
+When connecting to a TLS-enabled server, configure the client with a TLS config:
+
+```go
+tlsConf := &tls.Config{
+    RootCAs: caCertPool,
+}
+
+client, err := oxia.NewSyncClient("localhost:6648",
+    oxia.WithTLS(tlsConf),
+)
+```
+
+## Authentication
+
+Oxia supports OIDC (OpenID Connect) token-based authentication. When enabled, clients must present
+a valid Bearer token with each request.
+
+### Enabling authentication on the server
+
+Configure the data server with the OIDC authentication provider:
+
+```shell
+$ oxia server \
+    --auth-provider-name oidc \
+    --auth-provider-params '{"issuers":{"https://your-issuer.com":{"allowedAudiences":"your-audience","userNameClaim":"sub"}}}'
+```
+
+### OIDC configuration formats
+
+The `--auth-provider-params` flag accepts a JSON object. Two configuration formats are supported:
+
+**Per-issuer configuration** (recommended):
+
+```json
+{
+  "issuers": {
+    "https://issuer1.com": {
+      "allowedAudiences": "aud1,aud2",
+      "userNameClaim": "sub"
+    },
+    "https://issuer2.com": {
+      "allowedAudiences": "aud3",
+      "userNameClaim": "email",
+      "staticKeyFile": "/path/to/key.pem"
+    }
+  }
+}
+```
+
+**Legacy format**:
+
+```json
+{
+  "allowedIssueURLs": "https://issuer1.com,https://issuer2.com",
+  "allowedAudiences": "aud1,aud2",
+  "userNameClaim": "sub"
+}
+```
+
+### OIDC configuration fields
+
+| Field              | Description                                                        | Default |
+|--------------------|--------------------------------------------------------------------|---------|
+| `allowedAudiences` | Comma-separated list of accepted audience claims                   |         |
+| `userNameClaim`    | JWT claim to use as the username                                   | `"sub"` |
+| `staticKeyFile`    | Path to a PEM-encoded public key for offline token validation      |         |
+
+### Client authentication
+
+Configure the client with an authentication handler:
+
+```go
+client, err := oxia.NewSyncClient("localhost:6648",
+    oxia.WithAuthentication(myAuthHandler),
+)
+```
+
+The authentication handler must implement the `auth.Authentication` interface, providing a token
+that is sent as a `Bearer` token in the gRPC `authorization` metadata header.

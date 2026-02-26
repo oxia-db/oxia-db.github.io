@@ -1,0 +1,85 @@
+---
+sidebarTitle: Partition Keys
+---
+
+import {Tabs} from 'nextra/components'
+
+# Partition Keys
+
+By default, Oxia routes each operation to a shard based on a hash of the record key. Partition keys
+allow you to override this routing, ensuring that records with different primary keys are stored on
+the same shard.
+
+## Use cases
+
+- **Data co-location**: Ensure related records (e.g., a user and their settings) are stored on the
+  same shard for efficient access.
+- **Atomic range operations**: `DeleteRange` across a set of related keys only works when all keys
+  are on the same shard. A shared partition key guarantees this.
+- **Sequence keys**: Server-side key generation with `SequenceKeysDeltas` requires a partition key
+  to keep the sequence counter on a single shard.
+
+## How partition keys work
+
+When you specify a partition key, Oxia uses the hash of the partition key (instead of the record
+key) to determine shard routing. The record is still stored and retrieved by its primary key — only
+the routing decision changes.
+
+All operations that need to interact with co-located records should use the same partition key.
+
+## Using partition keys
+
+The `PartitionKey` option is available on all client operations: `Put`, `Get`, `Delete`,
+`DeleteRange`, `List`, and `RangeScan`.
+
+<Tabs items={['Go', 'Java', 'Python', 'CLI']}>
+    <Tabs.Tab>
+        ```go
+        // Store related records on the same shard
+        client.Put(context.Background(), "/users/123/profile",
+            []byte("profile-data"),
+            oxia.PartitionKey("/users/123"),
+        )
+        client.Put(context.Background(), "/users/123/settings",
+            []byte("settings-data"),
+            oxia.PartitionKey("/users/123"),
+        )
+
+        // List all records for user 123 (works because they share a partition key)
+        keys, _ := client.List(context.Background(),
+            "/users/123/", "/users/123//",
+            oxia.PartitionKey("/users/123"),
+        )
+
+        // Delete all records for user 123
+        client.DeleteRange(context.Background(),
+            "/users/123/", "/users/123//",
+            oxia.PartitionKey("/users/123"),
+        )
+        ```
+    </Tabs.Tab>
+    <Tabs.Tab>
+        ```java
+        client.put("/users/123/profile", "profile-data".getBytes(),
+                Set.of(PartitionKey("/users/123")));
+        client.put("/users/123/settings", "settings-data".getBytes(),
+                Set.of(PartitionKey("/users/123")));
+        ```
+    </Tabs.Tab>
+    <Tabs.Tab>
+        ```python
+        client.put("/users/123/profile", b"profile-data",
+                   partition_key="/users/123")
+        client.put("/users/123/settings", b"settings-data",
+                   partition_key="/users/123")
+        ```
+    </Tabs.Tab>
+    <Tabs.Tab>
+        ```shell
+        $ oxia client put /users/123/profile -c --partition-key /users/123 <<< "profile-data"
+        $ oxia client put /users/123/settings -c --partition-key /users/123 <<< "settings-data"
+        $ oxia client list -s /users/123/ -e /users/123// --partition-key /users/123
+        $ oxia client delete-range -s /users/123/ -e /users/123// --partition-key /users/123
+        ```
+    </Tabs.Tab>
+</Tabs>

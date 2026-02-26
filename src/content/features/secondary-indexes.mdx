@@ -1,0 +1,145 @@
+---
+sidebarTitle: Secondary Indexes
+---
+
+import {Tabs} from 'nextra/components'
+
+# Secondary Indexes
+
+Oxia allows records to be indexed by one or more secondary keys in addition to their primary key.
+Secondary indexes enable efficient lookups and range queries on alternative key spaces without
+duplicating data.
+
+## Use cases
+
+- **Multi-attribute lookups**: A record keyed by ID can also be indexed by name, email, or any other attribute.
+- **Reverse mappings**: Create bidirectional lookups without maintaining separate records.
+- **Alternative sort orders**: Query the same data set using different key orderings.
+
+## How secondary indexes work
+
+When writing a record, you can attach one or more secondary index entries. Each entry specifies an
+index name and a secondary key. The secondary key does not need to be unique — multiple records can
+share the same secondary key within the same index.
+
+When querying with `List`, `RangeScan`, or `Get`, you can specify an index name to search by
+secondary keys instead of primary keys. The results still return the primary keys and values of the
+matching records.
+
+## Using secondary indexes
+
+### Writing records with secondary indexes
+
+<Tabs items={['Go', 'Java', 'Python', 'CLI']}>
+    <Tabs.Tab>
+        ```go
+        // Index a user record by email
+        _, _, err := client.Put(context.Background(), "/users/123",
+            []byte(`{"name":"Alice","email":"alice@example.com"}`),
+            oxia.SecondaryIndex("by-email", "alice@example.com"),
+        )
+        ```
+    </Tabs.Tab>
+    <Tabs.Tab>
+        ```java
+        client.put("/users/123",
+                "{\"name\":\"Alice\",\"email\":\"alice@example.com\"}".getBytes(),
+                Set.of(SecondaryIndex("by-email", "alice@example.com")));
+        ```
+    </Tabs.Tab>
+    <Tabs.Tab>
+        ```python
+        client.put("/users/123",
+                   b'{"name":"Alice","email":"alice@example.com"}',
+                   secondary_index=("by-email", "alice@example.com"))
+        ```
+    </Tabs.Tab>
+    <Tabs.Tab>
+        ```shell
+        $ oxia client put /users/123 -d '{"name":"Alice","email":"alice@example.com"}'
+        ```
+    </Tabs.Tab>
+</Tabs>
+
+### Querying by secondary index
+
+Use the `UseIndex` option on `Get`, `List`, or `RangeScan` to query using secondary keys.
+
+<Tabs items={['Go', 'Java', 'Python', 'CLI']}>
+    <Tabs.Tab>
+        ```go
+        // Lookup by secondary index
+        key, value, version, err := client.Get(context.Background(),
+            "alice@example.com",
+            oxia.UseIndex("by-email"),
+        )
+
+        // List all keys in a secondary index range
+        keys, err := client.List(context.Background(),
+            "a", "b",
+            oxia.UseIndex("by-email"),
+        )
+
+        // Range scan using secondary index
+        ch := client.RangeScan(context.Background(),
+            "a", "b",
+            oxia.UseIndex("by-email"),
+        )
+        for result := range ch {
+            fmt.Printf("primary key: %s, value: %s\n", result.Key, string(result.Value))
+        }
+        ```
+    </Tabs.Tab>
+    <Tabs.Tab>
+        ```java
+        // Lookup by secondary index
+        GetResult res = client.get("alice@example.com", Set.of(UseIndex("by-email")));
+
+        // List all keys in a secondary index range
+        List<String> keys = client.list("a", "b", Set.of(UseIndex("by-email")));
+
+        // Range scan using secondary index
+        List<GetResult> results = client.rangeScan("a", "b", Set.of(UseIndex("by-email")));
+        ```
+    </Tabs.Tab>
+    <Tabs.Tab>
+        ```python
+        # Lookup by secondary index
+        key, value, version = client.get("alice@example.com", use_index="by-email")
+
+        # List all keys in a secondary index range
+        keys = client.list("a", "b", use_index="by-email")
+
+        # Range scan using secondary index
+        for result in client.range_scan("a", "b", use_index="by-email"):
+            print(f"primary key: {result.key}, value: {result.value}")
+        ```
+    </Tabs.Tab>
+    <Tabs.Tab>
+        ```shell
+        # Get by secondary index
+        $ oxia client get alice@example.com --index by-email
+
+        # List keys using secondary index
+        $ oxia client list -s a -e b --index by-email
+
+        # Range scan using secondary index
+        $ oxia client range-scan -s a -e b --index by-email
+        ```
+    </Tabs.Tab>
+</Tabs>
+
+### Updating secondary indexes
+
+Secondary indexes are updated atomically with the record. When you `Put` a record with new secondary
+index entries, the previous index entries for that record are replaced.
+
+```go
+// Update the email index for user 123
+_, _, err := client.Put(context.Background(), "/users/123",
+    []byte(`{"name":"Alice","email":"newalice@example.com"}`),
+    oxia.SecondaryIndex("by-email", "newalice@example.com"),
+)
+```
+
+When a record is deleted, all of its secondary index entries are automatically removed.
