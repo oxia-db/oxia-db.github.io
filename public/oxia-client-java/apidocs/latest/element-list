@@ -1,3 +1,5 @@
 io.oxia.client.api
 io.oxia.client.api.exceptions
 io.oxia.client.api.options
+io.oxia.client.api.options.defs
+io.oxia.client.internal
