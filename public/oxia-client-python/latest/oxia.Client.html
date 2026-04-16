@@ -131,6 +131,26 @@
         
 
         
+            <div class="itemName"><code><a href="#__enter__" class="internal-link" title="oxia.Client.__enter__">__enter__</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="#__exit__" class="internal-link" title="oxia.Client.__exit__">__exit__</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
             <div class="itemName"><code><a href="#__init__" class="internal-link" title="oxia.Client.__init__">__init__</a></code>
             </div>
         
@@ -468,11 +488,17 @@
         </div>
 
         <div class="extrasDocstring">
-          <p class="class-signature"><code><span class="py-keyword">class</span> <span class="py-defname">Client</span>: <a href="https://github.com/oxia-db/oxia-client-python/tree/refs/heads/main/src/oxia/client.py#L150" class="sourceLink">(source)</a></code></p><p>Constructor: <code><a href="#__init__" class="internal-link" title="oxia.Client.__init__">Client(service_address, namespace, session_timeout_ms, client_identifier)</a></code></p><p><a href="classIndex.html#oxia.Client">View In Hierarchy</a></p>
+          <p class="class-signature"><code><span class="py-keyword">class</span> <span class="py-defname">Client</span>: <a href="https://github.com/oxia-db/oxia-client-python/tree/refs/heads/main/src/oxia/client.py#L141" class="sourceLink">(source)</a></code></p><p>Constructor: <code><a href="#__init__" class="internal-link" title="oxia.Client.__init__">Client(service_address, namespace, session_timeout_ms, client_identifier)</a></code></p><p><a href="classIndex.html#oxia.Client">View In Hierarchy</a></p>
         </div>
 
         <div class="moduleDocstring">
-          <div><p>Client is the main entry point to the Oxia Python client</p></div>
+          <div><p>Synchronous client for the Oxia service.</p>
+<p>Can be used as a context manager:</p>
+<pre class="rst-literal-block">
+    with oxia.Client('localhost:6648') as client:
+        client.put('/key', b'value')
+</pre>
+</div>
         </div>
 
         <div id="split-tables">
@@ -482,53 +508,63 @@
   <tr class="method">
     
     <td>Method</td>
+    <td><code><a href="#__enter__" class="internal-link" title="oxia.Client.__enter__">__enter__</a></code></td>
+    <td><span class="rst-undocumented">Undocumented</span></td>
+  </tr><tr class="method">
+    
+    <td>Method</td>
+    <td><code><a href="#__exit__" class="internal-link" title="oxia.Client.__exit__">__exit__</a></code></td>
+    <td><span class="rst-undocumented">Undocumented</span></td>
+  </tr><tr class="method">
+    
+    <td>Method</td>
     <td><code><a href="#__init__" class="internal-link" title="oxia.Client.__init__">__init__</a></code></td>
-    <td>Create a new Oxia client instance.</td>
+    <td>Create a new Oxia client.</td>
   </tr><tr class="method">
     
     <td>Method</td>
     <td><code><a href="#close" class="internal-link" title="oxia.Client.close">close</a></code></td>
-    <td>Close closes the client and all underlying connections</td>
+    <td>Close the client and release all underlying connections.</td>
   </tr><tr class="method">
     
     <td>Method</td>
     <td><code><a href="#delete" class="internal-link" title="oxia.Client.delete">delete</a></code></td>
-    <td>Removes the key and its associated value from the data store.</td>
+    <td>Delete a key and its value.</td>
   </tr><tr class="method">
     
     <td>Method</td>
     <td><code><a href="#delete_range" class="internal-link" title="oxia.Client.delete_range">delete<wbr></wbr>_range</a></code></td>
-    <td>Deletes any records with keys within the specified range.</td>
+    <td>Delete all records whose keys fall within ``[min, max)``.</td>
   </tr><tr class="method">
     
     <td>Method</td>
     <td><code><a href="#get" class="internal-link" title="oxia.Client.get">get</a></code></td>
-    <td>Returns the value associated with the specified key.</td>
+    <td>Retrieve the record for a key.</td>
   </tr><tr class="method">
     
     <td>Method</td>
     <td><code><a href="#get_notifications" class="internal-link" title="oxia.Client.get_notifications">get<wbr></wbr>_notifications</a></code></td>
-    <td>Creates a new subscription to receive the notifications from Oxia for any change that is applied to the database</td>
+    <td>Subscribe to change notifications for the entire database.</td>
   </tr><tr class="method">
     
     <td>Method</td>
     <td><code><a href="#get_sequence_updates" class="internal-link" title="oxia.Client.get_sequence_updates">get<wbr></wbr>_sequence<wbr></wbr>_updates</a></code></td>
-    <td>Subscribe to the updates happening on a sequential key.</td>
+    <td>Subscribe to updates on a sequential key.</td>
   </tr><tr class="method">
     
     <td>Method</td>
     <td><code><a href="#list" class="internal-link" title="oxia.Client.list">list</a></code></td>
-    <td>List all the keys within the specified range.</td>
+    <td>List keys in the range ``[min, max)``.</td>
   </tr><tr class="method">
     
     <td>Method</td>
     <td><code><a href="#put" class="internal-link" title="oxia.Client.put">put</a></code></td>
-    <td>Associates a value with a key</td>
+    <td>Associate a value with a key.</td>
   </tr><tr class="method">
     
     <td>Method</td>
     <td><code><a href="#range_scan" class="internal-link" title="oxia.Client.range_scan">range<wbr></wbr>_scan</a></code></td>
-    <td>perform a scan for existing records with any keys within the specified range.</td>
+    <td>Scan records in the range ``[min, max)``.</td>
   </tr><tr class="staticmethod private">
     
     <td>Static Method</td>
@@ -580,6 +616,60 @@
           <div class="basemethod">
   
   
+  <a name="oxia.Client.__enter__">
+    
+  </a>
+  <a name="__enter__">
+    
+  </a>
+  <div class="functionHeader">
+    
+    
+    <span class="py-keyword">def</span>&#160;<span class="py-defname">__enter__</span><span class="function-signature">(<span class="rst-sig-param"><span class="rst-undocumented">self</span></span>):</span>
+    <a class="sourceLink" href="https://github.com/oxia-db/oxia-client-python/tree/refs/heads/main/src/oxia/client.py#L467">
+      
+      (source)
+    </a>
+    <a class="headerLink" href="#__enter__" title="oxia.Client.__enter__">
+      
+      
+      ¶
+    </a>
+  </div>
+  <div class="docstring functionBody">
+    
+    <div><p class="undocumented">Undocumented</p></div>
+  </div>
+</div><div class="basemethod">
+  
+  
+  <a name="oxia.Client.__exit__">
+    
+  </a>
+  <a name="__exit__">
+    
+  </a>
+  <div class="functionHeader">
+    
+    
+    <span class="py-keyword">def</span>&#160;<span class="py-defname">__exit__</span><span class="function-signature">(<span class="rst-sig-param"><span class="rst-undocumented">self</span>, </span><span class="rst-sig-param">exc_type, </span><span class="rst-sig-param">exc_val, </span><span class="rst-sig-param">exc_tb</span>):</span>
+    <a class="sourceLink" href="https://github.com/oxia-db/oxia-client-python/tree/refs/heads/main/src/oxia/client.py#L470">
+      
+      (source)
+    </a>
+    <a class="headerLink" href="#__exit__" title="oxia.Client.__exit__">
+      
+      
+      ¶
+    </a>
+  </div>
+  <div class="docstring functionBody">
+    
+    <div><p class="undocumented">Undocumented</p></div>
+  </div>
+</div><div class="basemethod">
+  
+  
   <a name="oxia.Client.__init__">
     
   </a>
@@ -590,7 +680,7 @@
     
     
     <span class="py-keyword">def</span>&#160;<span class="py-defname">__init__</span><span class="function-signature long-signature">(<span class="rst-sig-param"><span class="rst-undocumented">self</span>, </span><span class="rst-sig-param">service_address: <code>str</code>, </span><span class="rst-sig-param">namespace: <code>str</code> = <span class="rst-variable-quote">'</span><span class="rst-variable-string">default</span><span class="rst-variable-quote">'</span>, </span><span class="rst-sig-param">session_timeout_ms: <code>int</code> = 30000, </span><span class="rst-sig-param">client_identifier: <code>str</code> = None</span>):</span>
-    <a class="sourceLink" href="https://github.com/oxia-db/oxia-client-python/tree/refs/heads/main/src/oxia/client.py#L153">
+    <a class="sourceLink" href="https://github.com/oxia-db/oxia-client-python/tree/refs/heads/main/src/oxia/client.py#L150">
       
       (source)
     </a>
@@ -602,9 +692,7 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p>Create a new Oxia client instance.</p>
-<p>Initializes an instance of the class that manages service discovery, session management, and connection pooling. The constructor is responsible for setting up the required infrastructure to communicate with the service discovery system and maintain sessions.</p>
-<table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Parameters</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">service<wbr></wbr>_address:</span><code>str</code></td><td class="fieldArgDesc">The Oxia service address to connect to.</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">namespace:</span><code>str</code></td><td class="fieldArgDesc">The namespace to which this client belongs. Default is "default".</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">session<wbr></wbr>_timeout<wbr></wbr>_ms:</span><code>int</code></td><td class="fieldArgDesc">Duration of the session timeout in milliseconds. Default is 30,000 ms.</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">client<wbr></wbr>_identifier:</span><code>str</code></td><td class="fieldArgDesc">A unique identifier for the client. If None, a default identifier will be generated internally.</td></tr></table></div>
+    <div><p>Create a new Oxia client.</p><table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Parameters</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">service<wbr></wbr>_address:</span><code>str</code></td><td class="fieldArgDesc">Oxia service address (``host:port``).</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">namespace:</span><code>str</code></td><td class="fieldArgDesc">Oxia namespace. Default is ``"default"``.</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">session<wbr></wbr>_timeout<wbr></wbr>_ms:</span><code>int</code></td><td class="fieldArgDesc">Session timeout in milliseconds for ephemeral records. Default is 30 000 ms.</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">client<wbr></wbr>_identifier:</span><code>str</code></td><td class="fieldArgDesc">Optional client identity string. If ``None``, a random UUID is generated.</td></tr></table></div>
   </div>
 </div><div class="basemethod">
   
@@ -619,7 +707,7 @@
     
     
     <span class="py-keyword">def</span>&#160;<span class="py-defname">close</span><span class="function-signature">(<span class="rst-sig-param"><span class="rst-undocumented">self</span></span>):</span>
-    <a class="sourceLink" href="https://github.com/oxia-db/oxia-client-python/tree/refs/heads/main/src/oxia/client.py#L465">
+    <a class="sourceLink" href="https://github.com/oxia-db/oxia-client-python/tree/refs/heads/main/src/oxia/client.py#L460">
       
       (source)
     </a>
@@ -631,7 +719,7 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p>Close closes the client and all underlying connections</p></div>
+    <div><p>Close the client and release all underlying connections.</p></div>
   </div>
 </div><div class="basemethod">
   
@@ -646,7 +734,7 @@
     
     
     <span class="py-keyword">def</span>&#160;<span class="py-defname">delete</span><span class="function-signature long-signature">(<span class="rst-sig-param"><span class="rst-undocumented">self</span>, </span><span class="rst-sig-param">key: <code>str</code>, </span><span class="rst-sig-param">partition_key: <code>str</code> = None, </span><span class="rst-sig-param">expected_version_id: <code>int</code> = None</span>) -&gt; <code>bool</code>:</span>
-    <a class="sourceLink" href="https://github.com/oxia-db/oxia-client-python/tree/refs/heads/main/src/oxia/client.py#L241">
+    <a class="sourceLink" href="https://github.com/oxia-db/oxia-client-python/tree/refs/heads/main/src/oxia/client.py#L233">
       
       (source)
     </a>
@@ -658,9 +746,7 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p>Removes the key and its associated value from the data store.</p>
-<p>The delete operation can be made conditional on that the record hasn't changed from a specific existing version by passing the [ExpectedVersionId] option.</p>
-<table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Parameters</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">key:</span><code>str</code></td><td class="fieldArgDesc">the key to delete</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">partition<wbr></wbr>_key:</span><code>str</code></td><td class="fieldArgDesc">the partition key to use (instead of the actual record key)</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">expected<wbr></wbr>_version<wbr></wbr>_id:</span><code>int</code></td><td class="fieldArgDesc">the expected version id of the record to delete. If not specified, the delete operation is not conditional.</td></tr></table><table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Returns</td></tr><tr><td class="fieldArgContainer"><code>bool</code></td><td class="fieldArgDesc">true if the record was deleted, false otherwise</td></tr></table><table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Raises</td></tr><tr><td class="fieldArgContainer"><code><a href="oxia.ex.KeyNotFound.html" class="internal-link">oxia.ex.KeyNotFound</a></code></td><td>if the record does not exist</td></tr><tr><td class="fieldArgContainer"><code><a href="oxia.ex.UnexpectedVersionId.html" class="internal-link">oxia.ex.UnexpectedVersionId</a></code></td><td>if the expected version id does not match the current version id of the record</td></tr></table></div>
+    <div><p>Delete a key and its value.</p><table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Parameters</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">key:</span><code>str</code></td><td class="fieldArgDesc">The key to delete.</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">partition<wbr></wbr>_key:</span><code>str</code></td><td class="fieldArgDesc">Override shard routing.</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">expected<wbr></wbr>_version<wbr></wbr>_id:</span><code>int</code></td><td class="fieldArgDesc">If set, the delete is conditional.</td></tr></table><table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Returns</td></tr><tr><td class="fieldArgContainer"><code>bool</code></td><td class="fieldArgDesc">``True`` if the record existed and was deleted, ``False`` if the key was not found.</td></tr></table><table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Raises</td></tr><tr><td class="fieldArgContainer"><code><a href="oxia.ex.UnexpectedVersionId.html" class="internal-link">oxia.ex.UnexpectedVersionId</a></code></td><td>if the version check fails.</td></tr></table></div>
   </div>
 </div><div class="basemethod">
   
@@ -675,7 +761,7 @@
     
     
     <span class="py-keyword">def</span>&#160;<span class="py-defname">delete_range</span><span class="function-signature long-signature">(<span class="rst-sig-param"><span class="rst-undocumented">self</span>, </span><span class="rst-sig-param">min_key_inclusive: <code>str</code>, </span><span class="rst-sig-param">max_key_exclusive: <code>str</code>, </span><span class="rst-sig-param">partition_key: <code>str</code> = None</span>):</span>
-    <a class="sourceLink" href="https://github.com/oxia-db/oxia-client-python/tree/refs/heads/main/src/oxia/client.py#L270">
+    <a class="sourceLink" href="https://github.com/oxia-db/oxia-client-python/tree/refs/heads/main/src/oxia/client.py#L258">
       
       (source)
     </a>
@@ -687,9 +773,9 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p>Deletes any records with keys within the specified range.</p>
-<p>Note: Oxia uses a custom sorting order that treats `/` characters in a special way. Refer to this documentation for the specifics: https://oxia-db.github.io/docs/features/oxia-key-sorting</p>
-<table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Parameters</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">min<wbr></wbr>_key<wbr></wbr>_inclusive:</span><code>str</code></td><td class="fieldArgDesc">the minimum key to delete from</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">max<wbr></wbr>_key<wbr></wbr>_exclusive:</span><code>str</code></td><td class="fieldArgDesc">the maximum key to delete to (exclusive)</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">partition<wbr></wbr>_key:</span><code>str</code></td><td class="fieldArgDesc">if set, the delete range will be applied to the shard with the specified partition key.</td></tr></table></div>
+    <div><p>Delete all records whose keys fall within ``[min, max)``.</p>
+<p>Keys are compared using Oxia's hierarchical sort order. See: <a class="rst-external rst-reference" href="https://oxia-db.github.io/docs/features/oxia-key-sorting" target="_top">https://oxia-db.github.io/docs/features/oxia-key-sorting</a></p>
+<table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Parameters</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">min<wbr></wbr>_key<wbr></wbr>_inclusive:</span><code>str</code></td><td class="fieldArgDesc">Start of the range (inclusive).</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">max<wbr></wbr>_key<wbr></wbr>_exclusive:</span><code>str</code></td><td class="fieldArgDesc">End of the range (exclusive).</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">partition<wbr></wbr>_key:</span><code>str</code></td><td class="fieldArgDesc">If set, only the shard owning this partition key is affected.</td></tr></table></div>
   </div>
 </div><div class="basemethod">
   
@@ -703,8 +789,8 @@
   <div class="functionHeader">
     
     
-    <span class="py-keyword">def</span>&#160;<span class="py-defname">get</span><span class="function-signature long-signature">(<span class="rst-sig-param"><span class="rst-undocumented">self</span>, </span><span class="rst-sig-param">key: <code>str</code>, </span><span class="rst-sig-param">partition_key: <code>str</code> = None, </span><span class="rst-sig-param">comparison_type: <code><a href="oxia.ComparisonType.html" class="internal-link" title="oxia.ComparisonType">ComparisonType</a></code> = <a href="oxia.ComparisonType.html#EQUAL" class="internal-link" title="oxia.ComparisonType.EQUAL">ComparisonType.EQUAL</a>, </span><span class="rst-sig-param">include_value: <code>bool</code> = True, </span><span class="rst-sig-param">use_index: <code>str</code> = None</span>) -&gt; <code>(<wbr></wbr>str, <wbr></wbr>str, <wbr></wbr><a href="oxia.Version.html" class="internal-link" title="oxia.Version">Version</a>)</code>:</span>
-    <a class="sourceLink" href="https://github.com/oxia-db/oxia-client-python/tree/refs/heads/main/src/oxia/client.py#L299">
+    <span class="py-keyword">def</span>&#160;<span class="py-defname">get</span><span class="function-signature long-signature">(<span class="rst-sig-param"><span class="rst-undocumented">self</span>, </span><span class="rst-sig-param">key: <code>str</code>, </span><span class="rst-sig-param">partition_key: <code>str</code> = None, </span><span class="rst-sig-param">comparison_type: <code><a href="oxia.ComparisonType.html" class="internal-link" title="oxia.ComparisonType">ComparisonType</a></code> = <a href="oxia.ComparisonType.html#EQUAL" class="internal-link" title="oxia.ComparisonType.EQUAL">ComparisonType.EQUAL</a>, </span><span class="rst-sig-param">include_value: <code>bool</code> = True, </span><span class="rst-sig-param">use_index: <code>str</code> = None</span>) -&gt; <code>tuple[<wbr></wbr>str, <wbr></wbr>bytes, <wbr></wbr><a href="oxia.Version.html" class="internal-link" title="oxia.Version">Version</a>]</code>:</span>
+    <a class="sourceLink" href="https://github.com/oxia-db/oxia-client-python/tree/refs/heads/main/src/oxia/client.py#L285">
       
       (source)
     </a>
@@ -716,9 +802,7 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p>Returns the value associated with the specified key.</p>
-<p>In addition to the value, a version object is also returned, with information about the record state.</p>
-<table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Parameters</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">key:</span><code>str</code></td><td class="fieldArgDesc">the key to retrieve</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">partition<wbr></wbr>_key:</span><code>str</code></td><td class="fieldArgDesc">the partition key to use (instead of the actual record key)</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">comparison<wbr></wbr>_type:</span><code><a href="oxia.ComparisonType.html" class="internal-link" title="oxia.ComparisonType">ComparisonType</a></code></td><td class="fieldArgDesc">the comparison type to use</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">include<wbr></wbr>_value:</span><code>bool</code></td><td class="fieldArgDesc">whether to include the value in the result</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">use<wbr></wbr>_index:</span><code>str</code></td><td class="fieldArgDesc">the name of the secondary index to use</td></tr></table><table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Returns</td></tr><tr><td class="fieldArgContainer"><code>(<wbr></wbr>str, <wbr></wbr>str, <wbr></wbr><a href="oxia.Version.html" class="internal-link" title="oxia.Version">Version</a>)</code></td><td class="fieldArgDesc">(key, value, version)</td></tr></table><table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Raises</td></tr><tr><td class="fieldArgContainer"><code><a href="oxia.ex.KeyNotFound.html" class="internal-link">oxia.ex.KeyNotFound</a></code></td><td>if the record does not exist</td></tr></table></div>
+    <div><p>Retrieve the record for a key.</p><table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Parameters</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">key:</span><code>str</code></td><td class="fieldArgDesc">The key (or secondary-index key when *use_index* is set) to look up.</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">partition<wbr></wbr>_key:</span><code>str</code></td><td class="fieldArgDesc">Override shard routing.</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">comparison<wbr></wbr>_type:</span><code><a href="oxia.ComparisonType.html" class="internal-link" title="oxia.ComparisonType">ComparisonType</a></code></td><td class="fieldArgDesc">Key comparison mode. Default is <code><a href="oxia.ComparisonType.html#EQUAL" class="internal-link" title="oxia.ComparisonType.EQUAL">ComparisonType.EQUAL</a></code>. Non-equal modes query across all shards when *partition_key* is not set.</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">include<wbr></wbr>_value:</span><code>bool</code></td><td class="fieldArgDesc">If ``False``, the returned value is ``None`` (useful for metadata-only reads).</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">use<wbr></wbr>_index:</span><code>str</code></td><td class="fieldArgDesc">Name of a secondary index to query.</td></tr></table><table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Returns</td></tr><tr><td class="fieldArgContainer"><code>tuple[<wbr></wbr>str, <wbr></wbr>bytes, <wbr></wbr><a href="oxia.Version.html" class="internal-link" title="oxia.Version">Version</a>]</code></td><td class="fieldArgDesc">``(key, value, version)`` where *key* is the primary key of the matched record and *value* is ``bytes`` (or ``None`` if *include_value* is ``False``).</td></tr></table><table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Raises</td></tr><tr><td class="fieldArgContainer"><code><a href="oxia.ex.KeyNotFound.html" class="internal-link">oxia.ex.KeyNotFound</a></code></td><td>if no matching record exists.</td></tr></table></div>
   </div>
 </div><div class="basemethod">
   
@@ -733,7 +817,7 @@
     
     
     <span class="py-keyword">def</span>&#160;<span class="py-defname">get_notifications</span><span class="function-signature">(<span class="rst-sig-param"><span class="rst-undocumented">self</span></span>) -&gt; <code>Iterator[<wbr></wbr><a href="oxia.Notification.html" class="internal-link" title="oxia.Notification">oxia.defs.Notification</a>]</code>:</span>
-    <a class="sourceLink" href="https://github.com/oxia-db/oxia-client-python/tree/refs/heads/main/src/oxia/client.py#L455">
+    <a class="sourceLink" href="https://github.com/oxia-db/oxia-client-python/tree/refs/heads/main/src/oxia/client.py#L449">
       
       (source)
     </a>
@@ -745,7 +829,9 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p>Creates a new subscription to receive the notifications from Oxia for any change that is applied to the database</p><table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Returns</td></tr><tr><td class="fieldArgContainer"><code>Iterator[<a href="oxia.Notification.html" class="internal-link">oxia.Notification</a>]</code></td><td class="fieldArgDesc">an iterator over the notifications. Each notification is a Notification object.</td></tr></table></div>
+    <div><p>Subscribe to change notifications for the entire database.</p>
+<p>Returns an iterator that yields <code><a href="oxia.Notification.html" class="internal-link" title="oxia.Notification">Notification</a></code> objects for every create, modify, delete, or range-delete event. Multiple subscriptions can be active simultaneously.</p>
+<table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Returns</td></tr><tr><td class="fieldArgContainer"><code>Iterator[<wbr></wbr><a href="oxia.Notification.html" class="internal-link" title="oxia.Notification">oxia.defs.Notification</a>]</code></td><td class="fieldArgDesc">An iterator of <code><a href="oxia.Notification.html" class="internal-link" title="oxia.Notification">Notification</a></code> objects.</td></tr></table></div>
   </div>
 </div><div class="basemethod">
   
@@ -759,8 +845,8 @@
   <div class="functionHeader">
     
     
-    <span class="py-keyword">def</span>&#160;<span class="py-defname">get_sequence_updates</span><span class="function-signature long-signature">(<span class="rst-sig-param"><span class="rst-undocumented">self</span>, </span><span class="rst-sig-param">prefix_key: <code>str</code>, </span><span class="rst-sig-param">partition_key: <code>str</code> = None</span>) -&gt; <code><a href="oxia.SequenceUpdates.html" class="internal-link" title="oxia.SequenceUpdates">SequenceUpdates</a></code>:</span>
-    <a class="sourceLink" href="https://github.com/oxia-db/oxia-client-python/tree/refs/heads/main/src/oxia/client.py#L441">
+    <span class="py-keyword">def</span>&#160;<span class="py-defname">get_sequence_updates</span><span class="function-signature long-signature">(<span class="rst-sig-param"><span class="rst-undocumented">self</span>, </span><span class="rst-sig-param">prefix_key: <code>str</code>, </span><span class="rst-sig-param">partition_key: <code>str</code> = None</span>) -&gt; <code><a href="oxia.SequenceUpdates.html" class="internal-link" title="oxia.SequenceUpdates">oxia.defs.SequenceUpdates</a></code>:</span>
+    <a class="sourceLink" href="https://github.com/oxia-db/oxia-client-python/tree/refs/heads/main/src/oxia/client.py#L432">
       
       (source)
     </a>
@@ -772,9 +858,9 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p>Subscribe to the updates happening on a sequential key.</p>
-<p>Multiple updates can be collapsed into one single event with the highest sequence.</p>
-<table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Parameters</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">prefix<wbr></wbr>_key:</span><code>str</code></td><td class="fieldArgDesc">the prefix for the sequential key.</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">partition<wbr></wbr>_key:</span><code>str</code></td><td class="fieldArgDesc">the partition key to use (this is required)</td></tr></table><table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Returns</td></tr><tr><td class="fieldArgContainer"><code><a href="oxia.SequenceUpdates.html" class="internal-link" title="oxia.SequenceUpdates">SequenceUpdates</a></code></td><td class="fieldArgDesc">a SequenceUpdates object that can be used to iterate over the updates. Should be closed when done.</td></tr></table></div>
+    <div><p>Subscribe to updates on a sequential key.</p>
+<p>Returns an iterator that yields the latest key each time the sequence advances. Call ``.close()`` on the returned object when done.</p>
+<table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Parameters</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">prefix<wbr></wbr>_key:</span><code>str</code></td><td class="fieldArgDesc">The key prefix for the sequence.</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">partition<wbr></wbr>_key:</span><code>str</code></td><td class="fieldArgDesc">Required. The partition key for shard routing.</td></tr></table><table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Returns</td></tr><tr><td class="fieldArgContainer"><code><a href="oxia.SequenceUpdates.html" class="internal-link" title="oxia.SequenceUpdates">oxia.defs.SequenceUpdates</a></code></td><td class="fieldArgDesc">A <code><a href="oxia.SequenceUpdates.html" class="internal-link" title="oxia.SequenceUpdates">SequenceUpdates</a></code> iterator.</td></tr></table><table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Raises</td></tr><tr><td class="fieldArgContainer"><code><a href="oxia.ex.InvalidOptions.html" class="internal-link">oxia.ex.InvalidOptions</a></code></td><td>if *partition_key* is not set.</td></tr></table></div>
   </div>
 </div><div class="basemethod">
   
@@ -789,7 +875,7 @@
     
     
     <span class="py-keyword">def</span>&#160;<span class="py-defname">list</span><span class="function-signature long-signature">(<span class="rst-sig-param"><span class="rst-undocumented">self</span>, </span><span class="rst-sig-param">min_key_inclusive: <code>str</code>, </span><span class="rst-sig-param">max_key_exclusive: <code>str</code>, </span><span class="rst-sig-param">partition_key: <code>str</code> = None, </span><span class="rst-sig-param">use_index: <code>str</code> = None</span>) -&gt; <code><a href="#list" class="internal-link" title="oxia.Client.list">list</a>[<wbr></wbr>str]</code>:</span>
-    <a class="sourceLink" href="https://github.com/oxia-db/oxia-client-python/tree/refs/heads/main/src/oxia/client.py#L362">
+    <a class="sourceLink" href="https://github.com/oxia-db/oxia-client-python/tree/refs/heads/main/src/oxia/client.py#L352">
       
       (source)
     </a>
@@ -801,9 +887,9 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p>List all the keys within the specified range.</p>
-<p>Note: Oxia uses a custom sorting order that treats `/` characters in special way. Refer to this documentation for the specifics: https://oxia-db.github.io/docs/features/oxia-key-sorting</p>
-<table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Parameters</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">min<wbr></wbr>_key<wbr></wbr>_inclusive:</span><code>str</code></td><td class="fieldArgDesc">the minimum key to list from (inclusive).</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">max<wbr></wbr>_key<wbr></wbr>_exclusive:</span><code>str</code></td><td class="fieldArgDesc">the maximum key to list to (exclusive).</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">partition<wbr></wbr>_key:</span><code>str</code></td><td class="fieldArgDesc">if set, the list will be applied to the shard with the specified partition key.</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">use<wbr></wbr>_index:</span><code>str</code></td><td class="fieldArgDesc">if set, the list will be applied to the secondary index with the specified name.</td></tr></table><table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Returns</td></tr><tr><td class="fieldArgContainer"><code><a href="#list" class="internal-link" title="oxia.Client.list">list</a>[<wbr></wbr>str]</code></td><td class="fieldArgDesc">the list of keys within the specified range.</td></tr></table></div>
+    <div><p>List keys in the range ``[min, max)``.</p>
+<p>Keys are returned in Oxia's hierarchical sort order. See: <a class="rst-external rst-reference" href="https://oxia-db.github.io/docs/features/oxia-key-sorting" target="_top">https://oxia-db.github.io/docs/features/oxia-key-sorting</a></p>
+<table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Parameters</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">min<wbr></wbr>_key<wbr></wbr>_inclusive:</span><code>str</code></td><td class="fieldArgDesc">Start of the range (inclusive).</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">max<wbr></wbr>_key<wbr></wbr>_exclusive:</span><code>str</code></td><td class="fieldArgDesc">End of the range (exclusive).</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">partition<wbr></wbr>_key:</span><code>str</code></td><td class="fieldArgDesc">If set, only query the shard owning this partition key.</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">use<wbr></wbr>_index:</span><code>str</code></td><td class="fieldArgDesc">Name of a secondary index to query.</td></tr></table><table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Returns</td></tr><tr><td class="fieldArgContainer"><code><a href="#list" class="internal-link" title="oxia.Client.list">list</a>[<wbr></wbr>str]</code></td><td class="fieldArgDesc">Sorted list of keys in the range, or ``[]`` if none.</td></tr></table></div>
   </div>
 </div><div class="basemethod">
   
@@ -817,8 +903,8 @@
   <div class="functionHeader">
     
     
-    <span class="py-keyword">def</span>&#160;<span class="py-defname">put</span><span class="function-signature long-signature">(<span class="rst-sig-param"><span class="rst-undocumented">self</span>, </span><span class="rst-sig-param">key: <code>str</code>, </span><span class="rst-sig-param">value: <code>object</code>, </span><span class="rst-sig-param">partition_key: <code>str</code> = None, </span><span class="rst-sig-param">expected_version_id: <code>int</code> = None, </span><span class="rst-sig-param">ephemeral: <code>bool</code> = False, </span><span class="rst-sig-param">sequence_keys_deltas: <code><a href="#list" class="internal-link" title="oxia.Client.list">list</a>[<wbr></wbr>int]</code> = None, </span><span class="rst-sig-param">secondary_indexes: <code>dict[<wbr></wbr>str, <wbr></wbr>str]</code> = None</span>) -&gt; <code>(<wbr></wbr>str, <wbr></wbr><a href="oxia.Version.html" class="internal-link" title="oxia.Version">Version</a>)</code>:</span>
-    <a class="sourceLink" href="https://github.com/oxia-db/oxia-client-python/tree/refs/heads/main/src/oxia/client.py#L176">
+    <span class="py-keyword">def</span>&#160;<span class="py-defname">put</span><span class="function-signature long-signature">(<span class="rst-sig-param"><span class="rst-undocumented">self</span>, </span><span class="rst-sig-param">key: <code>str</code>, </span><span class="rst-sig-param">value: <code>str | bytes</code>, </span><span class="rst-sig-param">partition_key: <code>str</code> = None, </span><span class="rst-sig-param">expected_version_id: <code>int</code> = None, </span><span class="rst-sig-param">ephemeral: <code>bool</code> = False, </span><span class="rst-sig-param">sequence_keys_deltas: <code><a href="#list" class="internal-link" title="oxia.Client.list">list</a>[<wbr></wbr>int]</code> = None, </span><span class="rst-sig-param">secondary_indexes: <code>dict[<wbr></wbr>str, <wbr></wbr>str]</code> = None</span>) -&gt; <code>tuple[<wbr></wbr>str, <wbr></wbr><a href="oxia.Version.html" class="internal-link" title="oxia.Version">Version</a>]</code>:</span>
+    <a class="sourceLink" href="https://github.com/oxia-db/oxia-client-python/tree/refs/heads/main/src/oxia/client.py#L169">
       
       (source)
     </a>
@@ -830,14 +916,7 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p>Associates a value with a key</p>
-<p>There are few options that can be passed to the Put operation:</p>
-<ul class="rst-simple">
-<li>The Put operation can be made conditional on that the record hasn't changed from a specific existing version by passing the `expected_version_id` option.</li>
-<li>Client can assert that the record does not exist by passing [oxia.EXPECTED_RECORD_DOES_NOT_EXIST]</li>
-<li>Client can create an ephemeral record with `ephemeral=True`</li>
-</ul>
-<table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Parameters</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">key:</span><code>str</code></td><td class="fieldArgDesc">the key to associate with the value</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">value:</span><code>str | bytes</code></td><td class="fieldArgDesc">the value to associate with the key</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">partition<wbr></wbr>_key:</span><code>str</code></td><td class="fieldArgDesc">the partition key to use (instead of the actual record key)</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">expected<wbr></wbr>_version<wbr></wbr>_id:</span><code>int</code></td><td class="fieldArgDesc">the expected version id of the record to insert. If not specified, the put operation is not conditional.</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">ephemeral:</span><code>bool</code></td><td class="fieldArgDesc">whether the record should be created as ephemeral. Ephemeral records are deleted when the session expires.</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">sequence<wbr></wbr>_keys<wbr></wbr>_deltas:</span><code><a href="#list" class="internal-link" title="oxia.Client.list">list</a>[<wbr></wbr>int]</code></td><td class="fieldArgDesc">a list of sequence keys to be used as deltas for the key. Oxia will create new unique keys atomically adding the sequence key deltas to the key.</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">secondary<wbr></wbr>_indexes:</span><code>dict[<wbr></wbr>str, <wbr></wbr>str]</code></td><td class="fieldArgDesc">a dictionary of secondary indexes to be created for the record.</td></tr></table><table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Returns</td></tr><tr><td class="fieldArgContainer"><code>(<wbr></wbr>str, <wbr></wbr><a href="oxia.Version.html" class="internal-link" title="oxia.Version">Version</a>)</code></td><td class="fieldArgDesc">(actual_key, version)</td></tr></table><table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Raises</td></tr><tr><td class="fieldArgContainer"><code><a href="oxia.ex.InvalidOptions.html" class="internal-link">oxia.ex.InvalidOptions</a></code></td><td>if the sequence_keys_deltas option is used with partition_key</td></tr><tr><td class="fieldArgContainer"><code><a href="oxia.ex.UnexpectedVersionId.html" class="internal-link">oxia.ex.UnexpectedVersionId</a></code></td><td>if the expected version id does not match the current version id of the record</td></tr></table></div>
+    <div><p>Associate a value with a key.</p><table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Parameters</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">key:</span><code>str</code></td><td class="fieldArgDesc">The key to write.</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">value:</span><code>str | bytes</code></td><td class="fieldArgDesc">The value (``str`` is encoded to UTF-8).</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">partition<wbr></wbr>_key:</span><code>str</code></td><td class="fieldArgDesc">Override shard routing with this key instead of the record key. Records sharing a partition key are co-located on the same shard.</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">expected<wbr></wbr>_version<wbr></wbr>_id:</span><code>int</code></td><td class="fieldArgDesc">If set, the put is conditional: it succeeds only if the current version matches. Pass <code><a href="index.html#EXPECTED_RECORD_DOES_NOT_EXIST" class="internal-link" title="oxia.EXPECTED_RECORD_DOES_NOT_EXIST">EXPECTED_RECORD_DOES_NOT_EXIST</a></code> to assert the key is new.</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">ephemeral:</span><code>bool</code></td><td class="fieldArgDesc">If ``True``, the record is tied to the client session and automatically deleted when the session ends.</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">sequence<wbr></wbr>_keys<wbr></wbr>_deltas:</span><code><a href="#list" class="internal-link" title="oxia.Client.list">list</a>[<wbr></wbr>int]</code></td><td class="fieldArgDesc">Server-assigned sequential key suffixes. Requires ``partition_key``.</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">secondary<wbr></wbr>_indexes:</span><code>dict[<wbr></wbr>str, <wbr></wbr>str]</code></td><td class="fieldArgDesc">Additional index entries (``{index_name: secondary_key}``).</td></tr></table><table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Returns</td></tr><tr><td class="fieldArgContainer"><code>tuple[<wbr></wbr>str, <wbr></wbr><a href="oxia.Version.html" class="internal-link" title="oxia.Version">Version</a>]</code></td><td class="fieldArgDesc">``(actual_key, version)``</td></tr></table><table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Raises</td></tr><tr><td class="fieldArgContainer"><code><a href="oxia.ex.InvalidOptions.html" class="internal-link">oxia.ex.InvalidOptions</a></code></td><td>if options are incompatible.</td></tr><tr><td class="fieldArgContainer"><code><a href="oxia.ex.UnexpectedVersionId.html" class="internal-link">oxia.ex.UnexpectedVersionId</a></code></td><td>if the version check fails.</td></tr><tr><td class="fieldArgContainer"><code><a href="oxia.ex.SessionNotFound.html" class="internal-link">oxia.ex.SessionNotFound</a></code></td><td>if the session for an ephemeral put no longer exists on the server.</td></tr></table></div>
   </div>
 </div><div class="basemethod">
   
@@ -851,8 +930,8 @@
   <div class="functionHeader">
     
     
-    <span class="py-keyword">def</span>&#160;<span class="py-defname">range_scan</span><span class="function-signature long-signature">(<span class="rst-sig-param"><span class="rst-undocumented">self</span>, </span><span class="rst-sig-param">min_key_inclusive: <code>str</code>, </span><span class="rst-sig-param">max_key_exclusive: <code>str</code>, </span><span class="rst-sig-param">partition_key: <code>str</code> = None, </span><span class="rst-sig-param">use_index: <code>str</code> = None</span>) -&gt; <code>Iterator[<wbr></wbr>tuple[<wbr></wbr>str, <wbr></wbr>str, <wbr></wbr><a href="oxia.Version.html" class="internal-link" title="oxia.Version">Version</a>]]</code>:</span>
-    <a class="sourceLink" href="https://github.com/oxia-db/oxia-client-python/tree/refs/heads/main/src/oxia/client.py#L401">
+    <span class="py-keyword">def</span>&#160;<span class="py-defname">range_scan</span><span class="function-signature long-signature">(<span class="rst-sig-param"><span class="rst-undocumented">self</span>, </span><span class="rst-sig-param">min_key_inclusive: <code>str</code>, </span><span class="rst-sig-param">max_key_exclusive: <code>str</code>, </span><span class="rst-sig-param">partition_key: <code>str</code> = None, </span><span class="rst-sig-param">use_index: <code>str</code> = None</span>) -&gt; <code>Iterator[<wbr></wbr>tuple[<wbr></wbr>str, <wbr></wbr>bytes, <wbr></wbr><a href="oxia.Version.html" class="internal-link" title="oxia.Version">Version</a>]]</code>:</span>
+    <a class="sourceLink" href="https://github.com/oxia-db/oxia-client-python/tree/refs/heads/main/src/oxia/client.py#L390">
       
       (source)
     </a>
@@ -864,9 +943,10 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p>perform a scan for existing records with any keys within the specified range.</p>
-<p>Note: Oxia uses a custom sorting order that treats `/` characters in special way. Refer to this documentation for the specifics: https://oxia-db.github.io/docs/features/oxia-key-sorting</p>
-<table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Parameters</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">min<wbr></wbr>_key<wbr></wbr>_inclusive:</span><code>str</code></td><td class="fieldArgDesc">the minimum key to list from (inclusive).</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">max<wbr></wbr>_key<wbr></wbr>_exclusive:</span><code>str</code></td><td class="fieldArgDesc">the maximum key to list to (exclusive).</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">partition<wbr></wbr>_key:</span><code>str</code></td><td class="fieldArgDesc">if set, the range-scan will be applied to the shard with the specified partition key.</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">use<wbr></wbr>_index:</span><code>str</code></td><td class="fieldArgDesc">if set, the range-scan will be applied to the secondary index with the specified name.</td></tr></table><table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Returns</td></tr><tr><td class="fieldArgContainer"><code>Iterator[<wbr></wbr>tuple[<wbr></wbr>str, <wbr></wbr>str, <wbr></wbr><a href="oxia.Version.html" class="internal-link" title="oxia.Version">Version</a>]]</code></td><td class="fieldArgDesc">an iterator over the records within the specified range. Each record is a tuple of (key, value, version).</td></tr></table></div>
+    <div><p>Scan records in the range ``[min, max)``.</p>
+<p>Returns both keys and values, unlike <code><a href="#list" class="internal-link" title="oxia.Client.list">list</a></code> which returns keys only.</p>
+<p>Keys are returned in Oxia's hierarchical sort order. See: <a class="rst-external rst-reference" href="https://oxia-db.github.io/docs/features/oxia-key-sorting" target="_top">https://oxia-db.github.io/docs/features/oxia-key-sorting</a></p>
+<table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Parameters</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">min<wbr></wbr>_key<wbr></wbr>_inclusive:</span><code>str</code></td><td class="fieldArgDesc">Start of the range (inclusive).</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">max<wbr></wbr>_key<wbr></wbr>_exclusive:</span><code>str</code></td><td class="fieldArgDesc">End of the range (exclusive).</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">partition<wbr></wbr>_key:</span><code>str</code></td><td class="fieldArgDesc">If set, only scan the shard owning this partition key.</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">use<wbr></wbr>_index:</span><code>str</code></td><td class="fieldArgDesc">Name of a secondary index to query.</td></tr></table><table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Returns</td></tr><tr><td class="fieldArgContainer"><code>Iterator[<wbr></wbr>tuple[<wbr></wbr>str, <wbr></wbr>bytes, <wbr></wbr><a href="oxia.Version.html" class="internal-link" title="oxia.Version">Version</a>]]</code></td><td class="fieldArgDesc">An iterator of ``(key, value, version)`` tuples.</td></tr></table></div>
   </div>
 </div><div class="basestaticmethod private">
   
@@ -881,7 +961,7 @@
     
     <div><span class="decorator">@staticmethod<br /></span></div>
     <span class="py-keyword">def</span>&#160;<span class="py-defname">_delete_range_single_shard</span><span class="function-signature long-signature">(<span class="rst-sig-param">min_key_inclusive: <code>str</code>, </span><span class="rst-sig-param">max_key_exclusive: <code>str</code>, </span><span class="rst-sig-param">shard: <code>int</code>, </span><span class="rst-sig-param">stub</span>):</span>
-    <a class="sourceLink" href="https://github.com/oxia-db/oxia-client-python/tree/refs/heads/main/src/oxia/client.py#L290">
+    <a class="sourceLink" href="https://github.com/oxia-db/oxia-client-python/tree/refs/heads/main/src/oxia/client.py#L276">
       
       (source)
     </a>
@@ -907,8 +987,8 @@
   <div class="functionHeader">
     
     <div><span class="decorator">@staticmethod<br /></span></div>
-    <span class="py-keyword">def</span>&#160;<span class="py-defname">_get_single_shard</span><span class="function-signature long-signature">(<span class="rst-sig-param">shard: <code>int</code>, </span><span class="rst-sig-param">stub, </span><span class="rst-sig-param">key: <code>str</code>, </span><span class="rst-sig-param">comparison_type: <code><a href="oxia.ComparisonType.html" class="internal-link" title="oxia.ComparisonType">ComparisonType</a></code>, </span><span class="rst-sig-param">include_value: <code>bool</code>, </span><span class="rst-sig-param">use_index: <code>str</code></span>) -&gt; <code>(<wbr></wbr>str, <wbr></wbr>str, <wbr></wbr><a href="oxia.Version.html" class="internal-link" title="oxia.Version">Version</a>)</code>:</span>
-    <a class="sourceLink" href="https://github.com/oxia-db/oxia-client-python/tree/refs/heads/main/src/oxia/client.py#L345">
+    <span class="py-keyword">def</span>&#160;<span class="py-defname">_get_single_shard</span><span class="function-signature long-signature">(<span class="rst-sig-param">shard: <code>int</code>, </span><span class="rst-sig-param">stub, </span><span class="rst-sig-param">key: <code>str</code>, </span><span class="rst-sig-param">comparison_type: <code><a href="oxia.ComparisonType.html" class="internal-link" title="oxia.ComparisonType">ComparisonType</a></code>, </span><span class="rst-sig-param">include_value: <code>bool</code>, </span><span class="rst-sig-param">use_index: <code>str</code></span>) -&gt; <code>tuple[<wbr></wbr>str, <wbr></wbr>bytes, <wbr></wbr><a href="oxia.Version.html" class="internal-link" title="oxia.Version">Version</a>]</code>:</span>
+    <a class="sourceLink" href="https://github.com/oxia-db/oxia-client-python/tree/refs/heads/main/src/oxia/client.py#L335">
       
       (source)
     </a>
@@ -935,7 +1015,7 @@
     
     <div><span class="decorator">@staticmethod<br /></span></div>
     <span class="py-keyword">def</span>&#160;<span class="py-defname">_list_single_shard</span><span class="function-signature long-signature">(<span class="rst-sig-param">shard, </span><span class="rst-sig-param">stub, </span><span class="rst-sig-param">min_key_inclusive: <code>str</code>, </span><span class="rst-sig-param">max_key_exclusive: <code>str</code>, </span><span class="rst-sig-param">use_index: <code>str</code></span>) -&gt; <code><a href="#list" class="internal-link" title="oxia.Client.list">list</a></code>:</span>
-    <a class="sourceLink" href="https://github.com/oxia-db/oxia-client-python/tree/refs/heads/main/src/oxia/client.py#L389">
+    <a class="sourceLink" href="https://github.com/oxia-db/oxia-client-python/tree/refs/heads/main/src/oxia/client.py#L378">
       
       (source)
     </a>
@@ -961,8 +1041,8 @@
   <div class="functionHeader">
     
     <div><span class="decorator">@staticmethod<br /></span></div>
-    <span class="py-keyword">def</span>&#160;<span class="py-defname">_range_scan_single_shard</span><span class="function-signature long-signature">(<span class="rst-sig-param">shard, </span><span class="rst-sig-param">stub, </span><span class="rst-sig-param">min_key_inclusive: <code>str</code>, </span><span class="rst-sig-param">max_key_exclusive: <code>str</code>, </span><span class="rst-sig-param">use_index: <code>str</code></span>) -&gt; <code>Iterator[<wbr></wbr>tuple[<wbr></wbr>str, <wbr></wbr>str, <wbr></wbr><a href="oxia.Version.html" class="internal-link" title="oxia.Version">Version</a>]]</code>:</span>
-    <a class="sourceLink" href="https://github.com/oxia-db/oxia-client-python/tree/refs/heads/main/src/oxia/client.py#L429">
+    <span class="py-keyword">def</span>&#160;<span class="py-defname">_range_scan_single_shard</span><span class="function-signature long-signature">(<span class="rst-sig-param">shard, </span><span class="rst-sig-param">stub, </span><span class="rst-sig-param">min_key_inclusive: <code>str</code>, </span><span class="rst-sig-param">max_key_exclusive: <code>str</code>, </span><span class="rst-sig-param">use_index: <code>str</code></span>) -&gt; <code>Iterator[<wbr></wbr>tuple[<wbr></wbr>str, <wbr></wbr>bytes, <wbr></wbr><a href="oxia.Version.html" class="internal-link" title="oxia.Version">Version</a>]]</code>:</span>
+    <a class="sourceLink" href="https://github.com/oxia-db/oxia-client-python/tree/refs/heads/main/src/oxia/client.py#L420">
       
       (source)
     </a>
@@ -988,7 +1068,7 @@
   <div class="functionHeader">
     
     <span class="py-defname">_closed</span>: <code>bool</code> =
-    <a class="sourceLink" href="https://github.com/oxia-db/oxia-client-python/tree/refs/heads/main/src/oxia/client.py#L171">
+    <a class="sourceLink" href="https://github.com/oxia-db/oxia-client-python/tree/refs/heads/main/src/oxia/client.py#L164">
       
       (source)
     </a>
@@ -1015,7 +1095,7 @@
   <div class="functionHeader">
     
     <span class="py-defname">_connections</span> =
-    <a class="sourceLink" href="https://github.com/oxia-db/oxia-client-python/tree/refs/heads/main/src/oxia/client.py#L172">
+    <a class="sourceLink" href="https://github.com/oxia-db/oxia-client-python/tree/refs/heads/main/src/oxia/client.py#L165">
       
       (source)
     </a>
@@ -1042,7 +1122,7 @@
   <div class="functionHeader">
     
     <span class="py-defname">_service_discovery</span> =
-    <a class="sourceLink" href="https://github.com/oxia-db/oxia-client-python/tree/refs/heads/main/src/oxia/client.py#L173">
+    <a class="sourceLink" href="https://github.com/oxia-db/oxia-client-python/tree/refs/heads/main/src/oxia/client.py#L166">
       
       (source)
     </a>
@@ -1069,7 +1149,7 @@
   <div class="functionHeader">
     
     <span class="py-defname">_session_manager</span> =
-    <a class="sourceLink" href="https://github.com/oxia-db/oxia-client-python/tree/refs/heads/main/src/oxia/client.py#L174">
+    <a class="sourceLink" href="https://github.com/oxia-db/oxia-client-python/tree/refs/heads/main/src/oxia/client.py#L167">
       
       (source)
     </a>
@@ -1096,7 +1176,7 @@
   <div class="container-fluid">
     <a href="index.html">API Documentation</a> for <a href="https://github.com/oxia-db/oxia-client-python" class="projecthome">Oxia</a>,
   generated by <a href="https://github.com/twisted/pydoctor/">pydoctor</a>
-    25.10.1 at 2025-10-11 01:05:30.
+    25.10.1 at 2026-04-16 03:48:15.
   </div>
 
   <!-- Search related scripts needs to be loaded at the end of HTML 

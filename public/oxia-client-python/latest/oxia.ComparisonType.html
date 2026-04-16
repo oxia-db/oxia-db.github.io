@@ -335,11 +335,11 @@
         </div>
 
         <div class="extrasDocstring">
-          <p class="class-signature"><code><span class="py-keyword">class</span> <span class="py-defname">ComparisonType</span>(enum.IntEnum): <a href="https://github.com/oxia-db/oxia-client-python/tree/refs/heads/main/src/oxia/client.py#L42" class="sourceLink">(source)</a></code></p><p><a href="classIndex.html#oxia.ComparisonType">View In Hierarchy</a></p>
+          <p class="class-signature"><code><span class="py-keyword">class</span> <span class="py-defname">ComparisonType</span>(enum.IntEnum): <a href="https://github.com/oxia-db/oxia-client-python/tree/refs/heads/main/src/oxia/client.py#L69" class="sourceLink">(source)</a></code></p><p><a href="classIndex.html#oxia.ComparisonType">View In Hierarchy</a></p>
         </div>
 
         <div class="moduleDocstring">
-          <div><p>ComparisonType is an enumeration of the possible comparison types for the `get()` operation.</p></div>
+          <div><p>Key comparison mode for the <code><a href="oxia.Client.html#get" class="internal-link" title="oxia.Client.get">Client.get</a></code> operation.</p></div>
         </div>
 
         <div id="split-tables">
@@ -350,27 +350,27 @@
     
     <td>Constant</td>
     <td><code><a href="#CEILING" class="internal-link" title="oxia.ComparisonType.CEILING">CEILING</a></code></td>
-    <td>Ceiling option will make the get operation to search for the record whose key is the lowest key &gt;= to the supplied key.</td>
+    <td>Lowest key &gt;= the supplied key.</td>
   </tr><tr class="constant">
     
     <td>Constant</td>
     <td><code><a href="#EQUAL" class="internal-link" title="oxia.ComparisonType.EQUAL">EQUAL</a></code></td>
-    <td>Equal sets the Get() operation to compare the stored key for equality.</td>
+    <td>Exact match on the key.</td>
   </tr><tr class="constant">
     
     <td>Constant</td>
     <td><code><a href="#FLOOR" class="internal-link" title="oxia.ComparisonType.FLOOR">FLOOR</a></code></td>
-    <td>Floor option will make the get operation to search for the record whose key is the highest key &lt;= to the supplied key.</td>
+    <td>Highest key &lt;= the supplied key.</td>
   </tr><tr class="constant">
     
     <td>Constant</td>
     <td><code><a href="#HIGHER" class="internal-link" title="oxia.ComparisonType.HIGHER">HIGHER</a></code></td>
-    <td>Higher option will make the get operation to search for the record whose key is strictly &gt; to the supplied key.</td>
+    <td>Lowest key strictly &gt; the supplied key.</td>
   </tr><tr class="constant">
     
     <td>Constant</td>
     <td><code><a href="#LOWER" class="internal-link" title="oxia.ComparisonType.LOWER">LOWER</a></code></td>
-    <td>Lower option will make the get operation to search for the record whose key is strictly &lt; to the supplied key.</td>
+    <td>Highest key strictly &lt; the supplied key.</td>
   </tr>
 </table>
           
@@ -391,7 +391,7 @@
   <div class="functionHeader">
     
     <span class="py-defname">CEILING</span> =
-    <a class="sourceLink" href="https://github.com/oxia-db/oxia-client-python/tree/refs/heads/main/src/oxia/client.py#L47">
+    <a class="sourceLink" href="https://github.com/oxia-db/oxia-client-python/tree/refs/heads/main/src/oxia/client.py#L74">
       
       (source)
     </a>
@@ -403,7 +403,7 @@
   </div>
   <div class="functionBody">
     
-    <div><p>Ceiling option will make the get operation to search for the record whose key is the lowest key &gt;= to the supplied key.</p></div>
+    <div><p>Lowest key &gt;= the supplied key.</p></div>
     <table class="valueTable"><tr class="fieldStart"><td class="fieldName">Value</td></tr><tr><td><pre class="constant-value"><code>int(<wbr></wbr>pb.KeyComparisonType.CEILING)</code></pre></td></tr></table>
   </div>
 </div><div class="baseconstant">
@@ -418,7 +418,7 @@
   <div class="functionHeader">
     
     <span class="py-defname">EQUAL</span> =
-    <a class="sourceLink" href="https://github.com/oxia-db/oxia-client-python/tree/refs/heads/main/src/oxia/client.py#L45">
+    <a class="sourceLink" href="https://github.com/oxia-db/oxia-client-python/tree/refs/heads/main/src/oxia/client.py#L72">
       
       (source)
     </a>
@@ -430,7 +430,7 @@
   </div>
   <div class="functionBody">
     
-    <div><p>Equal sets the Get() operation to compare the stored key for equality.</p></div>
+    <div><p>Exact match on the key.</p></div>
     <table class="valueTable"><tr class="fieldStart"><td class="fieldName">Value</td></tr><tr><td><pre class="constant-value"><code>int(<wbr></wbr>pb.KeyComparisonType.EQUAL)</code></pre></td></tr></table>
   </div>
 </div><div class="baseconstant">
@@ -445,7 +445,7 @@
   <div class="functionHeader">
     
     <span class="py-defname">FLOOR</span> =
-    <a class="sourceLink" href="https://github.com/oxia-db/oxia-client-python/tree/refs/heads/main/src/oxia/client.py#L46">
+    <a class="sourceLink" href="https://github.com/oxia-db/oxia-client-python/tree/refs/heads/main/src/oxia/client.py#L73">
       
       (source)
     </a>
@@ -457,7 +457,7 @@
   </div>
   <div class="functionBody">
     
-    <div><p>Floor option will make the get operation to search for the record whose key is the highest key &lt;= to the supplied key.</p></div>
+    <div><p>Highest key &lt;= the supplied key.</p></div>
     <table class="valueTable"><tr class="fieldStart"><td class="fieldName">Value</td></tr><tr><td><pre class="constant-value"><code>int(<wbr></wbr>pb.KeyComparisonType.FLOOR)</code></pre></td></tr></table>
   </div>
 </div><div class="baseconstant">
@@ -472,7 +472,7 @@
   <div class="functionHeader">
     
     <span class="py-defname">HIGHER</span> =
-    <a class="sourceLink" href="https://github.com/oxia-db/oxia-client-python/tree/refs/heads/main/src/oxia/client.py#L49">
+    <a class="sourceLink" href="https://github.com/oxia-db/oxia-client-python/tree/refs/heads/main/src/oxia/client.py#L76">
       
       (source)
     </a>
@@ -484,7 +484,7 @@
   </div>
   <div class="functionBody">
     
-    <div><p>Higher option will make the get operation to search for the record whose key is strictly &gt; to the supplied key.</p></div>
+    <div><p>Lowest key strictly &gt; the supplied key.</p></div>
     <table class="valueTable"><tr class="fieldStart"><td class="fieldName">Value</td></tr><tr><td><pre class="constant-value"><code>int(<wbr></wbr>pb.KeyComparisonType.HIGHER)</code></pre></td></tr></table>
   </div>
 </div><div class="baseconstant">
@@ -499,7 +499,7 @@
   <div class="functionHeader">
     
     <span class="py-defname">LOWER</span> =
-    <a class="sourceLink" href="https://github.com/oxia-db/oxia-client-python/tree/refs/heads/main/src/oxia/client.py#L48">
+    <a class="sourceLink" href="https://github.com/oxia-db/oxia-client-python/tree/refs/heads/main/src/oxia/client.py#L75">
       
       (source)
     </a>
@@ -511,7 +511,7 @@
   </div>
   <div class="functionBody">
     
-    <div><p>Lower option will make the get operation to search for the record whose key is strictly &lt; to the supplied key.</p></div>
+    <div><p>Highest key strictly &lt; the supplied key.</p></div>
     <table class="valueTable"><tr class="fieldStart"><td class="fieldName">Value</td></tr><tr><td><pre class="constant-value"><code>int(<wbr></wbr>pb.KeyComparisonType.LOWER)</code></pre></td></tr></table>
   </div>
 </div>
@@ -526,7 +526,7 @@
   <div class="container-fluid">
     <a href="index.html">API Documentation</a> for <a href="https://github.com/oxia-db/oxia-client-python" class="projecthome">Oxia</a>,
   generated by <a href="https://github.com/twisted/pydoctor/">pydoctor</a>
-    25.10.1 at 2025-10-11 01:05:30.
+    25.10.1 at 2026-04-16 03:48:15.
   </div>
 
   <!-- Search related scripts needs to be loaded at the end of HTML 

@@ -335,15 +335,15 @@
         </div>
 
         <div class="extrasDocstring">
-          <p class="class-signature"><code><span class="py-keyword">class</span> <span class="py-defname">Notification</span>: <a href="https://github.com/oxia-db/oxia-client-python/tree/refs/heads/main/src/oxia/defs.py#L26" class="sourceLink">(source)</a></code></p><p><a href="classIndex.html#oxia.Notification">View In Hierarchy</a></p>
+          <p class="class-signature"><code><span class="py-keyword">class</span> <span class="py-defname">Notification</span>: <a href="https://github.com/oxia-db/oxia-client-python/tree/refs/heads/main/src/oxia/defs.py#L29" class="sourceLink">(source)</a></code></p><p><a href="classIndex.html#oxia.Notification">View In Hierarchy</a></p>
         </div>
 
         <div class="moduleDocstring">
-          <div><p>Notification represents one change in the Oxia database.</p></div>
+          <div><p>A single change event in the Oxia database.</p></div>
         </div>
 
         <div id="split-tables">
-          <table class="children sortable" id="id9">
+          <table class="children sortable" id="id8">
   
   
   <tr class="method">
@@ -355,22 +355,22 @@
     
     <td>Method</td>
     <td><code><a href="#key" class="internal-link" title="oxia.Notification.key">key</a></code></td>
-    <td>The Key of the record to which the notification is referring</td>
+    <td>The key of the record that was changed.</td>
   </tr><tr class="method">
     
     <td>Method</td>
     <td><code><a href="#key_range_end" class="internal-link" title="oxia.Notification.key_range_end">key<wbr></wbr>_range<wbr></wbr>_end</a></code></td>
-    <td>In case of a KeyRangeRangeDeleted notification, this would represent the end (excluded) of the range of keys</td>
+    <td>For a <code><a href="oxia.NotificationType.html#KEY_RANGE_DELETED" class="internal-link" title="oxia.NotificationType.KEY_RANGE_DELETED">KEY_RANGE_DELETED</a></code> notification, the end (exclusive) of the deleted key range. ``None`` for other notification types.</td>
   </tr><tr class="method">
     
     <td>Method</td>
     <td><code><a href="#notification_type" class="internal-link" title="oxia.Notification.notification_type">notification<wbr></wbr>_type</a></code></td>
-    <td>The type of the modification</td>
+    <td>The type of the modification.</td>
   </tr><tr class="method">
     
     <td>Method</td>
     <td><code><a href="#version_id" class="internal-link" title="oxia.Notification.version_id">version<wbr></wbr>_id</a></code></td>
-    <td>The current VersionId of the record, or -1 for a KeyDeleted event</td>
+    <td>The current version ID of the record, or ``0`` for a delete event.</td>
   </tr>
 </table>
           
@@ -392,7 +392,7 @@
     
     
     <span class="py-keyword">def</span>&#160;<span class="py-defname">__str__</span><span class="function-signature">(<span class="rst-sig-param"><span class="rst-undocumented">self</span></span>):</span>
-    <a class="sourceLink" href="https://github.com/oxia-db/oxia-client-python/tree/refs/heads/main/src/oxia/defs.py#L46">
+    <a class="sourceLink" href="https://github.com/oxia-db/oxia-client-python/tree/refs/heads/main/src/oxia/defs.py#L49">
       
       (source)
     </a>
@@ -419,7 +419,7 @@
     
     
     <span class="py-keyword">def</span>&#160;<span class="py-defname">key</span><span class="function-signature">(<span class="rst-sig-param"><span class="rst-undocumented">self</span></span>) -&gt; <code>str</code>:</span>
-    <a class="sourceLink" href="https://github.com/oxia-db/oxia-client-python/tree/refs/heads/main/src/oxia/defs.py#L33">
+    <a class="sourceLink" href="https://github.com/oxia-db/oxia-client-python/tree/refs/heads/main/src/oxia/defs.py#L36">
       
       (source)
     </a>
@@ -431,7 +431,7 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p>The Key of the record to which the notification is referring</p></div>
+    <div><p>The key of the record that was changed.</p></div>
   </div>
 </div><div class="basemethod">
   
@@ -446,7 +446,7 @@
     
     
     <span class="py-keyword">def</span>&#160;<span class="py-defname">key_range_end</span><span class="function-signature">(<span class="rst-sig-param"><span class="rst-undocumented">self</span></span>) -&gt; <code>str</code>:</span>
-    <a class="sourceLink" href="https://github.com/oxia-db/oxia-client-python/tree/refs/heads/main/src/oxia/defs.py#L41">
+    <a class="sourceLink" href="https://github.com/oxia-db/oxia-client-python/tree/refs/heads/main/src/oxia/defs.py#L44">
       
       (source)
     </a>
@@ -458,7 +458,7 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p>In case of a KeyRangeRangeDeleted notification, this would represent the end (excluded) of the range of keys</p></div>
+    <div><p>For a <code><a href="oxia.NotificationType.html#KEY_RANGE_DELETED" class="internal-link" title="oxia.NotificationType.KEY_RANGE_DELETED">KEY_RANGE_DELETED</a></code> notification, the end (exclusive) of the deleted key range. ``None`` for other notification types.</p></div>
   </div>
 </div><div class="basemethod">
   
@@ -473,7 +473,7 @@
     
     
     <span class="py-keyword">def</span>&#160;<span class="py-defname">notification_type</span><span class="function-signature">(<span class="rst-sig-param"><span class="rst-undocumented">self</span></span>) -&gt; <code><a href="oxia.NotificationType.html" class="internal-link" title="oxia.NotificationType">NotificationType</a></code>:</span>
-    <a class="sourceLink" href="https://github.com/oxia-db/oxia-client-python/tree/refs/heads/main/src/oxia/defs.py#L29">
+    <a class="sourceLink" href="https://github.com/oxia-db/oxia-client-python/tree/refs/heads/main/src/oxia/defs.py#L32">
       
       (source)
     </a>
@@ -485,7 +485,7 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p>The type of the modification</p></div>
+    <div><p>The type of the modification.</p></div>
   </div>
 </div><div class="basemethod">
   
@@ -500,7 +500,7 @@
     
     
     <span class="py-keyword">def</span>&#160;<span class="py-defname">version_id</span><span class="function-signature">(<span class="rst-sig-param"><span class="rst-undocumented">self</span></span>) -&gt; <code>int</code>:</span>
-    <a class="sourceLink" href="https://github.com/oxia-db/oxia-client-python/tree/refs/heads/main/src/oxia/defs.py#L37">
+    <a class="sourceLink" href="https://github.com/oxia-db/oxia-client-python/tree/refs/heads/main/src/oxia/defs.py#L40">
       
       (source)
     </a>
@@ -512,7 +512,7 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p>The current VersionId of the record, or -1 for a KeyDeleted event</p></div>
+    <div><p>The current version ID of the record, or ``0`` for a delete event.</p></div>
   </div>
 </div>
         </div>
@@ -526,7 +526,7 @@
   <div class="container-fluid">
     <a href="index.html">API Documentation</a> for <a href="https://github.com/oxia-db/oxia-client-python" class="projecthome">Oxia</a>,
   generated by <a href="https://github.com/twisted/pydoctor/">pydoctor</a>
-    25.10.1 at 2025-10-11 01:05:30.
+    25.10.1 at 2026-04-16 03:48:15.
   </div>
 
   <!-- Search related scripts needs to be loaded at the end of HTML 

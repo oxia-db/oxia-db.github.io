@@ -365,11 +365,11 @@
         </div>
 
         <div class="extrasDocstring">
-          <p class="class-signature"><code><span class="py-keyword">class</span> <span class="py-defname">Version</span>: <a href="https://github.com/oxia-db/oxia-client-python/tree/refs/heads/main/src/oxia/client.py#L63" class="sourceLink">(source)</a></code></p><p><a href="classIndex.html#oxia.Version">View In Hierarchy</a></p>
+          <p class="class-signature"><code><span class="py-keyword">class</span> <span class="py-defname">Version</span>: <a href="https://github.com/oxia-db/oxia-client-python/tree/refs/heads/main/src/oxia/client.py#L90" class="sourceLink">(source)</a></code></p><p><a href="classIndex.html#oxia.Version">View In Hierarchy</a></p>
         </div>
 
         <div class="moduleDocstring">
-          <div><p>Version includes some information regarding the state of a record.</p></div>
+          <div><p>Metadata about the state of an Oxia record.</p></div>
         </div>
 
         <div id="split-tables">
@@ -385,37 +385,37 @@
     
     <td>Method</td>
     <td><code><a href="#client_identity" class="internal-link" title="oxia.Version.client_identity">client<wbr></wbr>_identity</a></code></td>
-    <td>Get the client identity for ephemeral records. For ephemeral records, this is the unique identity of the Oxia client that did last modify it. It will be empty for all non-ephemeral records.</td>
+    <td>The identity of the client that last modified this ephemeral record, or ``None`` for non-ephemeral records.</td>
   </tr><tr class="method">
     
     <td>Method</td>
     <td><code><a href="#created_timestamp" class="internal-link" title="oxia.Version.created_timestamp">created<wbr></wbr>_timestamp</a></code></td>
-    <td>The time when the record was last created (If the record gets deleted and recreated, it will have a new CreatedTimestamp value)</td>
+    <td>When the record was created. Resets if the record is deleted and re-created.</td>
   </tr><tr class="method">
     
     <td>Method</td>
     <td><code><a href="#is_ephemeral" class="internal-link" title="oxia.Version.is_ephemeral">is<wbr></wbr>_ephemeral</a></code></td>
-    <td>Check if the record is ephemeral.</td>
+    <td>Whether the record is ephemeral (tied to a client session). Returns ``True`` if the record has an associated session ID, ``False`` otherwise.</td>
   </tr><tr class="method">
     
     <td>Method</td>
     <td><code><a href="#modifications_count" class="internal-link" title="oxia.Version.modifications_count">modifications<wbr></wbr>_count</a></code></td>
-    <td>Get the number of modifications to the record since it was last created. If the record gets deleted and recreated, the ModificationsCount will restart at 0.</td>
+    <td>Number of modifications since the record was last created. Resets to 0 if the record is deleted and re-created.</td>
   </tr><tr class="method">
     
     <td>Method</td>
     <td><code><a href="#modified_timestamp" class="internal-link" title="oxia.Version.modified_timestamp">modified<wbr></wbr>_timestamp</a></code></td>
-    <td>Get the time when the record was last modified.</td>
+    <td>When the record was last modified.</td>
   </tr><tr class="method">
     
     <td>Method</td>
     <td><code><a href="#session_id" class="internal-link" title="oxia.Version.session_id">session<wbr></wbr>_id</a></code></td>
-    <td>Get the session identifier for ephemeral records. For ephemeral records, this is the identifier of the session to which this record lifecycle is attached to. Non-ephemeral records will always report 0.</td>
+    <td>The session ID for ephemeral records, or ``None`` for non-ephemeral records.</td>
   </tr><tr class="method">
     
     <td>Method</td>
     <td><code><a href="#version_id" class="internal-link" title="oxia.Version.version_id">version<wbr></wbr>_id</a></code></td>
-    <td>Retrieve the version ID.</td>
+    <td>The monotonically increasing version identifier of the record.</td>
   </tr>
 </table>
           
@@ -437,7 +437,7 @@
     
     
     <span class="py-keyword">def</span>&#160;<span class="py-defname">__str__</span><span class="function-signature">(<span class="rst-sig-param"><span class="rst-undocumented">self</span></span>):</span>
-    <a class="sourceLink" href="https://github.com/oxia-db/oxia-client-python/tree/refs/heads/main/src/oxia/client.py#L132">
+    <a class="sourceLink" href="https://github.com/oxia-db/oxia-client-python/tree/refs/heads/main/src/oxia/client.py#L127">
       
       (source)
     </a>
@@ -476,7 +476,7 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p>Get the client identity for ephemeral records. For ephemeral records, this is the unique identity of the Oxia client that did last modify it. It will be empty for all non-ephemeral records.</p><table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Returns</td></tr><tr><td class="fieldArgContainer"><code>str</code></td><td class="fieldArgDesc">The client identity.</td></tr></table></div>
+    <div><p>The identity of the client that last modified this ephemeral record, or ``None`` for non-ephemeral records.</p></div>
   </div>
 </div><div class="basemethod">
   
@@ -491,7 +491,7 @@
     
     
     <span class="py-keyword">def</span>&#160;<span class="py-defname">created_timestamp</span><span class="function-signature">(<span class="rst-sig-param"><span class="rst-undocumented">self</span></span>) -&gt; <code>datetime.datetime</code>:</span>
-    <a class="sourceLink" href="https://github.com/oxia-db/oxia-client-python/tree/refs/heads/main/src/oxia/client.py#L80">
+    <a class="sourceLink" href="https://github.com/oxia-db/oxia-client-python/tree/refs/heads/main/src/oxia/client.py#L97">
       
       (source)
     </a>
@@ -503,7 +503,7 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p>The time when the record was last created (If the record gets deleted and recreated, it will have a new CreatedTimestamp value)</p></div>
+    <div><p>When the record was created. Resets if the record is deleted and re-created.</p></div>
   </div>
 </div><div class="basemethod">
   
@@ -518,7 +518,7 @@
     
     
     <span class="py-keyword">def</span>&#160;<span class="py-defname">is_ephemeral</span><span class="function-signature">(<span class="rst-sig-param"><span class="rst-undocumented">self</span></span>) -&gt; <code>bool</code>:</span>
-    <a class="sourceLink" href="https://github.com/oxia-db/oxia-client-python/tree/refs/heads/main/src/oxia/client.py#L104">
+    <a class="sourceLink" href="https://github.com/oxia-db/oxia-client-python/tree/refs/heads/main/src/oxia/client.py#L111">
       
       (source)
     </a>
@@ -530,7 +530,7 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p>Check if the record is ephemeral.</p><table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Returns</td></tr><tr><td class="fieldArgContainer"><code>bool</code></td><td class="fieldArgDesc">True if the record is ephemeral, False otherwise.</td></tr></table></div>
+    <div><p>Whether the record is ephemeral (tied to a client session). Returns ``True`` if the record has an associated session ID, ``False`` otherwise.</p></div>
   </div>
 </div><div class="basemethod">
   
@@ -545,7 +545,7 @@
     
     
     <span class="py-keyword">def</span>&#160;<span class="py-defname">modifications_count</span><span class="function-signature">(<span class="rst-sig-param"><span class="rst-undocumented">self</span></span>) -&gt; <code>int</code>:</span>
-    <a class="sourceLink" href="https://github.com/oxia-db/oxia-client-python/tree/refs/heads/main/src/oxia/client.py#L95">
+    <a class="sourceLink" href="https://github.com/oxia-db/oxia-client-python/tree/refs/heads/main/src/oxia/client.py#L106">
       
       (source)
     </a>
@@ -557,7 +557,7 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p>Get the number of modifications to the record since it was last created. If the record gets deleted and recreated, the ModificationsCount will restart at 0.</p><table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Returns</td></tr><tr><td class="fieldArgContainer"><code>int</code></td><td class="fieldArgDesc">The number of modifications.</td></tr></table></div>
+    <div><p>Number of modifications since the record was last created. Resets to 0 if the record is deleted and re-created.</p></div>
   </div>
 </div><div class="basemethod">
   
@@ -572,7 +572,7 @@
     
     
     <span class="py-keyword">def</span>&#160;<span class="py-defname">modified_timestamp</span><span class="function-signature">(<span class="rst-sig-param"><span class="rst-undocumented">self</span></span>) -&gt; <code>datetime.datetime</code>:</span>
-    <a class="sourceLink" href="https://github.com/oxia-db/oxia-client-python/tree/refs/heads/main/src/oxia/client.py#L87">
+    <a class="sourceLink" href="https://github.com/oxia-db/oxia-client-python/tree/refs/heads/main/src/oxia/client.py#L102">
       
       (source)
     </a>
@@ -584,7 +584,7 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p>Get the time when the record was last modified.</p><table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Returns</td></tr><tr><td class="fieldArgContainer"><code>datetime.datetime</code></td><td class="fieldArgDesc">The last modification timestamp.</td></tr></table></div>
+    <div><p>When the record was last modified.</p></div>
   </div>
 </div><div class="basemethod">
   
@@ -599,7 +599,7 @@
     
     
     <span class="py-keyword">def</span>&#160;<span class="py-defname">session_id</span><span class="function-signature">(<span class="rst-sig-param"><span class="rst-undocumented">self</span></span>) -&gt; <code>int</code>:</span>
-    <a class="sourceLink" href="https://github.com/oxia-db/oxia-client-python/tree/refs/heads/main/src/oxia/client.py#L112">
+    <a class="sourceLink" href="https://github.com/oxia-db/oxia-client-python/tree/refs/heads/main/src/oxia/client.py#L117">
       
       (source)
     </a>
@@ -611,7 +611,7 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p>Get the session identifier for ephemeral records. For ephemeral records, this is the identifier of the session to which this record lifecycle is attached to. Non-ephemeral records will always report 0.</p><table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Returns</td></tr><tr><td class="fieldArgContainer"><code>int</code></td><td class="fieldArgDesc">The session ID.</td></tr></table></div>
+    <div><p>The session ID for ephemeral records, or ``None`` for non-ephemeral records.</p></div>
   </div>
 </div><div class="basemethod">
   
@@ -626,7 +626,7 @@
     
     
     <span class="py-keyword">def</span>&#160;<span class="py-defname">version_id</span><span class="function-signature">(<span class="rst-sig-param"><span class="rst-undocumented">self</span></span>) -&gt; <code>int</code>:</span>
-    <a class="sourceLink" href="https://github.com/oxia-db/oxia-client-python/tree/refs/heads/main/src/oxia/client.py#L68">
+    <a class="sourceLink" href="https://github.com/oxia-db/oxia-client-python/tree/refs/heads/main/src/oxia/client.py#L93">
       
       (source)
     </a>
@@ -638,9 +638,7 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p>Retrieve the version ID.</p>
-<p>This method returns the version ID, which is an integer value representing the current version. It does not accept any parameters and simply outputs the version ID as an integer.</p>
-<table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Returns</td></tr><tr><td class="fieldArgContainer"><code>int</code></td><td class="fieldArgDesc">The version ID.</td></tr></table></div>
+    <div><p>The monotonically increasing version identifier of the record.</p></div>
   </div>
 </div>
         </div>
@@ -654,7 +652,7 @@
   <div class="container-fluid">
     <a href="index.html">API Documentation</a> for <a href="https://github.com/oxia-db/oxia-client-python" class="projecthome">Oxia</a>,
   generated by <a href="https://github.com/twisted/pydoctor/">pydoctor</a>
-    25.10.1 at 2025-10-11 01:05:30.
+    25.10.1 at 2026-04-16 03:48:15.
   </div>
 
   <!-- Search related scripts needs to be loaded at the end of HTML 

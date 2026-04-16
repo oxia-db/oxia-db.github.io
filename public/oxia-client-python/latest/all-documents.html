@@ -123,7 +123,7 @@
             <div class="type">Class</div>
             <div class="kind">Class</div>
             <div class="privacy">PUBLIC</div>
-            <div class="summary">Client is the main entry point to the Oxia Python client</div>
+            <div class="summary">Synchronous client for the Oxia service.</div>
           </li><li id="oxia.Client.__init__">
             
             <div class="fullName">oxia<wbr></wbr>.<wbr></wbr>Client<wbr></wbr>.__init__</div>
@@ -131,7 +131,7 @@
             <div class="type">Function</div>
             <div class="kind">Method</div>
             <div class="privacy">PUBLIC</div>
-            <div class="summary">Create a new Oxia client instance.</div>
+            <div class="summary">Create a new Oxia client.</div>
           </li><li id="oxia.Client._closed">
             
             <div class="fullName">oxia<wbr></wbr>.<wbr></wbr>Client<wbr></wbr>._closed</div>
@@ -171,7 +171,7 @@
             <div class="type">Function</div>
             <div class="kind">Method</div>
             <div class="privacy">PUBLIC</div>
-            <div class="summary">Associates a value with a key</div>
+            <div class="summary">Associate a value with a key.</div>
           </li><li id="oxia.Client.delete">
             
             <div class="fullName">oxia<wbr></wbr>.<wbr></wbr>Client<wbr></wbr>.delete</div>
@@ -179,7 +179,7 @@
             <div class="type">Function</div>
             <div class="kind">Method</div>
             <div class="privacy">PUBLIC</div>
-            <div class="summary">Removes the key and its associated value from the data store.</div>
+            <div class="summary">Delete a key and its value.</div>
           </li><li id="oxia.Client.delete_range">
             
             <div class="fullName">oxia<wbr></wbr>.<wbr></wbr>Client<wbr></wbr>.delete<wbr></wbr>_range</div>
@@ -187,7 +187,7 @@
             <div class="type">Function</div>
             <div class="kind">Method</div>
             <div class="privacy">PUBLIC</div>
-            <div class="summary">Deletes any records with keys within the specified range.</div>
+            <div class="summary">Delete all records whose keys fall within ``[min, max)``.</div>
           </li><li id="oxia.Client._delete_range_single_shard">
             
             <div class="fullName">oxia<wbr></wbr>.<wbr></wbr>Client<wbr></wbr>._delete<wbr></wbr>_range<wbr></wbr>_single<wbr></wbr>_shard</div>
@@ -203,7 +203,7 @@
             <div class="type">Function</div>
             <div class="kind">Method</div>
             <div class="privacy">PUBLIC</div>
-            <div class="summary">Returns the value associated with the specified key.</div>
+            <div class="summary">Retrieve the record for a key.</div>
           </li><li id="oxia.Client._get_single_shard">
             
             <div class="fullName">oxia<wbr></wbr>.<wbr></wbr>Client<wbr></wbr>._get<wbr></wbr>_single<wbr></wbr>_shard</div>
@@ -219,7 +219,7 @@
             <div class="type">Function</div>
             <div class="kind">Method</div>
             <div class="privacy">PUBLIC</div>
-            <div class="summary">List all the keys within the specified range.</div>
+            <div class="summary">List keys in the range ``[min, max)``.</div>
           </li><li id="oxia.Client._list_single_shard">
             
             <div class="fullName">oxia<wbr></wbr>.<wbr></wbr>Client<wbr></wbr>._list<wbr></wbr>_single<wbr></wbr>_shard</div>
@@ -235,7 +235,7 @@
             <div class="type">Function</div>
             <div class="kind">Method</div>
             <div class="privacy">PUBLIC</div>
-            <div class="summary">perform a scan for existing records with any keys within the specified range.</div>
+            <div class="summary">Scan records in the range ``[min, max)``.</div>
           </li><li id="oxia.Client._range_scan_single_shard">
             
             <div class="fullName">oxia<wbr></wbr>.<wbr></wbr>Client<wbr></wbr>._range<wbr></wbr>_scan<wbr></wbr>_single<wbr></wbr>_shard</div>
@@ -251,7 +251,7 @@
             <div class="type">Function</div>
             <div class="kind">Method</div>
             <div class="privacy">PUBLIC</div>
-            <div class="summary">Subscribe to the updates happening on a sequential key.</div>
+            <div class="summary">Subscribe to updates on a sequential key.</div>
           </li><li id="oxia.Client.get_notifications">
             
             <div class="fullName">oxia<wbr></wbr>.<wbr></wbr>Client<wbr></wbr>.get<wbr></wbr>_notifications</div>
@@ -259,7 +259,7 @@
             <div class="type">Function</div>
             <div class="kind">Method</div>
             <div class="privacy">PUBLIC</div>
-            <div class="summary">Creates a new subscription to receive the notifications from Oxia for any change that is applied to the database</div>
+            <div class="summary">Subscribe to change notifications for the entire database.</div>
           </li><li id="oxia.Client.close">
             
             <div class="fullName">oxia<wbr></wbr>.<wbr></wbr>Client<wbr></wbr>.close</div>
@@ -267,7 +267,23 @@
             <div class="type">Function</div>
             <div class="kind">Method</div>
             <div class="privacy">PUBLIC</div>
-            <div class="summary">Close closes the client and all underlying connections</div>
+            <div class="summary">Close the client and release all underlying connections.</div>
+          </li><li id="oxia.Client.__enter__">
+            
+            <div class="fullName">oxia<wbr></wbr>.<wbr></wbr>Client<wbr></wbr>.__enter__</div>
+            <div class="url">oxia.Client.html#__enter__</div>
+            <div class="type">Function</div>
+            <div class="kind">Method</div>
+            <div class="privacy">PUBLIC</div>
+            <div class="summary"><span class="rst-undocumented">Undocumented</span></div>
+          </li><li id="oxia.Client.__exit__">
+            
+            <div class="fullName">oxia<wbr></wbr>.<wbr></wbr>Client<wbr></wbr>.__exit__</div>
+            <div class="url">oxia.Client.html#__exit__</div>
+            <div class="type">Function</div>
+            <div class="kind">Method</div>
+            <div class="privacy">PUBLIC</div>
+            <div class="summary"><span class="rst-undocumented">Undocumented</span></div>
           </li><li id="oxia.Version">
             
             <div class="fullName">oxia<wbr></wbr>.<wbr></wbr>Version</div>
@@ -275,7 +291,7 @@
             <div class="type">Class</div>
             <div class="kind">Class</div>
             <div class="privacy">PUBLIC</div>
-            <div class="summary">Version includes some information regarding the state of a record.</div>
+            <div class="summary">Metadata about the state of an Oxia record.</div>
           </li><li id="oxia.Version.version_id">
             
             <div class="fullName">oxia<wbr></wbr>.<wbr></wbr>Version<wbr></wbr>.version<wbr></wbr>_id</div>
@@ -283,7 +299,7 @@
             <div class="type">Function</div>
             <div class="kind">Method</div>
             <div class="privacy">PUBLIC</div>
-            <div class="summary">Retrieve the version ID.</div>
+            <div class="summary">The monotonically increasing version identifier of the record.</div>
           </li><li id="oxia.Version.created_timestamp">
             
             <div class="fullName">oxia<wbr></wbr>.<wbr></wbr>Version<wbr></wbr>.created<wbr></wbr>_timestamp</div>
@@ -291,7 +307,7 @@
             <div class="type">Function</div>
             <div class="kind">Method</div>
             <div class="privacy">PUBLIC</div>
-            <div class="summary">The time when the record was last created (If the record gets deleted and recreated, it will have a new CreatedTimestamp value)</div>
+            <div class="summary">When the record was created. Resets if the record is deleted and re-created.</div>
           </li><li id="oxia.Version.modified_timestamp">
             
             <div class="fullName">oxia<wbr></wbr>.<wbr></wbr>Version<wbr></wbr>.modified<wbr></wbr>_timestamp</div>
@@ -299,7 +315,7 @@
             <div class="type">Function</div>
             <div class="kind">Method</div>
             <div class="privacy">PUBLIC</div>
-            <div class="summary">Get the time when the record was last modified.</div>
+            <div class="summary">When the record was last modified.</div>
           </li><li id="oxia.Version.modifications_count">
             
             <div class="fullName">oxia<wbr></wbr>.<wbr></wbr>Version<wbr></wbr>.modifications<wbr></wbr>_count</div>
@@ -307,7 +323,7 @@
             <div class="type">Function</div>
             <div class="kind">Method</div>
             <div class="privacy">PUBLIC</div>
-            <div class="summary">Get the number of modifications to the record since it was last created. If the record gets deleted and recreated, the ModificationsCount will restart at 0.</div>
+            <div class="summary">Number of modifications since the record was last created. Resets to 0 if the record is deleted and re-created.</div>
           </li><li id="oxia.Version.is_ephemeral">
             
             <div class="fullName">oxia<wbr></wbr>.<wbr></wbr>Version<wbr></wbr>.is<wbr></wbr>_ephemeral</div>
@@ -315,7 +331,7 @@
             <div class="type">Function</div>
             <div class="kind">Method</div>
             <div class="privacy">PUBLIC</div>
-            <div class="summary">Check if the record is ephemeral.</div>
+            <div class="summary">Whether the record is ephemeral (tied to a client session). Returns ``True`` if the record has an associated session ID, ``False`` otherwise.</div>
           </li><li id="oxia.Version.session_id">
             
             <div class="fullName">oxia<wbr></wbr>.<wbr></wbr>Version<wbr></wbr>.session<wbr></wbr>_id</div>
@@ -323,7 +339,7 @@
             <div class="type">Function</div>
             <div class="kind">Method</div>
             <div class="privacy">PUBLIC</div>
-            <div class="summary">Get the session identifier for ephemeral records. For ephemeral records, this is the identifier of the session to which this record lifecycle is attached to. Non-ephemeral records will always report 0.</div>
+            <div class="summary">The session ID for ephemeral records, or ``None`` for non-ephemeral records.</div>
           </li><li id="oxia.Version.client_identity">
             
             <div class="fullName">oxia<wbr></wbr>.<wbr></wbr>Version<wbr></wbr>.client<wbr></wbr>_identity</div>
@@ -331,7 +347,7 @@
             <div class="type">Function</div>
             <div class="kind">Method</div>
             <div class="privacy">PUBLIC</div>
-            <div class="summary">Get the client identity for ephemeral records. For ephemeral records, this is the unique identity of the Oxia client that did last modify it. It will be empty for all non-ephemeral records.</div>
+            <div class="summary">The identity of the client that last modified this ephemeral record, or ``None`` for non-ephemeral records.</div>
           </li><li id="oxia.Version.__str__">
             
             <div class="fullName">oxia<wbr></wbr>.<wbr></wbr>Version<wbr></wbr>.__str__</div>
@@ -347,7 +363,7 @@
             <div class="type">Attribute</div>
             <div class="kind">Constant</div>
             <div class="privacy">PUBLIC</div>
-            <div class="summary">When doing a `put()`, this value can be used to indicate that the record should not exist.</div>
+            <div class="summary">Pass as ``expected_version_id`` to <code><a href="oxia.Client.html#put" class="internal-link" title="oxia.Client.put">Client.put</a></code> to assert the record does not already exist.</div>
           </li><li id="oxia.ComparisonType">
             
             <div class="fullName">oxia<wbr></wbr>.<wbr></wbr>Comparison<wbr></wbr>Type</div>
@@ -355,7 +371,7 @@
             <div class="type">Class</div>
             <div class="kind">Class</div>
             <div class="privacy">PUBLIC</div>
-            <div class="summary">ComparisonType is an enumeration of the possible comparison types for the `get()` operation.</div>
+            <div class="summary">Key comparison mode for the <code><a href="oxia.Client.html#get" class="internal-link" title="oxia.Client.get">Client.get</a></code> operation.</div>
           </li><li id="oxia.ComparisonType.EQUAL">
             
             <div class="fullName">oxia<wbr></wbr>.<wbr></wbr>Comparison<wbr></wbr>Type<wbr></wbr>.EQUAL</div>
@@ -363,7 +379,7 @@
             <div class="type">Attribute</div>
             <div class="kind">Constant</div>
             <div class="privacy">PUBLIC</div>
-            <div class="summary">Equal sets the Get() operation to compare the stored key for equality.</div>
+            <div class="summary">Exact match on the key.</div>
           </li><li id="oxia.ComparisonType.FLOOR">
             
             <div class="fullName">oxia<wbr></wbr>.<wbr></wbr>Comparison<wbr></wbr>Type<wbr></wbr>.FLOOR</div>
@@ -371,7 +387,7 @@
             <div class="type">Attribute</div>
             <div class="kind">Constant</div>
             <div class="privacy">PUBLIC</div>
-            <div class="summary">Floor option will make the get operation to search for the record whose key is the highest key &lt;= to the supplied key.</div>
+            <div class="summary">Highest key &lt;= the supplied key.</div>
           </li><li id="oxia.ComparisonType.CEILING">
             
             <div class="fullName">oxia<wbr></wbr>.<wbr></wbr>Comparison<wbr></wbr>Type<wbr></wbr>.CEILING</div>
@@ -379,7 +395,7 @@
             <div class="type">Attribute</div>
             <div class="kind">Constant</div>
             <div class="privacy">PUBLIC</div>
-            <div class="summary">Ceiling option will make the get operation to search for the record whose key is the lowest key &gt;= to the supplied key.</div>
+            <div class="summary">Lowest key &gt;= the supplied key.</div>
           </li><li id="oxia.ComparisonType.LOWER">
             
             <div class="fullName">oxia<wbr></wbr>.<wbr></wbr>Comparison<wbr></wbr>Type<wbr></wbr>.LOWER</div>
@@ -387,7 +403,7 @@
             <div class="type">Attribute</div>
             <div class="kind">Constant</div>
             <div class="privacy">PUBLIC</div>
-            <div class="summary">Lower option will make the get operation to search for the record whose key is strictly &lt; to the supplied key.</div>
+            <div class="summary">Highest key strictly &lt; the supplied key.</div>
           </li><li id="oxia.ComparisonType.HIGHER">
             
             <div class="fullName">oxia<wbr></wbr>.<wbr></wbr>Comparison<wbr></wbr>Type<wbr></wbr>.HIGHER</div>
@@ -395,23 +411,7 @@
             <div class="type">Attribute</div>
             <div class="kind">Constant</div>
             <div class="privacy">PUBLIC</div>
-            <div class="summary">Higher option will make the get operation to search for the record whose key is strictly &gt; to the supplied key.</div>
-          </li><li id="oxia.SequenceUpdates">
-            
-            <div class="fullName">oxia<wbr></wbr>.<wbr></wbr>Sequence<wbr></wbr>Updates</div>
-            <div class="url">oxia.SequenceUpdates.html</div>
-            <div class="type">Class</div>
-            <div class="kind">Class</div>
-            <div class="privacy">PUBLIC</div>
-            <div class="summary">Represents an iterable sequence of key updates that can be closed when the caller is done.</div>
-          </li><li id="oxia.SequenceUpdates.close">
-            
-            <div class="fullName">oxia<wbr></wbr>.<wbr></wbr>Sequence<wbr></wbr>Updates<wbr></wbr>.close</div>
-            <div class="url">oxia.SequenceUpdates.html#close</div>
-            <div class="type">Function</div>
-            <div class="kind">Method</div>
-            <div class="privacy">PUBLIC</div>
-            <div class="summary">Close the iterator and release any resources.</div>
+            <div class="summary">Lowest key strictly &gt; the supplied key.</div>
           </li><li id="oxia.NotificationType">
             
             <div class="fullName">oxia<wbr></wbr>.<wbr></wbr>Notification<wbr></wbr>Type</div>
@@ -419,7 +419,7 @@
             <div class="type">Class</div>
             <div class="kind">Class</div>
             <div class="privacy">PUBLIC</div>
-            <div class="summary">NotificationType represents the type of the notification event.</div>
+            <div class="summary">The type of a notification event.</div>
           </li><li id="oxia.NotificationType.KEY_CREATED">
             
             <div class="fullName">oxia<wbr></wbr>.<wbr></wbr>Notification<wbr></wbr>Type<wbr></wbr>.KEY<wbr></wbr>_CREATED</div>
@@ -459,7 +459,7 @@
             <div class="type">Class</div>
             <div class="kind">Class</div>
             <div class="privacy">PUBLIC</div>
-            <div class="summary">Notification represents one change in the Oxia database.</div>
+            <div class="summary">A single change event in the Oxia database.</div>
           </li><li id="oxia.Notification.notification_type">
             
             <div class="fullName">oxia<wbr></wbr>.<wbr></wbr>Notification<wbr></wbr>.notification<wbr></wbr>_type</div>
@@ -467,7 +467,7 @@
             <div class="type">Function</div>
             <div class="kind">Method</div>
             <div class="privacy">PUBLIC</div>
-            <div class="summary">The type of the modification</div>
+            <div class="summary">The type of the modification.</div>
           </li><li id="oxia.Notification.key">
             
             <div class="fullName">oxia<wbr></wbr>.<wbr></wbr>Notification<wbr></wbr>.key</div>
@@ -475,7 +475,7 @@
             <div class="type">Function</div>
             <div class="kind">Method</div>
             <div class="privacy">PUBLIC</div>
-            <div class="summary">The Key of the record to which the notification is referring</div>
+            <div class="summary">The key of the record that was changed.</div>
           </li><li id="oxia.Notification.version_id">
             
             <div class="fullName">oxia<wbr></wbr>.<wbr></wbr>Notification<wbr></wbr>.version<wbr></wbr>_id</div>
@@ -483,7 +483,7 @@
             <div class="type">Function</div>
             <div class="kind">Method</div>
             <div class="privacy">PUBLIC</div>
-            <div class="summary">The current VersionId of the record, or -1 for a KeyDeleted event</div>
+            <div class="summary">The current version ID of the record, or ``0`` for a delete event.</div>
           </li><li id="oxia.Notification.key_range_end">
             
             <div class="fullName">oxia<wbr></wbr>.<wbr></wbr>Notification<wbr></wbr>.key<wbr></wbr>_range<wbr></wbr>_end</div>
@@ -491,7 +491,7 @@
             <div class="type">Function</div>
             <div class="kind">Method</div>
             <div class="privacy">PUBLIC</div>
-            <div class="summary">In case of a KeyRangeRangeDeleted notification, this would represent the end (excluded) of the range of keys</div>
+            <div class="summary">For a <code><a href="oxia.NotificationType.html#KEY_RANGE_DELETED" class="internal-link" title="oxia.NotificationType.KEY_RANGE_DELETED">KEY_RANGE_DELETED</a></code> notification, the end (exclusive) of the deleted key range. ``None`` for other notification types.</div>
           </li><li id="oxia.Notification.__str__">
             
             <div class="fullName">oxia<wbr></wbr>.<wbr></wbr>Notification<wbr></wbr>.__str__</div>
@@ -500,6 +500,22 @@
             <div class="kind">Method</div>
             <div class="privacy">PUBLIC</div>
             <div class="summary"><span class="rst-undocumented">Undocumented</span></div>
+          </li><li id="oxia.SequenceUpdates">
+            
+            <div class="fullName">oxia<wbr></wbr>.<wbr></wbr>Sequence<wbr></wbr>Updates</div>
+            <div class="url">oxia.SequenceUpdates.html</div>
+            <div class="type">Class</div>
+            <div class="kind">Class</div>
+            <div class="privacy">PUBLIC</div>
+            <div class="summary">An iterator over sequential key updates.</div>
+          </li><li id="oxia.SequenceUpdates.close">
+            
+            <div class="fullName">oxia<wbr></wbr>.<wbr></wbr>Sequence<wbr></wbr>Updates<wbr></wbr>.close</div>
+            <div class="url">oxia.SequenceUpdates.html#close</div>
+            <div class="type">Function</div>
+            <div class="kind">Method</div>
+            <div class="privacy">PUBLIC</div>
+            <div class="summary">Close the subscription and release resources.</div>
           </li><li id="oxia.ex.OxiaException">
             
             <div class="fullName">oxia<wbr></wbr>.ex<wbr></wbr>.<wbr></wbr>Oxia<wbr></wbr>Exception</div>
