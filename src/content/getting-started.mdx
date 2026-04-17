@@ -2,6 +2,30 @@ import {Steps, Tabs} from 'nextra/components'
 
 # Getting Started
 
+## Key concepts in 60 seconds
+
+Before running anything, here are the building blocks you will encounter.
+
+- **Records.** Every record is a key (string), a value (bytes), and a per-key monotonic
+  `VersionId` used for optimistic concurrency. Keys are arbitrary byte strings — Oxia is
+  agnostic to their structure, and applications are free to use flat identifiers, path-shaped
+  keys, or whatever fits. The namespace's [key sorting](./features/oxia-key-sorting.mdx) mode
+  (hierarchical with special `/` handling, or natural byte-wise order) controls how range
+  scans traverse the key space.
+- **Namespaces.** An isolated key space with its own shards and configuration. Every client
+  picks one on connect (`default` by default). See [namespaces](./features/namespaces.mdx).
+- **Shards.** A namespace is partitioned into shards, each with its own leader and replica
+  set. The client library routes keys to the right shard; there is no shard-aware code to
+  write. See [logical architecture](./architecture/logical-architecture.mdx).
+- **Per-key linearizability.** Successful operations on any single key are linearizable;
+  operations on different keys may land on different shards and have no cluster-wide real-time
+  order. See [consistency model](./features/consistency-model.mdx).
+- **Sessions and ephemerals.** Records can be marked *ephemeral*: they live as long as the
+  client's session does, and are deleted when the client disconnects. The building block of
+  leader election and service discovery. See [ephemerals](./features/ephemerals.mdx).
+- **Notifications.** Clients can subscribe to a reliable, resumable stream of create / modify
+  / delete events in a namespace. See [notifications](./features/notifications.mdx).
+
 <Steps>
     ### Obtaining Oxia
 
@@ -71,6 +95,22 @@ import {Steps, Tabs} from 'nextra/components'
     ---
     {"key":"my-key","version_id":2132,"created_timestamp":"2025-06-17T17:09:26.043-07:00","modified_timestamp":"2025-06-17T17:09:26.043-07:00","modifications_count":0,"ephemeral":false,"session_id":0,"client_identity":""}
     ```
+
+    ### Going beyond standalone
+
+    `oxia standalone` runs a single-node, single-process cluster with replication factor 1 —
+    fine for local development, but it is not a production deployment. To run a real cluster:
+
+    - **Kubernetes** — install the official
+      [Helm chart](./deployment/kubernetes/helm.mdx) for a multi-node cluster with
+      coordinators, storage nodes, and metrics pre-wired.
+    - **Bare metal or self-managed** — see [bare metal](./deployment/bare-metal.mdx) for
+      running the coordinator and storage nodes as plain processes.
+    - **Tune the namespace.** [Namespaces](./features/namespaces.mdx) carry
+      `initialShardCount` and `replicationFactor`; pick values that match your throughput and
+      availability targets.
+    - **Day-two operations.** [Admin operations](./admin.mdx) covers shard management and
+      cluster upkeep.
 
     ### Using client SDKs
 
