@@ -10,6 +10,9 @@ export default {
   admin: {
     title: 'Admin Operations',
   },
+  reference: {
+    title: 'Reference',
+  },
   architecture: '',
   correctness: '',
   consensus: '',
