@@ -97,6 +97,28 @@ leader election, fencing, service discovery, cache coherence, and streaming offs
 | Atomic sequencing         | `+1` znodes only         | No                                 | Arbitrary `+N`, multi-dimensional, fused with `Put`    |
 | Full-dataset snapshots    | Yes (I/O stalls)         | No                                 | No (WAL + LSM)                                         |
 
+## Performance
+
+Measured with Oxia's [open-source benchmark tool](https://github.com/oxia-db/benchmark) running YCSB-style
+workloads on Kubernetes (AWS `i7ie.xlarge` instances, replication factor 3, 10M-key dataset, 64-byte
+values). ZooKeeper and Etcd are shown with 3-node ensembles — adding replicas to a single-RSM system
+improves availability but not throughput. Oxia is measured at 3, 6, and 12 storage nodes to illustrate
+scaling.
+
+| Workload                                    | ZooKeeper (3) | Etcd (3)   | Oxia (3)    | Oxia (6)    | Oxia (12)   |
+|---------------------------------------------|---------------|------------|-------------|-------------|-------------|
+| Inserts — 100% write, ordered keys          | ~33k ops/s    | ~25k ops/s | ~120k ops/s | ~250k ops/s | ~380k ops/s |
+| YCSB X — 100% updates, Zipf skew            | ~1.7k ops/s   | ~17k ops/s | ~93k ops/s  | ~171k ops/s | ~366k ops/s |
+| YCSB A — 50/50 reads/updates, Zipf          | ~33 ops/s     | ~11k ops/s | ~120k ops/s | ~296k ops/s | ~459k ops/s |
+| YCSB C — 100% reads, Zipf                   | ~4.6k ops/s   | ~15k ops/s | ~120k ops/s | ~320k ops/s | ~841k ops/s |
+
+Two things stand out:
+
+- **Throughput scales nearly linearly** as storage nodes are added. Reads on a 12-node cluster approach
+  one million operations per second.
+- **Skewed (Zipf) workloads do not collapse Oxia.** Sharding places hot keys on different shard leaders,
+  so a few popular records don't bottleneck the cluster the way they do in a single-RSM design.
+
 ## Who is using Oxia?
 
 <br/>
