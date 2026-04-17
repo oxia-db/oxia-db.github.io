@@ -1,0 +1,232 @@
+---
+sidebarTitle: Migrating from ZK / Etcd
+---
+
+# Migrating from ZooKeeper or Etcd
+
+Oxia offers the same programming model as ZooKeeper and Etcd — linearizable keys, sessions,
+ephemerals, notifications, compare-and-swap — but sharded across many nodes. A migration is
+feasible for the overwhelming majority of coordination workloads, but it is *not* a drop-in
+replacement: the consistency scope and a handful of operation semantics differ. This page
+enumerates every developer-facing difference so you can plan the transition.
+
+## Differences common to ZooKeeper and Etcd
+
+- **Sharded substrate.** ZK and Etcd replicate the full dataset on every node, coordinated by a
+  single Paxos/Raft group. Oxia partitions the dataset across many shards, each with its own
+  replica set and leader. Operations for a given key are routed to the shard that owns that
+  key; the client library does the routing transparently.
+- **Per-key linearizability, not cluster-wide.** Oxia guarantees linearizability on every
+  individual key — see [consistency model](./features/consistency-model.mdx). Two operations on
+  different keys may land on different shards and therefore have no global real-time ordering.
+- **No global total order.** ZK assigns a monotonic zxid to every modification and Etcd assigns
+  a monotonic revision. Oxia maintains a version counter per key and does not provide a
+  cluster-wide sequence.
+- **No multi-key transactions across shards.** Oxia offers per-key CAS via an expected-version
+  option, but no atomic multi-key commit. Related keys can be co-located on the same shard with
+  a [partition key](./features/partition-keys.mdx) when multi-key atomicity is required.
+
+## Migrating from ZooKeeper
+
+### Data model
+
+ZooKeeper stores data in a hierarchical tree of *znodes*; creating `/a/b` requires `/a` to
+already exist. Oxia stores flat keys. Path-shaped keys like `/a/b/c` continue to work and are
+the recommended style, but Oxia does not track parent/child relationships: you can `Put("/a/b")`
+without first creating `/a`, and there is no "list the children of `/a`" operation. Use a range
+scan or list with a prefix instead.
+
+Concrete consequences:
+
+- `exists` is not a separate call; a `Get` that misses returns a not-found error.
+- `getChildren(path)` becomes `List(prefix, prefix-end-marker)` — typically
+  `List("/a/", "/a//")`.
+- Oxia namespaces can be configured for either *hierarchical* (`/`-aware, default) or
+  *natural* (byte-wise lexicographic) [key sorting](./features/oxia-key-sorting.mdx).
+  Hierarchical sorting is what makes `List("/a/", "/a//")` return only the direct children of
+  `/a/` without visiting deeper entries — the closest match to ZooKeeper's `getChildren`
+  semantics. Keep the default for ZK-style workloads.
+- Creating a deep path is a single `Put`; there is no "create parent" requirement.
+- znode data-size limits do not carry over: keys and values are stored in Pebble and limited
+  only by the LSM store's practical constraints.
+
+### Operation mapping
+
+| ZooKeeper | Oxia | Notes |
+|---|---|---|
+| `create(path, data)` | `Put(key, value)` | |
+| `create(..., CREATE_EPHEMERAL)` | `Put(key, value, Ephemeral())` | Session is created on first ephemeral write |
+| `create(..., CREATE_SEQUENTIAL)` | `Put(prefix, value, SequenceKeysDeltas(1), PartitionKey(prefix))` | See [sequence keys](./features/sequence-keys.mdx) |
+| `setData(path, data, version)` | `Put(key, value, ExpectedVersionId(v))` | Optimistic concurrency via per-key version |
+| `setData(path, data, -1)` | `Put(key, value)` | Unconditional write |
+| `getData(path)` | `Get(key)` | Returns value, version, and created/modified timestamps |
+| `getChildren(path)` | `List(prefix, prefix-end)` | Prefix scan; no hierarchical semantics |
+| `exists(path)` | `Get(key)` returning not-found | |
+| `delete(path, version)` | `Delete(key, ExpectedVersionId(v))` | |
+| `delete(path, -1)` | `Delete(key)` | Unconditional delete |
+| `multi(ops)` | — | No cross-key atomicity; use per-key CAS or re-architect around a single key |
+| `sync(path)` | — | Not needed: every read is linearizable |
+
+### Watches become reliable notifications
+
+ZooKeeper watches are one-shot: when an event fires, the watch is consumed and the client has
+to re-register it. Events that occur between firing and re-registration are lost, and there is
+no native "catch me up on everything since timestamp T".
+
+Oxia replaces watches with a persistent [notifications](./features/notifications.mdx) stream
+scoped to a namespace. A client calls `GetNotifications()` and receives a continuous feed of
+`KeyCreated`, `KeyModified`, `KeyDeleted`, and `KeyRangeRangeDeleted` events. The stream is
+reliable and resumable — disconnected clients pick up where they left off, and no events are
+silently dropped. There is no child-vs-data distinction: the stream covers every mutation in
+the namespace, and clients filter by key if they only care about a subset.
+
+### Sessions and ephemerals
+
+The concepts map directly:
+
+- An Oxia session is created transparently on the first ephemeral write.
+- The client SDK handles heartbeats and reconnects.
+- When the session expires (clean close, crash, or partition past the timeout), all ephemerals
+  tied to it are deleted and `KeyDeleted` notifications are emitted.
+- Session timeout is configured per client via `WithSessionTimeout` — see
+  [ephemerals](./features/ephemerals.mdx).
+
+The main lifecycle difference: ZK sessions are tied to a TCP connection and can be reattached
+by presenting the session ID + password on a new connection. Oxia sessions are not designed to
+be reattached across process restarts. A client that crashes and comes back up opens a fresh
+session; any ephemerals it still owns can be identified by setting a stable client identity
+with `WithIdentity(...)` and reading it back from the record metadata.
+
+### Sequential znodes become atomic sequence keys
+
+ZooKeeper's `CREATE_SEQUENTIAL` appends a 10-digit padded counter to the created znode name,
+always incrementing by 1 and scoped to the parent path. Oxia's
+[sequence keys](./features/sequence-keys.mdx) generalise this:
+
+- The counter is scoped to the prefix key, pinned to a single shard with `PartitionKey(...)`.
+- Deltas can be any positive integer, not just 1 — useful when allocating ranges in a single
+  round trip.
+- Multi-dimensional counters are supported: one `Put` can increment several counters at once,
+  producing composite suffix keys like `/data/00000000005/00000000001`.
+
+### ACLs
+
+ZooKeeper supports per-znode ACLs with schemes like `world`, `ip`, `digest`, and `sasl`. Oxia
+does not currently provide per-key ACLs. Isolation is offered at coarser granularity by
+[namespaces](./features/namespaces.mdx) (each namespace has its own key space and shard set),
+and per-client authentication is done via OIDC tokens — see
+[security](./deployment/security.mdx).
+
+## Migrating from Etcd
+
+### Operation mapping
+
+| Etcd | Oxia | Notes |
+|---|---|---|
+| `Put(key, value)` | `Put(key, value)` | |
+| `Put(..., WithLease(id))` | `Put(..., Ephemeral())` | Sessions are client-scoped — see below |
+| `Get(key)` | `Get(key)` | |
+| `Get(key, WithRange(end))` | `List(key, end)` or `RangeScan(key, end)` | `List` returns keys only; `RangeScan` streams keys + values |
+| `Delete(key)` | `Delete(key)` | |
+| `Delete(key, WithRange(end))` | `DeleteRange(key, end)` | Atomic within a shard |
+| `Watch(key)` / `Watch(key, WithPrefix())` | `GetNotifications()` | Namespace-scoped; filter client-side on key |
+| `Txn().If(...).Then(...).Commit()` | `Put(..., ExpectedVersionId(v))` / `Put(..., ExpectedRecordNotExists())` | Single-key CAS only; no multi-key transaction API |
+| `Lease.Grant(ttl)` + `Put(..., WithLease)` | Client session (implicit) + `Put(..., Ephemeral())` | Session is a client-level construct, not a named handle |
+| `Lease.KeepAlive(id)` | Handled automatically by the client SDK | |
+| `Compact(rev)` | — | LSM compaction is internal and automatic; no application API |
+
+### Revisions become per-key versions
+
+Etcd assigns every modification a globally monotonic `revision`, which doubles as a
+cluster-wide logical timestamp. Applications use it for reliable event replay, snapshots, and
+bounded staleness.
+
+Oxia maintains a monotonic `VersionId` per key, along with created- and modified-timestamp
+fields in the record metadata. It does not provide a global revision. Equivalents:
+
+- **Which version am I reading?** → `VersionId` on the record — analogous to Etcd's
+  `ModRevision`.
+- **Reliable replay of all changes** → the [notifications](./features/notifications.mdx) stream
+  is resumable and covers the whole namespace.
+- **Point-in-time reads at a past revision** → not supported. Oxia serves the current state of
+  each key.
+
+### Leases become sessions
+
+Etcd leases are first-class, named objects: create a lease, attach keys to it, keep it alive,
+revoke it to delete every attached key. Oxia's sessions behave similarly but are scoped to the
+client instance:
+
+- A single session is created per client the first time it writes an ephemeral record.
+- Session TTL is configured at client construction via `WithSessionTimeout`.
+- Keep-alive is transparent — the SDK heartbeats on your behalf.
+- On client close or session expiry, all ephemeral records written by that client are deleted.
+
+There is no API for "create a lease, attach unrelated keys, revoke later": the session's
+lifetime *is* the client's lifetime. If you need multiple independent lifetimes, run multiple
+clients.
+
+### Transactions collapse to per-key CAS
+
+Etcd's `Txn` supports comparing any number of keys and, depending on the outcome, performing
+any number of Puts / Gets / Deletes atomically. Oxia has no multi-key transaction API. For
+single-key compare-and-set, use the `ExpectedVersionId` or `ExpectedRecordNotExists` option
+on `Put` and `Delete`:
+
+```go
+// Create only if absent (Etcd equivalent: Txn with CreateRevision == 0).
+client.Put(ctx, "/lock", []byte(owner), oxia.ExpectedRecordNotExists())
+
+// Update only if unchanged since last read (Etcd equivalent: Txn with ModRevision == r).
+client.Put(ctx, "/config", newConfig, oxia.ExpectedVersionId(currentVersion))
+```
+
+If an Etcd workload depends on multi-key transactions, options in order of preference are:
+
+1. Re-architect around a single key (encode the protected state as one value).
+2. Use a [partition key](./features/partition-keys.mdx) to co-locate related keys on a single
+   shard, then serialise updates through a lock held on a coordinator key.
+3. Accept application-level rollback when a multi-key update fails partway through.
+
+### Watch resume
+
+Etcd watches resume from a known revision — the client asks the server "send me every event
+with revision > R". Oxia notifications resume from an acknowledged offset managed by the
+client SDK: as the application processes each event, the SDK tracks progress, and a subsequent
+`GetNotifications()` call from the same client picks up where the previous one left off.
+
+## Data migration strategies
+
+The right strategy depends on downtime budget and how much of the workload can dual-write.
+Roughly in order from lowest to highest risk:
+
+- **Staged, namespace-by-namespace.** If the source system stores multiple logical datasets,
+  create one Oxia namespace per dataset and migrate them independently. Each migration is a
+  smaller, reversible change.
+- **Dual-write, verify, cutover.** Teach the application to write to both systems, verify the
+  Oxia replica reaches parity, flip reads, then stop writes to the source. This is the pattern
+  used by Apache Pulsar's PIP-454 framework for migrating ZooKeeper metadata to Oxia in
+  production.
+- **Snapshot + cutover.** Take a consistent snapshot of the source, load it into Oxia offline,
+  cut over during a maintenance window. Appropriate when a short outage is acceptable.
+- **Big-bang replace.** Stop, drain, convert, restart — the simplest option for test or
+  non-critical environments.
+
+## Things Oxia deliberately does not provide
+
+Before committing, check that the workload does not depend on any of these:
+
+- **Global total order across all keys** — Oxia has per-shard ordering only.
+- **Multi-key transactions across shards** — only per-key CAS and shard-local range deletes are
+  atomic.
+- **Point-in-time reads at historical revisions** — Oxia serves the current state of each key.
+- **Hierarchical create-parent semantics** — keys are flat; parent paths are not auto-created
+  or auto-deleted.
+- **Per-key ACLs** — isolation is at the namespace level; authentication is client-level via
+  OIDC.
+- **`sync()` / explicit quorum-read** — not needed (every read is linearizable) and not
+  available.
+
+For the overwhelming majority of coordination workloads — fencing, leader election, service
+discovery, session tracking, offset assignment, configuration distribution — none of these
+limits applies, and the trade is a substantial gain in write throughput and metadata capacity.

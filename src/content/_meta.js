@@ -1,6 +1,7 @@
 export default {
   'what-is-oxia': '',
   'getting-started' : '',
+  'migration': '',
   features:'',
   deployment: '',
   clients: {
