@@ -47,7 +47,7 @@ a new leader election.
 
 ## Anatomy of a leadership election
 
-> As mentioned elsewhere, a [formal description](../correctness/correctness.md) of the protocol is available in 
+> As mentioned elsewhere, a [formal description](../correctness/tla+.mdx) of the protocol is available in 
 > [TLA+](https://lamport.azurewebsites.net/tla/tla.html).
 
 ### Fence Nodes
@@ -92,7 +92,7 @@ a `Replicate` stream to them.
 > ⚠️ Note the additional subtext of the `Replicate` stream here — it is acting not only as a channel to append entries,
 > but also as a signal to become a follower.
 
-The responses to these requests are described in the [storage](replication-storage.md) section of the protocol. The
+The responses to these requests are described in the [storage](replication-storage.mdx) section of the protocol. The
 follower is now in a steady state will receive `Append` requests from the leader.
 
 ### Finalize ensemble
@@ -132,7 +132,7 @@ However, another possibility exists…
 
 Nodes that were not present in the fencing quorum may have a `head_offset` in the **previous** term that is more advanced (greater) than that of the new leader. When electing a leader in the fencing quorum, the coordinator so far avoided truncations by choosing the node with the highest `head_offset` as leader — meaning that other nodes in the quorum will therefore have lower values and thus not need truncation. However, outside of the fencing quorum this might not hold true; perhaps in the previous term the follower being added now was the leader, or maybe it was a ‘faster’ follower? In this eventuality, the node must be truncated before it can follow so that the log of entries for the prior term are the same on all nodes. Quite simply, the node must dispose of any entries that the leader does not have.
 
-The leader instructs followers to truncate by issuing `TruncateRequests` to any new followers who require it. When the leader receives `TruncateResponses` from followers, it starts `[FollowCursors](Storage%203889d3c230e74dcdbbf405f72978a60c.md)` for each follower at the head offset indicated in the respective response.
+The leader instructs followers to truncate by issuing `TruncateRequests` to any new followers who require it. When the leader receives `TruncateResponses` from followers, it starts [`FollowCursors`](replication-storage.mdx) for each follower at the head offset indicated in the respective response.
 
 ```mermaid
 sequenceDiagram
