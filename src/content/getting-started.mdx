@@ -7,9 +7,11 @@ import {Steps, Tabs} from 'nextra/components'
 Before running anything, here are the building blocks you will encounter.
 
 - **Records.** Every record is a key (string), a value (bytes), and a per-key monotonic
-  `VersionId` used for optimistic concurrency. Keys are flat; path-shaped keys like `/users/42`
-  are the recommended style. See [key sorting](./features/oxia-key-sorting.mdx) for
-  hierarchical vs natural ordering.
+  `VersionId` used for optimistic concurrency. Keys are arbitrary byte strings — Oxia is
+  agnostic to their structure, and applications are free to use flat identifiers, path-shaped
+  keys, or whatever fits. The namespace's [key sorting](./features/oxia-key-sorting.mdx) mode
+  (hierarchical with special `/` handling, or natural byte-wise order) controls how range
+  scans traverse the key space.
 - **Namespaces.** An isolated key space with its own shards and configuration. Every client
   picks one on connect (`default` by default). See [namespaces](./features/namespaces.mdx).
 - **Shards.** A namespace is partitioned into shards, each with its own leader and replica
