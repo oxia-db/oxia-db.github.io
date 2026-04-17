@@ -1,0 +1,52 @@
+# Consistency model
+
+Oxia is both a coordination service and a metadata store. For coordination workloads the
+guarantees determine whether fencing, leader election, and session tracking behave correctly
+under failure. For metadata workloads they determine whether pointers to external data —
+object-storage paths, ledger IDs, log offsets — stay consistent with that data. Losing or
+reordering a metadata entry can make the underlying data permanently unreachable, so Oxia aims
+at guarantees comparable to those of storage systems, not weaker than a typical coordination
+service.
+
+## What Oxia guarantees
+
+These guarantees apply to every successful operation.
+
+- **Per-key linearizability with read-after-write.** For any single key, successful operations
+  appear to execute atomically in a total order consistent with real time. Once a write is
+  acknowledged, every subsequent operation on that key — from any client — observes that write
+  or a later one, regardless of transient failures, leader failover, or reconnects. A read
+  never returns an older value than an update that has already been acknowledged.
+
+- **Durable after acknowledgment.** Once an operation returns success, its effect survives the
+  crash of any minority of replicas in the shard. The ack is issued only after a quorum of
+  replicas has durably persisted the entry.
+
+- **Ordered sequence generation.** When a client uses
+  [atomic sequence keys](./sequence-keys.mdx) to assign monotonic offsets, the order in which
+  that client's asynchronous operations are applied is preserved under all conditions —
+  including failures and retries.
+
+## What Oxia does *not* guarantee
+
+- **No cross-shard linearizability.** Each shard is linearizable on its own, but operations on
+  different shards have no defined real-time relationship. Two clients writing to different
+  shards may disagree about which write "happened first."
+
+- **No multi-key transactions across shards.** Atomic updates apply to a single shard; a batch
+  that touches keys on different shards is not committed atomically across them.
+
+- **No global total order.** Notifications are ordered per shard; there is no cluster-wide
+  monotonic timestamp.
+
+Coordination workloads rarely hit these limits: fencing, leader election, session tracking, and
+offset assignment all operate on a single key or a co-located key range, and related keys can
+be pinned to the same shard with a [partition key](./partition-keys.mdx).
+
+## How these guarantees are enforced and validated
+
+Under the hood the shard replication protocol maintains a small set of invariants that together
+imply the external guarantees above. See [protocol safety](../correctness/protocol-safety.mdx)
+for the invariants and the leader-failover procedure, and the [TLA+](../correctness/tla+.mdx)
+and [Maelstrom](../correctness/maelstrom.mdx) pages for the formal and empirical validation
+pipelines.
