@@ -2,10 +2,10 @@ export default {
   'what-is-oxia': '',
   'getting-started' : '',
   features:'',
-  deployment: '',
   clients: {
     title: 'Client SDKs',
   },
+  deployment: '',
   admin: {
     title: 'Admin Operations',
   },
