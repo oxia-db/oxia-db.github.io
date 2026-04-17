@@ -2,35 +2,35 @@
 
 ![Logical Architecture](/architecture/logical-architecture-1.png)
 
-Followed by [Design Goal](./design-goals.md). the logical architecture is as follows:
+Building on the [design goals](./design-goals.mdx), the logical architecture is organized around three concepts:
 
 - Sharding
-- Leader Based
+- Leader-Based
 - Multi-Namespaces
 
 ## Sharding
 
-![Shading](/architecture/logical-architecture-2.png)
+![Sharding](/architecture/logical-architecture-2.png)
 
 Sharding is a method of distributing data across multiple machines or servers to improve scalability and performance.
 In Oxia, sharding is implemented to handle large datasets by dividing them into smaller, more manageable parts, known as "shards."
 Each shard contains a subset of the data, allowing parallel processing across different nodes.
 
-The Oxia supports sharding of keys, which means that the keys used to access data are distributed across various shards.
+Oxia supports sharding of keys, which means that the keys used to access data are distributed across various shards.
 This helps in optimizing read and write operations, as requests for data can be routed to the appropriate shard instead of one central server.
 As a result, Oxia can efficiently scale horizontally, handle a higher volume of requests, and ensure better fault tolerance and data availability.
 
 In the architecture diagram above, you can see how data is partitioned across multiple shards,
 and the process of sharding ensures that data is evenly distributed, allowing for optimal performance and reliability.
 
-## Leader Base
+## Leader-Based
 
-![Leader Base](/architecture/logical-architecture-3.png)
+![Leader-Based architecture](/architecture/logical-architecture-3.png)
 
-The Leader Base architecture is designed to optimize the management of data and tasks in a distributed system.
+The leader-based architecture is designed to optimize the management of data and tasks in a distributed system.
 In this model, a central "leader" node is responsible for coordinating and overseeing the operations of other nodes, ensuring consistency, reliability, and efficient resource usage.
 
-In Oxia, the Leader Base ensures that one node is designated as the leader at any given time.
+In Oxia, the leader-based design ensures that one node is designated as the leader at any given time.
 This leader node is responsible for directing and managing operations, such as data writes, coordination of reads, and handling replication.
 The leader node is key to maintaining strong consistency in the system, as it controls the flow of operations across the distributed architecture.
 
@@ -52,7 +52,7 @@ interfere with those in others.
 
 Key benefits of Multi-Namespaces in Oxia include:
 
-- **Data** Isolation: Each namespace has its own data, preventing cross-contamination between different applications or users.
+- **Data Isolation**: Each namespace has its own data, preventing cross-contamination between different applications or users.
 - **Security**: With namespaces, you can enforce security policies tailored to each namespace, ensuring strict access control and segregation.
 - **Scalability**: By isolating workloads into separate namespaces, Oxia can scale resources efficiently for each application or tenant.
 - **Flexibility**: Developers and administrators can manage and configure each namespace independently, allowing for a more flexible and customizable environment.
