@@ -41,6 +41,11 @@ Concrete consequences:
 - `exists` is not a separate call; a `Get` that misses returns a not-found error.
 - `getChildren(path)` becomes `List(prefix, prefix-end-marker)` — typically
   `List("/a/", "/a//")`.
+- Oxia namespaces can be configured for either *hierarchical* (`/`-aware, default) or
+  *natural* (byte-wise lexicographic) [key sorting](./features/oxia-key-sorting.mdx).
+  Hierarchical sorting is what makes `List("/a/", "/a//")` return only the direct children of
+  `/a/` without visiting deeper entries — the closest match to ZooKeeper's `getChildren`
+  semantics. Keep the default for ZK-style workloads.
 - Creating a deep path is a single `Put`; there is no "create parent" requirement.
 - znode data-size limits do not carry over: keys and values are stored in Pebble and limited
   only by the LSM store's practical constraints.
