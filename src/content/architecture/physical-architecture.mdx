@@ -17,7 +17,7 @@ The Oxia Coordinator is a stateless component that is in charge of some main tas
 
 ![Coordinator Input/Output](/architecture/physical-architecture-2.png)
 
-The coordinator uses the [configuration]() as input and the [status]() as a way to checkpoint the current status of
+The coordinator uses the configuration as input and the status as a way to checkpoint the current status of
 all the shards.
 
 - For the Kubernetes environment, it's easy to use `ConfigMap` to store that data and ensure high availability.
