@@ -10,29 +10,29 @@ import { Table } from 'nextra/components'
     <span style={{fontSize: '0.7rem', marginTop: '0.2rem'}}>Original image credited to xkcd.com/2347, alterations by Qiang Zhao.</span>
 </div>
 
-Oxia is a horizontally scalable metadata store and coordination system — the same programming model as
-ZooKeeper, Etcd, or Chubby (linearizable keys, sessions, ephemerals, notifications, compare-and-swap), but
-sharded across many nodes so that throughput and capacity grow with the cluster instead of being bounded by a
-single leader. It is open source and a [CNCF Sandbox project](https://www.cncf.io/projects/oxia/).
+Oxia is a metadata store and coordination system with the same programming model as ZooKeeper, Etcd,
+or Chubby — linearizable keys, sessions, ephemerals, notifications, compare-and-swap — but sharded
+across many nodes. Throughput and capacity grow with the cluster instead of hitting a single-leader
+ceiling. It's open source, a [CNCF Sandbox project](https://www.cncf.io/projects/oxia/).
 
 ## The problem
 
 ZooKeeper, Etcd, and Consul all share one architecture: a single replicated state machine driven by Paxos or
 Raft. Every node holds the full dataset, every write passes through the leader, and periodic snapshots of the
-full state machine stall I/O. At scale, this shows up as:
+full state machine stall I/O. At scale that means:
 
 - A hard ceiling of a few gigabytes of metadata — full-dataset snapshots become prohibitive past that.
 - Write throughput capped by one leader, regardless of cluster size.
 - Long tail latencies from snapshot I/O and GC pressure.
 
-For large systems this is a real problem. Apache Pulsar, for example, was forced to keep cursor positions in
-BookKeeper ledgers — separate from the rest of its metadata — because ZooKeeper could not sustain the
-required write rate. That split metadata across two systems and doubled the operational surface area.
+Apache Pulsar hit this head-on: cursor positions had to live in BookKeeper ledgers — separate from the
+rest of its metadata — because ZooKeeper couldn't sustain the write rate. That split metadata across two
+systems and doubled the operational surface area.
 
-Sharded key–value stores (FoundationDB, TiKV, CockroachDB, Redis Cluster) solve the scaling problem, but they
+Sharded key–value stores (FoundationDB, TiKV, CockroachDB, Redis Cluster) solve the scaling problem but
 lack the coordination primitives — sessions, ephemerals, ordered notifications, atomic sequencing — that
-distributed systems need to operate. Builders end up reimplementing those primitives by hand on top of a
-generic KV store, or stitching a coordination service together with a KV store and paying for both.
+distributed systems need to operate. Teams end up either rebuilding those primitives on top of a generic
+KV store, or running a separate coordination service alongside it and paying to operate both.
 
 ## Oxia's approach
 
@@ -78,7 +78,7 @@ leader election, fencing, service discovery, cache coherence, and streaming offs
 ## What Oxia is *not*
 
 - **Not globally linearizable across shards.** Each shard is linearizable on its own; cross-shard ordering
-  is the application's responsibility. For coordination workloads this is almost always what you want —
+  is the application's responsibility. For coordination workloads that's what you want anyway —
   fencing, leader election, and offset assignment all operate on a single key or key range.
 - **Not a transactional database.** There are no multi-key transactions that span shards.
 
