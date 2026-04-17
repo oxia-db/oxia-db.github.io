@@ -6,7 +6,7 @@ import { getPageMap } from 'nextra/page-map'
 import 'nextra-theme-docs/style.css'
 
 export const metadata = {
-  metadataBase: new URL('https://github.com/oxia-db'),
+  metadataBase: new URL('https://oxia-db.github.io'),
   title: {
     template: '%s - Oxia'
   },
