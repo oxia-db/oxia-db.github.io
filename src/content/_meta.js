@@ -3,10 +3,10 @@ export default {
   'getting-started' : '',
   'migration': '',
   features:'',
-  deployment: '',
   clients: {
     title: 'Client SDKs',
   },
+  deployment: '',
   admin: {
     title: 'Admin Operations',
   },
