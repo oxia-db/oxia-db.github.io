@@ -1,0 +1,186 @@
+---
+sidebarTitle: gRPC API
+---
+
+import {Tabs} from 'nextra/components'
+
+# gRPC API Reference
+
+Oxia's wire API is defined in Protocol Buffers and served over gRPC. This page is for
+developers writing a custom client, a proxy, or a tool that talks directly to an Oxia
+server. Application developers using the official [Go](./go.mdx), [Java](./java.mdx), or
+[Python](./python.mdx) SDKs do not need to read this — the SDKs wrap everything documented
+below.
+
+## Source of truth
+
+The authoritative schemas live in the Oxia source tree under
+[`common/proto/`](https://github.com/oxia-db/oxia/tree/main/common/proto):
+
+- [`client.proto`](https://github.com/oxia-db/oxia/blob/main/common/proto/client.proto) —
+  application-facing API.
+- [`admin.proto`](https://github.com/oxia-db/oxia/blob/main/common/proto/admin.proto) —
+  coordinator administrative API.
+- `storage.proto` and `replication.proto` — internal protocols between coordinator and
+  storage nodes. **Do not depend on these from a custom client** — they carry
+  implementation details and change without notice.
+
+All public types live in the proto package `io.oxia.proto.v1`; backward-compatible changes
+are kept within the `v1` prefix.
+
+## Services overview
+
+| Service | Purpose | Implemented by | Typical caller |
+|---|---|---|---|
+| `OxiaClient` | Read, write, notifications, sessions, sequences | Every storage node (public port) | Application code |
+| `OxiaAdmin` | Namespace and node introspection, shard split | Coordinator | Operators, admin CLI |
+
+Typical topology: clients connect to any storage node and discover the shard → leader
+mapping through `OxiaClient.GetShardAssignments`. Admin traffic is separate and goes to the
+coordinator.
+
+## Shard discovery and routing
+
+A custom client has one job the SDKs hide: keep a current map of shard → leader and route
+each request to the correct leader. This is the most common source of bugs in hand-rolled
+clients.
+
+1. **Connect** to any storage node on the public gRPC port.
+2. **Call `GetShardAssignments(ShardAssignmentsRequest{namespace})`.** The RPC is server-
+   streaming; hold the stream open for the lifetime of the client. Each message contains
+   the *full* current assignment for the namespace — not a delta.
+3. **Hash each key with XXHASH3** and pick the shard whose `Int32HashRange` covers that
+   hash. The `ShardKeyRouter` field in `NamespaceShardsAssignment` currently has only one
+   value, `XXHASH3`; new routers may be added later.
+4. **Send the request** to the shard's `leader` (a `host:port` string).
+5. **When the assignment stream delivers a new message** (leader change, shard split, or
+   shard move), update the local map and re-route any retries.
+
+### Partition-key override
+
+`PutRequest.partition_key` — and the corresponding optional field on read-side RPCs —
+overrides the routing key: the server hashes the partition key instead of the record key.
+This forces related records onto a single shard so shard-local guarantees apply. Sequence
+keys require it.
+
+## OxiaClient RPCs
+
+| RPC | Request → Response | Purpose |
+|---|---|---|
+| `GetShardAssignments` | `ShardAssignmentsRequest` → `stream ShardAssignments` | Discover and track shard → leader mapping. |
+| `WriteStream` | `stream WriteRequest` → `stream WriteResponse` | Bidirectional streaming batched writes (puts, deletes, delete-ranges). Preferred entry point. |
+| `Write` | `WriteRequest` → `WriteResponse` | Deprecated unary form of the above — kept for backward compatibility. |
+| `Read` | `ReadRequest` → `stream ReadResponse` | Batched reads; response streams back in chunks. |
+| `List` | `ListRequest` → `stream ListResponse` | Stream keys in a `[start, end)` range (values excluded). |
+| `RangeScan` | `RangeScanRequest` → `stream RangeScanResponse` | Stream keys + values in a range. |
+| `GetSequenceUpdates` | `GetSequenceUpdatesRequest` → `stream GetSequenceUpdatesResponse` | Subscribe to new sequence-key assignments under a prefix. |
+| `GetNotifications` | `NotificationsRequest` → `stream NotificationBatch` | CDC stream of create / modify / delete events for a shard. |
+| `CreateSession` | `CreateSessionRequest` → `CreateSessionResponse` | Open a session for ephemeral records on a shard. |
+| `KeepAlive` | `SessionHeartbeat` → `KeepAliveResponse` | Heartbeat an open session. |
+| `CloseSession` | `CloseSessionRequest` → `CloseSessionResponse` | Close a session and delete its ephemerals. |
+
+### Batched writes and reads
+
+`WriteRequest` bundles independent puts, deletes, and delete-ranges into a single round
+trip. Each operation carries its own per-operation `Status` — one can fail (for example
+with `UNEXPECTED_VERSION_ID`) without affecting the others. The official SDKs expose a
+`BatchLinger` option that buffers operations for a few milliseconds before flushing, which
+custom clients chasing throughput should replicate.
+
+Operations within a `WriteRequest` are applied in positional order within their type, and
+the types are processed in the order **puts → deletes → delete-ranges**.
+
+### Compare-and-swap
+
+All writes support optimistic concurrency:
+
+- `PutRequest.expected_version_id` — succeed only if the current `VersionId` matches.
+- `DeleteRequest.expected_version_id` — same, for delete.
+- Omitting the field yields an unconditional write. The SDKs expose a separate
+  `ExpectedRecordNotExists` sentinel that maps to a specific reserved value.
+
+A mismatch returns `UNEXPECTED_VERSION_ID` in the per-operation `Status`.
+
+### Extended Get comparisons
+
+`GetRequest.comparison_type` turns a Get into a key-range lookup in a single round trip:
+
+| `KeyComparisonType` | Behaviour |
+|---|---|
+| `EQUAL` (default) | Exact match. |
+| `FLOOR` | Highest key ≤ requested key. |
+| `CEILING` | Lowest key ≥ requested key. |
+| `LOWER` | Highest key strictly &lt; requested key. |
+| `HIGHER` | Lowest key strictly &gt; requested key. |
+
+Non-exact matches include the matched key in `GetResponse.key`.
+
+## Sessions and ephemerals on the wire
+
+Sessions are **per-shard**: `CreateSessionRequest` carries a `shard` field. A client that
+needs ephemerals on more than one shard must create one session per shard and heartbeat
+each independently. Every `PutRequest` for an ephemeral record carries the relevant
+`session_id`; if the session has been closed or expired, the put is rejected with
+`SESSION_DOES_NOT_EXIST`.
+
+`KeepAlive` messages must arrive before `session_timeout_ms` elapses. On timeout or an
+explicit `CloseSession`, the server deletes every ephemeral bound to the session and
+emits `KEY_DELETED` notifications on the affected shard.
+
+## OxiaAdmin RPCs
+
+| RPC | Request → Response | Purpose |
+|---|---|---|
+| `ListNamespaces` | `ListNamespacesRequest` → `ListNamespacesResponse` | Enumerate configured namespaces. |
+| `ListNodes` | `ListNodesRequest` → `ListNodesResponse` | Enumerate storage nodes with their public and internal addresses. |
+| `SplitShard` | `SplitShardRequest` → `SplitShardResponse` | Manually split a shard at an optional explicit hash point. |
+
+The admin service is implemented only by the coordinator.
+
+## Status codes
+
+Each write and read response carries a per-operation `Status`:
+
+| `Status` | Meaning |
+|---|---|
+| `OK` | Operation succeeded. |
+| `KEY_NOT_FOUND` | Get or delete targeted a key that does not exist. |
+| `UNEXPECTED_VERSION_ID` | `expected_version_id` did not match the current `VersionId`. |
+| `SESSION_DOES_NOT_EXIST` | Put referenced an ephemeral session that has expired or been closed. |
+
+Standard gRPC status codes are returned by the transport for connection-level errors — for
+example `FAILED_PRECONDITION` when a client reaches a node that is not the current leader
+for the target shard. Re-consume `GetShardAssignments` to refresh the routing map in that
+case.
+
+## Generating client stubs
+
+Vendor the `.proto` files from the Oxia repository (or add it as a submodule) and run
+`protoc` with the language plugin of your choice.
+
+<Tabs items={['Go', 'Java', 'Python']}>
+    <Tabs.Tab>
+        ```shell
+        protoc \
+            --go_out=. --go_opt=paths=source_relative \
+            --go-grpc_out=. --go-grpc_opt=paths=source_relative \
+            client.proto admin.proto
+        ```
+    </Tabs.Tab>
+    <Tabs.Tab>
+        ```shell
+        protoc \
+            --java_out=src/main/java \
+            --grpc-java_out=src/main/java \
+            client.proto admin.proto
+        ```
+    </Tabs.Tab>
+    <Tabs.Tab>
+        ```shell
+        python -m grpc_tools.protoc -I . \
+            --python_out=. \
+            --grpc_python_out=. \
+            client.proto admin.proto
+        ```
+    </Tabs.Tab>
+</Tabs>
