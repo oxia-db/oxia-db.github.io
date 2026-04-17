@@ -1,0 +1,72 @@
+# Protocol safety
+
+This page describes how Oxia's replication protocol enforces the guarantees listed in the
+[consistency model](../features/consistency-model.mdx). It's intended for operators and
+contributors who need to reason about what happens during leader failover or network
+partition, not for application developers using the client SDK.
+
+## Invariants
+
+The replication protocol maintains three invariants under all failure schedules. The external
+guarantees follow from them.
+
+1. **Prefix agreement.** All replicas of a shard agree on the committed log prefix. If an entry
+   is committed at index *i* on one replica, every replica that has committed index *i* has the
+   same entry there.
+
+2. **Commit implies quorum persistence.** An entry is committed only after it has been durably
+   appended on a quorum of replicas. This is what makes acknowledged operations survive
+   minority crashes.
+
+3. **Term monotonicity and write fencing.** Every leadership change increments a
+   coordinator-managed shard *term*. Replicas accept writes only from the current-term leader,
+   and a leader never commits entries tagged with an older term. Committed entries therefore
+   form a single history across all leader transitions.
+
+## Single-leader safety
+
+Invariant 3 is what prevents split-brain. Two leaders at different terms cannot both commit
+conflicting entries because each replica's log is tagged with a term and replicas only accept
+entries from the current-term leader. The coordinator enforces that terms are strictly
+monotonic and that a new term is published only after the old leader has been fenced, so the
+system never has two active committing leaders at the same term — whatever the network does.
+
+## Leader failover
+
+When a shard's leader fails or becomes unreachable, the coordinator chooses a replacement from
+the remaining replicas. The chosen replica is the one with the longest committed prefix —
+guaranteed by prefix agreement to contain every acknowledged entry.
+
+The coordinator then:
+
+1. Advances the shard term.
+2. Publishes the new leader assignment.
+3. Instructs followers to catch up to the new leader's log before accepting further
+   operations.
+
+Clients that were talking to the old leader receive a not-leader error, re-resolve the current
+leader through the coordinator, and retry. Acknowledged writes are preserved across failover;
+a write that was in flight and never acknowledged may or may not have committed, and the
+client's retry settles which.
+
+## Validation
+
+Oxia layers three complementary validation techniques against these invariants, each covering
+a different failure mode:
+
+- **Protocol model checking.** The single-shard replication protocol is formalised in
+  [TLA+](./tla+.mdx). Model checking explores all interleavings of log replication, term
+  advancement, quorum commitment, and failover, verifying prefix agreement, single-leader
+  enforcement, and monotonic term progression.
+
+- **Implementation testing.** The production Go code is continuously tested with
+  [Maelstrom](./maelstrom.mdx), which runs a real multi-node Oxia binary under adversarial
+  schedules (message loss, delays, reordering) and checks linearizability using the Jepsen
+  validation engine.
+
+- **Real-world deployment.** Fault injection with Chaos Mesh in Kubernetes exercises crashes,
+  pod restarts, and network partitions against a production-like cluster, confirming that
+  leader failover and session semantics hold under realistic operational conditions.
+
+Together these establish protocol safety formally, implementation correctness empirically, and
+deployment correctness in the environment Oxia is actually run in.
