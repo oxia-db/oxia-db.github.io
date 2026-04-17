@@ -2,15 +2,12 @@ import "./page.css"
 export default function IndexPage() {
     return (
         <div className="home-content" style={{height: '76vh', marginTop: '8rem', display: "flex", flexDirection: "column", justifyContent: "start", alignItems: "center"}}>
-            <div align="center">
-                <img className={"rotate-image"} src="/oxia-logo.svg" alt="oxia logo" width="250"/>
-            </div>
+            <img className={"rotate-image"} src="/oxia-logo.svg" alt="oxia logo" width="250"/>
 
             <h1 className="headline" style={{
                 textAlign: 'center',
                 fontSize: 32,
-                margin: '50 50',
-                // fontWeight: 'bold'
+                margin: '50px 50px',
             }}>
                 Oxia ― Metadata Store and Coordination System
             </h1>
