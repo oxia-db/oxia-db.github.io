@@ -25,7 +25,7 @@ import oxia
 client = oxia.Client("localhost:6648")
 ```
 
-When creating the client is possible to pass several options, such as:
+When creating the client it is possible to pass several options, such as:
 
 ```python
 client = oxia.Client("localhost:6648",
@@ -34,37 +34,82 @@ client = oxia.Client("localhost:6648",
 )
 ```
 
-For the full list of options, see the [Client constructor docs](https://oxia-db.github.io/oxia-client-python/latest/oxia.Client.html#__init__).
+Available `Client` constructor options:
+
+| Option | Type | Description | Default |
+|---|---|---|---|
+| `namespace` | `str` | Oxia namespace to use. | `"default"` |
+| `session_timeout_ms` | `int` | Session timeout for ephemeral records, in milliseconds. | `30000` |
+| `client_identifier` | `str` | Stable client identity attached to ephemeral records. | Random UUID |
+| `request_timeout_ms` | `int` | Deadline for each unary RPC. Long-lived streams are unbounded. | `30000` |
+| `authentication` | `oxia.defs.Authentication` | Credentials attached as gRPC metadata. See `oxia.auth.TokenAuthentication`. | `None` |
+
+For the full parameter list see the [Client constructor docs](https://oxia-db.github.io/oxia-client-python/latest/oxia.Client.html#__init__).
 
 ### Writing records
 
-
 ```python
-
 # Write a record to Oxia with the specified key and value, and with the expectation
 # that the record does not already exist.
 key, version1 = client.put("my-key", "value-1",
                            expected_version_id=oxia.EXPECTED_RECORD_DOES_NOT_EXIST)
 
-
 # Write a record with the expectation that it has not changed since the previous write.
-# If there was any change, the operation will fail
+# If there was any change, the operation will fail.
 key, version2 = client.put("my-key", "value-2",
                            expected_version_id=version1.version_id())
+
+# Ephemeral record: deleted automatically when the client session ends.
+client.put("/workers/worker-1", b"host:port", ephemeral=True)
+
+# Atomic sequence key: server appends a monotonic suffix; requires a partition key.
+key, version = client.put("/events/", b"event-data",
+                          sequence_keys_deltas=[1],
+                          partition_key="/events/")
+
+# Attach a secondary index entry at write time.
+client.put("/offset/12345", b"...",
+           secondary_indexes={"partition": "p-17"})
 ```
 
-All the options for the put operation are available in the
-[put() method docs](https://oxia-db.github.io/oxia-client-python/latest/oxia.Client.html#put).
+`put()` options:
+
+| Option | Description |
+|---|---|
+| `partition_key` | Route to a specific shard (co-locate related keys). |
+| `expected_version_id` | Conditional write; use `oxia.EXPECTED_RECORD_DOES_NOT_EXIST` to assert absence. |
+| `ephemeral` | Bind the record to the client session — see [ephemerals](../features/ephemerals.mdx). |
+| `sequence_keys_deltas` | Server-assigned monotonic suffixes — see [sequence keys](../features/sequence-keys.mdx). |
+| `secondary_indexes` | `{index_name: secondary_key}` — see [secondary indexes](../features/secondary-indexes.mdx). |
+
+Full reference: [put() method docs](https://oxia-db.github.io/oxia-client-python/latest/oxia.Client.html#put).
 
 ### Reading records
 
-Reading the value of a record
+Reading the value of a record:
 
 ```python
 key, value, version = client.get("my-key")
+
+# Metadata-only read (skips the value payload).
+key, _, version = client.get("my-key", include_value=False)
+
+# Range-style Get: returns the closest key ≤ the lookup key.
+from oxia import ComparisonType
+key, value, version = client.get("/users/50",
+                                 comparison_type=ComparisonType.FLOOR)
 ```
-All the options for the get operation are available in the
-[get() method docs](https://oxia-db.github.io/oxia-client-python/latest/oxia.Client.html#get).
+
+`get()` options:
+
+| Option | Description |
+|---|---|
+| `comparison_type` | `EQUAL` (default), `FLOOR`, `CEILING`, `LOWER`, `HIGHER`. Non-equal modes scan all shards unless `partition_key` is set. |
+| `include_value` | Set to `False` for a metadata-only read. |
+| `partition_key` | Route to a specific shard. |
+| `use_index` | Look up via a named [secondary index](../features/secondary-indexes.mdx). |
+
+Full reference: [get() method docs](https://oxia-db.github.io/oxia-client-python/latest/oxia.Client.html#get).
 
 ### Deleting records
 
@@ -83,32 +128,69 @@ All the options for the delete operation are available in the
 
 ### Deleting a range of records
 
-Delete all records whose keys fall within a specified range.
+Delete all records whose keys fall within `[min, max)`:
 
 ```python
-# Delete all keys in the range [min_key_inclusive, max_key_exclusive)
 client.delete_range("/users/", "/users//")
 ```
 
+Without `partition_key`, the call fans out to every shard. Pass `partition_key` to scope
+the delete to a single shard.
+
 ### Listing keys
 
-List the keys within a specified range, without fetching the associated values.
+List keys in `[min, max)` without fetching values:
 
 ```python
 keys = client.list("/users/", "/users//")
 for key in keys:
     print(key)
+
+# Narrow to a single shard via partition_key, or query a secondary index via use_index.
+keys = client.list("/users/", "/users//", partition_key="/users/")
+keys = client.list("", "\xff", use_index="email")
 ```
 
 ### Scanning records
 
-Scan records in a key range, returning both keys and values.
+Scan records in a key range, returning keys and values:
 
 ```python
-for result in client.range_scan("/users/", "/users//"):
-    print(f"key: {result.key}, value: {result.value}, version: {result.version}")
+for key, value, version in client.range_scan("/users/", "/users//"):
+    print(f"key: {key}, value: {value}, version: {version}")
+
+# With a secondary index.
+for key, value, version in client.range_scan(
+        "", "\xff", use_index="email"):
+    print(key)
 ```
 
-For the complete list of options available on all operations, see the
+`list()` and `range_scan()` both accept `partition_key` and `use_index`.
+
+### Sessions and ephemerals
+
+Sessions are managed transparently: the first `put(..., ephemeral=True)` creates a
+per-shard session, the client SDK heartbeats it, and ephemerals are cleaned up when the
+client closes or the session expires. See [ephemerals](../features/ephemerals.mdx) for
+the lifecycle details.
+
+### Notifications and sequence updates
+
+Both streams are exposed as plain Python iterators:
+
+```python
+# Change feed for the namespace.
+for notification in client.get_notifications():
+    print(notification)
+
+# Updates for a specific sequence prefix.
+for key in client.get_sequence_updates("/events/", partition_key="/events/"):
+    print(f"New sequence key: {key}")
+```
+
+See [notifications](../features/notifications.mdx) and
+[sequence keys](../features/sequence-keys.mdx) for semantics.
+
+For the complete reference see the
 [PyDoc reference](https://oxia-db.github.io/oxia-client-python/latest/oxia.Client.html).
 
