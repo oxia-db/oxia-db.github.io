@@ -29,7 +29,7 @@ file and the one most often edited in production — for example when adding a n
 |---|---|---|
 | `namespaces` | list&lt;Namespace&gt; | Declared namespaces. At least one is required. |
 | `servers` | list&lt;Server&gt; | Storage nodes available to the cluster. At least one is required. |
-| `serverMetadata` | map&lt;name, {labels}&gt; | Optional labels used by placement policies — for example an availability-zone tag. |
+| `serverMetadata` | map&lt;name, ServerMetadata&gt; | Optional per-server labels used by placement policies — for example an availability-zone tag. |
 | `loadBalancer` | LoadBalancer | Shard rebalancing tuning. |
 
 ### Namespace
@@ -57,6 +57,12 @@ file and the one most often edited in production — for example when adding a n
 | `name` | string | Optional unique identifier (defaults to `internal` address). |
 | `public` | string | Advertised `host:port` for client traffic. |
 | `internal` | string | `host:port` for coordinator → server and server → server RPCs. |
+
+### ServerMetadata
+
+| Field | Type | Purpose |
+|---|---|---|
+| `labels` | map&lt;string, string&gt; | Free-form labels (for example `zone: eu-west-1a`) referenced by anti-affinity policies when placing shard replicas. |
 
 ### LoadBalancer
 
