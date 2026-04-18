@@ -1,0 +1,165 @@
+---
+sidebarTitle: Configuration schema
+---
+
+# Configuration Schema Reference
+
+Oxia uses three YAML configuration surfaces, each with its own schema and consumer.
+
+| File | Flag(s) | Consumer | Contents |
+|---|---|---|---|
+| Cluster config | `--cconfig` on `oxia coordinator`, or referenced from the coordinator server config | Coordinator | Namespaces, server list, server metadata, load-balancer tuning. |
+| Coordinator server config | `--sconfig` on `oxia coordinator` | Coordinator process | Admin / internal bind addresses, TLS, metadata provider, observability. |
+| Data-server config | `--sconfig` on `oxia server` | Data-server process | Public / internal bind addresses, auth, TLS, storage paths, scheduler, observability. |
+
+The authoritative JSON schema for each surface can be generated from a running binary:
+
+```shell
+oxia config create-schema
+```
+
+Pipe the output into any JSON-schema validator to check a config file before deploying it.
+
+## Cluster configuration
+
+Cluster-wide configuration consumed by the coordinator. This is the most operator-visible
+file and the one most often edited in production — for example when adding a namespace.
+
+| Field | Type | Purpose |
+|---|---|---|
+| `namespaces` | list&lt;Namespace&gt; | Declared namespaces. At least one is required. |
+| `servers` | list&lt;Server&gt; | Storage nodes available to the cluster. At least one is required. |
+| `serverMetadata` | map&lt;name, {labels}&gt; | Optional labels used by placement policies — for example an availability-zone tag. |
+| `loadBalancer` | LoadBalancer | Shard rebalancing tuning. |
+
+### Namespace
+
+| Field | Type | Default | Purpose |
+|---|---|---|---|
+| `name` | string | — | Required. Unique namespace identifier. |
+| `initialShardCount` | uint32 | — | Required. Shard count at namespace creation (≥ 1). |
+| `replicationFactor` | uint32 | — | Required. Must be ≥ 1 and ≤ the number of servers. |
+| `notificationsEnabled` | bool | `true` | Enable the notifications feed for the namespace. |
+| `keySorting` | string | `hierarchical` | `hierarchical` (default, `/`-aware) or `natural` (byte-wise). See [key sorting](../features/oxia-key-sorting.mdx). |
+| `policy.antiAffinities` | list | — | Optional placement anti-affinity rules. |
+
+### Anti-affinity (`policy.antiAffinities[]`)
+
+| Field | Type | Purpose |
+|---|---|---|
+| `labels` | list&lt;string&gt; | Server-metadata label keys to compare replicas against. |
+| `mode` | string | `Strict` fails ensemble selection if the constraint cannot be met; `Relaxed` proceeds anyway. |
+
+### Server
+
+| Field | Type | Purpose |
+|---|---|---|
+| `name` | string | Optional unique identifier (defaults to `internal` address). |
+| `public` | string | Advertised `host:port` for client traffic. |
+| `internal` | string | `host:port` for coordinator → server and server → server RPCs. |
+
+### LoadBalancer
+
+| Field | Type | Purpose |
+|---|---|---|
+| `scheduleInterval` | duration | How often the balancer scans for shards to move. |
+| `quarantineTime` | duration | How long a recently moved shard is ineligible for further moves. |
+
+### Example
+
+```yaml
+namespaces:
+  - name: default
+    initialShardCount: 3
+    replicationFactor: 3
+    keySorting: hierarchical
+servers:
+  - public:   oxia-0.oxia-svc.oxia.svc.cluster.local:6648
+    internal: oxia-0.oxia-svc:6649
+  - public:   oxia-1.oxia-svc.oxia.svc.cluster.local:6648
+    internal: oxia-1.oxia-svc:6649
+  - public:   oxia-2.oxia-svc.oxia.svc.cluster.local:6648
+    internal: oxia-2.oxia-svc:6649
+```
+
+## Coordinator server configuration
+
+Passed via `oxia coordinator --sconfig`. Per-process settings for the coordinator.
+
+| Section | Purpose |
+|---|---|
+| `cluster.configPath` | Path to the cluster-config file described above. |
+| `server.admin` | Bind address + TLS for the admin gRPC service (`OxiaAdmin`). Default `0.0.0.0:6651`. |
+| `server.internal` | Bind address + TLS for the internal service (coordinator ↔ server traffic). Default `0.0.0.0:6649`. |
+| `controller.tls` | TLS for outbound coordinator → server calls. |
+| `metadata` | How the coordinator persists cluster status. See below. |
+| `observability.metric` | Prometheus metrics endpoint. Default enabled, `0.0.0.0:8080`. |
+| `observability.log.level` | Log level (`debug` / `info` / `warn` / `error`). Default `info`. |
+
+### Metadata provider
+
+`metadata.providerName` selects how the coordinator's cluster status is persisted across
+restarts:
+
+| Provider | Extra configuration | Use case |
+|---|---|---|
+| `memory` | — | Tests only. State is lost on restart. |
+| `file` | `metadata.file.path` | Single-node or development. |
+| `configmap` | `metadata.kubernetes.namespace`, `metadata.kubernetes.configMapName` | Kubernetes: survives restarts via a ConfigMap. |
+| `raft` | `metadata.raft.address`, `metadata.raft.dataDir`, `metadata.raft.bootstrapNodes` | Self-managed, HA coordinator with a built-in Raft group. |
+
+## Data-server configuration
+
+Passed via `oxia server --sconfig`. Per-process settings for a storage node.
+
+| Section | Purpose |
+|---|---|
+| `server.public` | Public bind address (default `0.0.0.0:6648`), `auth`, `tls`. |
+| `server.internal` | Internal bind address (default `0.0.0.0:6649`), `tls`. |
+| `replication.tls` | TLS for peer replication traffic. |
+| `storage.wal` | Write-ahead log: `dir` (default `./data/wal`), `sync` (default `true`), `retention` (default `1h`). |
+| `storage.database` | Pebble database: `dir` (default `./data/db`), `readCacheSizeMB` (default `100`). |
+| `storage.notification` | Notifications: `retention` (default `1h`). |
+| `scheduler.checksum.interval` | Periodic DB integrity check. Default `5m`. Set to `0s` to disable. |
+| `observability` | Same shape as on the coordinator (metric + log). |
+
+### Authentication
+
+`server.public.auth` configures client authentication. Currently only OIDC is supported
+out of the box; see [security](../deployment/security.mdx) for the full schema and a
+worked example.
+
+## TLS options
+
+Every TLS block in any config file (`server.*.tls`, `replication.tls`, `controller.tls`)
+shares the same schema:
+
+| Field | Type | Purpose |
+|---|---|---|
+| `enabled` | bool | Explicit on / off. Auto-detected as `true` when `certFile` is set. |
+| `certFile` | string | Server certificate file. |
+| `keyFile` | string | Server private key file. |
+| `trustedCaFile` | string | Trusted CA bundle. |
+| `clientAuth` | bool | Require mTLS. |
+| `minVersion`, `maxVersion` | uint16 | Allowed TLS versions. |
+| `cipherSuites` | list&lt;uint16&gt; | Allowed cipher suites. |
+| `insecureSkipVerify` | bool | Disable certificate verification. Avoid in production. |
+| `serverName` | string | SNI override for outbound connections. |
+
+See [security](../deployment/security.mdx) for end-to-end examples.
+
+## Hot reload
+
+When a data server is started with `--sconfig`, the file is watched and re-parsed on
+modification: applicable fields take effect without a restart. Bind addresses and other
+startup-only fields still require restarting the process.
+
+## Source of truth
+
+The Go structs below are the canonical definition; field-level descriptions live there as
+`jsonschema:"description=..."` tags and are what `oxia config create-schema` exposes as
+JSON schema.
+
+- [`oxiad/coordinator/option/option.go`](https://github.com/oxia-db/oxia/blob/main/oxiad/coordinator/option/option.go) — coordinator server config.
+- [`oxiad/dataserver/option/option.go`](https://github.com/oxia-db/oxia/blob/main/oxiad/dataserver/option/option.go) — data-server config.
+- [`oxiad/coordinator/model/cluster_config.go`](https://github.com/oxia-db/oxia/blob/main/oxiad/coordinator/model/cluster_config.go) — cluster config.
