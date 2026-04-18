@@ -1,0 +1,300 @@
+---
+sidebarTitle: CLI
+---
+
+# CLI Reference
+
+The `oxia` binary is a single executable with subcommands for running a cluster, operating
+on data, managing the cluster, and debugging. This page enumerates every user-visible
+subcommand and flag. Append `--help` to any command for the same information at the shell.
+
+## Global flags
+
+These apply to every subcommand and are omitted from the tables below.
+
+| Flag | Default | Purpose |
+|---|---|---|
+| `-l, --log-level` | `INFO` | Logging level: `debug`, `info`, `warn`, `error`. |
+| `-j, --log-json` | `false` | Emit logs in JSON format. |
+| `--profile` | `false` | Enable the built-in pprof profiler. |
+| `--profile-bind-address` | `127.0.0.1:6060` | pprof bind address. |
+
+## Running a cluster
+
+### `oxia standalone`
+
+Single-process, single-node Oxia instance. Good for local development and CI. Not a
+production deployment: replication factor is 1, there is no external coordinator, and a
+crash loses data that has not been fsync'd.
+
+```shell
+oxia standalone
+```
+
+| Flag | Default | Purpose |
+|---|---|---|
+| `-p, --public-addr` | `0.0.0.0:6648` | Public service bind address (client traffic). |
+| `-m, --metrics-addr` | `0.0.0.0:8080` | Prometheus metrics bind address. |
+| `-s, --shards` | `1` | Number of shards in the `default` namespace. |
+| `--data-dir` | `./data/db` | Pebble database directory. |
+| `--wal-dir` | `./data/wal` | Write-ahead log directory. |
+| `--wal-sync-data` | `true` | `fsync` WAL writes for durability. |
+| `--wal-retention-time` | `1h` | How long to keep WAL entries after commit. |
+| `--notifications-enabled` | `true` | Enable the notifications feed. |
+| `--notifications-retention-time` | `1h` | How long to retain undelivered notifications. |
+| `--db-cache-size-mb` | `100` | Shared Pebble block-cache size. |
+| `--key-sorting` | `hierarchical` | Key sort mode: `hierarchical` or `natural` (see [key sorting](../features/oxia-key-sorting.mdx)). |
+
+### `oxia server`
+
+Run a storage node. Needs an `oxia coordinator` to join a cluster.
+
+```shell
+oxia server --sconfig /etc/oxia/server.yaml
+```
+
+| Flag | Default | Purpose |
+|---|---|---|
+| `--sconfig` | — | Server config file path. |
+| `-p, --public-addr` | `0.0.0.0:6648` | Public (client) bind address. |
+| `-i, --internal-addr` | `0.0.0.0:6649` | Internal (coordinator / peer) bind address. |
+| `-m, --metrics-addr` | `0.0.0.0:8080` | Metrics bind address. |
+| `--data-dir` | `./data/db` | Pebble database directory. |
+| `--wal-dir` | `./data/wal` | Write-ahead log directory. |
+| `--wal-sync-data` | `true` | `fsync` WAL writes. |
+| `--wal-retention-time` | `1h` | WAL retention. |
+| `--notifications-retention-time` | `1h` | Undelivered notification retention. |
+| `--db-cache-size-mb` | `100` | Shared Pebble block-cache size. |
+| `--auth-provider-name` | — | Auth provider; currently `oidc`. |
+| `--auth-provider-params` | — | Auth provider configuration (JSON). See [security](../deployment/security.mdx). |
+| `--tls-*`, `--internal-tls-*`, `--peer-tls-*` | — | TLS for public, internal, and peer endpoints respectively. Each group exposes `-cert-file`, `-key-file`, `-min-version`, `-max-version`, `-trusted-ca-file`, `-insecure-skip-verify`, `-client-auth`. |
+
+### `oxia coordinator`
+
+Run the coordinator. One active instance per cluster; other instances can run in standby
+using the Raft metadata provider for high availability.
+
+```shell
+oxia coordinator --cconfig /etc/oxia/cluster.yaml --metadata configmap
+```
+
+| Flag | Default | Purpose |
+|---|---|---|
+| `--cconfig` | — | Cluster configuration file (namespaces, replication factor, server list). |
+| `--sconfig` | — | Server configuration file. |
+| `--metadata` | `file` | Cluster-status provider: `file`, `configmap`, `raft`, or `memory`. |
+| `--file-clusters-status-path` | `data/cluster-status.json` | Cluster-status path when `metadata=file`. |
+| `--k8s-namespace` | — | Kubernetes namespace for the status ConfigMap. |
+| `--k8s-configmap-name` | — | ConfigMap name when `metadata=configmap`. |
+| `--raft-address` | — | Raft bind address when `metadata=raft`. |
+| `--raft-data-dir` | `data/raft` | Raft data directory. |
+| `--raft-bootstrap-nodes` | — | Comma-separated list of peers for bootstrapping the Raft group. |
+| `-a, --admin-addr` | `0.0.0.0:6651` | Admin service bind address (`OxiaAdmin` gRPC service). |
+| `-i, --internal-addr` | `0.0.0.0:6649` | Internal bind address (coordinator ↔ server). |
+| `-m, --metrics-addr` | `0.0.0.0:8080` | Metrics bind address. |
+| `--tls-*`, `--peer-tls-*` | — | TLS for the admin endpoint and for peer Raft traffic. |
+
+## Data operations
+
+`oxia client` groups the subcommands that read and write records. They all connect to a
+storage node on its public port.
+
+Common flags for every `oxia client` subcommand:
+
+| Flag | Default | Purpose |
+|---|---|---|
+| `-a, --service-address` | `localhost:6648` | Storage node address. |
+| `-n, --namespace` | `default` | Namespace to operate on. |
+| `--request-timeout` | `30s` | Per-request timeout. |
+
+### `oxia client put`
+
+Insert or update a record.
+
+```shell
+oxia client put my-key my-value
+oxia client put my-key -c < payload.bin        # read value from stdin
+```
+
+| Flag | Default | Purpose |
+|---|---|---|
+| `-c, --std-in` | `false` | Read the value from stdin. |
+| `-e, --expected-version` | `-1` | If set, succeed only when the current version matches (CAS). |
+| `-p, --partition-key` | — | Route the operation using this key instead of the record key. |
+| `-d, --sequence-keys-deltas` | `[]` | One or more deltas applied to the sequence counters appended to the key. |
+
+### `oxia client get`
+
+Read a record.
+
+```shell
+oxia client get my-key -v     # include the version metadata
+```
+
+| Flag | Default | Purpose |
+|---|---|---|
+| `-v, --include-version` | `false` | Include the `Version` object in the output. |
+| `-t, --comparison-type` | `equal` | Key comparison: `equal`, `floor`, `ceiling`, `lower`, `higher`. |
+| `-p, --partition-key` | — | Routing override. |
+| `--index` | — | Read via a [secondary index](../features/secondary-indexes.mdx). |
+| `--hex` | `false` | Print the value as hex. |
+
+### `oxia client delete`
+
+Delete a record.
+
+| Flag | Default | Purpose |
+|---|---|---|
+| `-e, --expected-version` | `-1` | CAS: delete only if the current version matches. |
+| `-p, --partition-key` | — | Routing override. |
+
+### `oxia client delete-range`
+
+Delete every record whose key is in `[key-min, key-max)`.
+
+```shell
+oxia client delete-range -s /users/ -e /users//
+```
+
+| Flag | Default | Purpose |
+|---|---|---|
+| `-s, --key-min` | — | Range start, inclusive. |
+| `-e, --key-max` | — | Range end, exclusive. |
+| `-p, --partition-key` | — | Routing override. |
+
+### `oxia client list`
+
+Stream the keys whose values fall in `[key-min, key-max)`; values are not returned.
+
+| Flag | Default | Purpose |
+|---|---|---|
+| `-s, --key-min` | — | Range start, inclusive. |
+| `-e, --key-max` | — | Range end, exclusive. |
+| `-p, --partition-key` | — | Routing override. |
+| `--index` | — | List from a secondary index instead of the primary key space. |
+| `--internal-keys` | `false` | Include Oxia's own internal keys. |
+
+### `oxia client range-scan`
+
+Stream both keys and values in `[key-min, key-max)`.
+
+| Flag | Default | Purpose |
+|---|---|---|
+| `-s, --key-min` | — | Range start, inclusive. |
+| `-e, --key-max` | — | Range end, exclusive. |
+| `-p, --partition-key` | — | Routing override. |
+| `--index` | — | Scan using a secondary index. |
+| `--internal-keys` | `false` | Include internal keys. |
+| `-v, --include-version` | `false` | Include the version with each record. |
+| `--hex` | `false` | Print values as hex. |
+
+### `oxia client notifications`
+
+Follow the [notifications](../features/notifications.mdx) stream for the namespace. No
+flags beyond the common ones.
+
+### `oxia client sequence-updates`
+
+Follow the stream of new [sequence keys](../features/sequence-keys.mdx) for a prefix.
+
+```shell
+oxia client sequence-updates /events/ --partition-key /events/
+```
+
+| Flag | Default | Purpose |
+|---|---|---|
+| `-p, --partition-key` | — | Required. Routes to the shard holding the sequence prefix. |
+
+## Cluster administration
+
+`oxia admin` groups the operator-facing commands. They connect to the coordinator's
+admin port.
+
+Common flag:
+
+| Flag | Default | Purpose |
+|---|---|---|
+| `--admin-address` | `localhost:6651` | Coordinator admin address. |
+
+### `oxia admin list-namespaces`
+
+Enumerate configured namespaces. No subcommand-specific flags.
+
+### `oxia admin list-nodes`
+
+Enumerate storage nodes with their public and internal addresses and metadata. No
+subcommand-specific flags.
+
+### `oxia admin split-shard`
+
+Manually trigger a shard split. Usually reserved for operational tuning; automatic
+splitting is also available.
+
+| Flag | Default | Purpose |
+|---|---|---|
+| `--namespace` | `default` | Namespace of the shard to split. |
+| `--shard` | `-1` | Shard ID to split. Required. |
+| `--split-point` | — | Explicit hash split point; defaults to the shard's midpoint. |
+
+## Utilities
+
+### `oxia health`
+
+Probes a server's gRPC health check. Exit code is non-zero on failure — suitable for
+Kubernetes readiness/liveness probes.
+
+| Flag | Default | Purpose |
+|---|---|---|
+| `--host` | — | Target host. |
+| `--port` | `6649` | Target port (internal port by default). |
+| `--service` | — | gRPC health-check service name. |
+| `--timeout` | `10s` | Probe timeout. |
+
+### `oxia perf`
+
+Built-in load generator. Useful for smoke-testing a cluster without pulling in the
+separate [benchmark tool](https://github.com/oxia-db/benchmark).
+
+| Flag | Default | Purpose |
+|---|---|---|
+| `-a, --service-address` | `localhost:6648` | Storage node address. |
+| `-n, --namespace` | `default` | Namespace. |
+| `-r, --rate` | `100` | Total request rate (ops/s). |
+| `-p, --read-write-percent` | `80` | Percentage of reads in the mix. |
+| `-s, --value-size` | `128` | Value size in bytes. |
+| `--keys-cardinality` | `1000` | Number of distinct keys in the working set. |
+| `--random-payload` | `false` | Use random bytes for each write. |
+| `--batch-linger` | `5ms` | Client-side batching linger. |
+| `--max-requests-per-batch` | `1000` | Maximum operations per batched request. |
+| `--request-timeout` | `30s` | Per-request timeout. |
+
+### `oxia config create-schema`
+
+Emit the JSON schema for the cluster configuration file. Pipe into a validator or IDE
+helper to get completion and validation when editing `config.yaml`.
+
+## Advanced / debugging
+
+These commands operate directly on on-disk state and should usually be run offline against
+a stopped node.
+
+### `oxia wal`
+
+Introspect the write-ahead log of a single shard.
+
+Common flags:
+
+| Flag | Default | Purpose |
+|---|---|---|
+| `--wal-dir` | `data/wal` | WAL root directory. |
+| `--namespace` | `default` | Namespace. |
+| `--shard` | — | Shard ID. |
+
+Subcommands: `scan` (dump entries), `truncate` (cut the log at a given index),
+`perf` (WAL-level throughput test).
+
+### `oxia pebble`
+
+Pebble DB introspection tooling, forwarded from the upstream Pebble CLI. Subcommands:
+`blob`, `db`, `find`, `lsm`, `manifest`, `remotecat`, `sstable`, `wal`. Each has its own
+flags; run `oxia pebble <subcommand> --help` for details.
