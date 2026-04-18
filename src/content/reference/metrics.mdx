@@ -1,0 +1,231 @@
+---
+sidebarTitle: Metrics
+---
+
+# Metrics Reference
+
+Oxia exposes OpenTelemetry metrics on every process. They are collected via the
+Prometheus registry by default and scraped at `/metrics` on the metrics bind address —
+`0.0.0.0:8080` out of the box. This page enumerates the metrics each process publishes
+and what each one means. Pre-built Grafana dashboards that use these metrics are in the
+Oxia repository under
+[`deploy/dashboards`](https://github.com/oxia-db/oxia/tree/main/deploy/dashboards).
+
+## Conventions
+
+- All metric names are prefixed with `oxia_`. Client SDK metrics use `oxia_client_*`,
+  storage-node metrics use `oxia_server_*` / `oxia_dataserver_*`, and coordinator metrics
+  use `oxia_coordinator_*`.
+- Latency histograms are in milliseconds. Byte counters and gauges are in bytes; plain
+  counters are dimensionless (`count`).
+- Most storage-node metrics carry two labels: `oxia_namespace` and `shard`.
+- Histograms are published with Prometheus's standard `_bucket` / `_sum` / `_count`
+  suffixes; counters that wrap a timer (e.g. `oxia_client_op`) publish `_sum` and
+  `_count`.
+
+## Client metrics
+
+Emitted by the Go SDK when a `MeterProvider` is configured (`WithMeterProvider` or
+`WithGlobalMeterProvider`). The metrics carry a `type` label identifying the operation
+(`put`, `delete`, `delete_range`, `get`) and a success label.
+
+| Name | Type | Unit | Purpose |
+|---|---|---|---|
+| `oxia_client_op` | timer | ms | Time for a single operation (by `type`). |
+| `oxia_client_op_value` | histogram | bytes | Size of the value on put / get operations. |
+| `oxia_client_batch_total` | timer | ms | Total time for a batched request, including batch linger. |
+| `oxia_client_batch_exec` | timer | ms | Server-side execution time for a batch. |
+| `oxia_client_batch_request` | histogram | count | Number of operations per batched request. |
+| `oxia_client_batch_value` | histogram | bytes | Total payload size of a batched request. |
+
+## Storage-node metrics
+
+Published at `/metrics` on every `oxia server` (and the standalone binary).
+
+### Role counters
+
+| Name | Type | Unit | Purpose |
+|---|---|---|---|
+| `oxia_server_leaders_count` | up-down counter | count | Shards this node is currently leading. |
+| `oxia_server_followers_count` | up-down counter | count | Shards this node is currently following. |
+
+### Request counts and latencies (logical DB layer)
+
+| Name | Type | Unit | Purpose |
+|---|---|---|---|
+| `oxia_server_db_puts` | counter | count | `Put` operations applied. |
+| `oxia_server_db_deletes` | counter | count | `Delete` operations applied. |
+| `oxia_server_db_delete_ranges` | counter | count | `DeleteRange` operations applied. |
+| `oxia_server_db_gets` | counter | count | `Get` operations served. |
+| `oxia_server_db_lists` | counter | count | `List` operations served. |
+| `oxia_server_db_range_scans` | counter | count | `RangeScan` operations served. |
+| `oxia_server_db_get_sequence_updates` | counter | count | `GetSequenceUpdates` subscriptions opened. |
+| `oxia_server_db_batch_write_latency` | histogram | ms | Time to apply a write batch to the DB. |
+| `oxia_server_db_get_latency` | histogram | ms | Time to serve a `Get`. |
+| `oxia_server_db_list_latency` | histogram | ms | Time to serve a `List`. |
+
+### Replication (leader side)
+
+| Name | Type | Unit | Purpose |
+|---|---|---|---|
+| `oxia_server_leader_write_latency` | histogram | ms | Time to replicate and commit a write as leader. |
+| `oxia_server_leader_head_offset` | gauge | offset | Head (latest uncommitted) WAL offset of the shard. |
+| `oxia_server_leader_commit_offset` | gauge | offset | Commit (durable-on-quorum) WAL offset of the shard. |
+
+### Replication (follower / observer side)
+
+| Name | Type | Unit | Purpose |
+|---|---|---|---|
+| `oxia_server_follower_write_latency` | histogram | ms | Time to apply replicated writes on a follower. |
+| `oxia_server_follower_ack_offset` | gauge | offset | Per-follower ack offset. Labelled by follower identity. |
+| `oxia_server_observer_ack_offset` | gauge | offset | Per-observer ack offset. |
+
+### Snapshots
+
+Emitted when a new replica catches up via a full DB snapshot.
+
+| Name | Type | Unit | Purpose |
+|---|---|---|---|
+| `oxia_server_snapshots_started` | counter | count | Full-snapshot transfers initiated (to followers). |
+| `oxia_server_snapshots_completed` | counter | count | Full-snapshot transfers completed. |
+| `oxia_server_snapshots_failed` | counter | count | Full-snapshot transfers that failed. |
+| `oxia_server_snapshots_sent` | counter | bytes | Data sent during snapshot transfer. |
+| `oxia_server_snapshots_transfer_time` | histogram | ms | Duration of a snapshot transfer. |
+| `oxia_server_observer_snapshots_started` | counter | count | Same, for observer replicas. |
+| `oxia_server_observer_snapshots_completed` | counter | count | |
+| `oxia_server_observer_snapshots_failed` | counter | count | |
+| `oxia_server_observer_snapshots_sent` | counter | bytes | |
+| `oxia_server_observer_snapshots_transfer_time` | histogram | ms | |
+
+### WAL
+
+| Name | Type | Unit | Purpose |
+|---|---|---|---|
+| `oxia_server_wal_append` | counter | bytes | Bytes appended to the WAL. |
+| `oxia_server_wal_append_latency` | histogram | ms | Append latency (excluding fsync). |
+| `oxia_server_wal_sync_latency` | histogram | ms | `fsync` latency on the WAL file. |
+| `oxia_server_wal_read` | counter | bytes | Bytes read from the WAL (replication, recovery). |
+| `oxia_server_wal_read_latency` | histogram | ms | Read latency. |
+| `oxia_server_wal_trim` | counter | count | Retention-driven trim operations. |
+| `oxia_server_wal_read_errors` | counter | count | I/O errors on WAL reads. |
+| `oxia_server_wal_write_errors` | counter | count | I/O errors on WAL writes. |
+| `oxia_server_wal_entries` | gauge | count | Currently active entries in the WAL. |
+
+### KV store (low-level Pebble batching)
+
+| Name | Type | Unit | Purpose |
+|---|---|---|---|
+| `oxia_server_kv_batch_commit_latency` | histogram | ms | Time to commit a Pebble write batch. |
+| `oxia_server_kv_read_latency` | histogram | ms | Pebble read latency. |
+| `oxia_server_kv_write` | counter | bytes | Bytes written to Pebble. |
+| `oxia_server_kv_read` | counter | bytes | Bytes read from Pebble. |
+| `oxia_server_kv_write_ops` | counter | count | Pebble write ops. |
+| `oxia_server_kv_write_errors` | counter | count | Write errors. |
+| `oxia_server_kv_read_errors` | counter | count | Read errors. |
+| `oxia_server_kv_batch_size` | histogram | bytes | Size of each Pebble write batch. |
+| `oxia_server_kv_batch_count` | histogram | count | Operations per Pebble write batch. |
+
+### Pebble internals
+
+Pebble exposes its own internal counters. Oxia re-publishes them under the
+`oxia_server_kv_pebble_*` prefix.
+
+| Name | Type | Unit | Purpose |
+|---|---|---|---|
+| `oxia_server_kv_pebble_max_cache_size` | gauge | bytes | Block-cache capacity. |
+| `oxia_server_kv_pebble_block_cache_used` | gauge | bytes | Block-cache in-use bytes. |
+| `oxia_server_kv_pebble_block_cache_hits` | gauge | count | Cumulative hits. |
+| `oxia_server_kv_pebble_block_cache_misses` | gauge | count | Cumulative misses. |
+| `oxia_server_kv_pebble_read_iterators` | gauge | count | Iterators currently open. |
+| `oxia_server_kv_pebble_compactions_total` | gauge | count | Compactions performed. |
+| `oxia_server_kv_pebble_compaction_debt` | gauge | bytes | Estimated bytes still to compact. |
+| `oxia_server_kv_pebble_flush_total` | gauge | count | Memtable flushes. |
+| `oxia_server_kv_pebble_flush` | gauge | bytes | Bytes flushed. |
+| `oxia_server_kv_pebble_memtable_size` | gauge | bytes | Memtable size. |
+| `oxia_server_kv_pebble_disk_space` | gauge | bytes | Total size of all DB files. |
+| `oxia_server_kv_pebble_num_files_total` | gauge | count | Total SST files. |
+| `oxia_server_kv_pebble_read` | gauge | bytes | Bytes read (LSM level). |
+| `oxia_server_kv_pebble_write_amplification_percent` | gauge | count | Write amplification percentage. |
+| `oxia_server_kv_pebble_per_level_num_files` | gauge | count | Files per LSM level (labelled `level`). |
+| `oxia_server_kv_pebble_per_level_size` | gauge | bytes | Size per level. |
+| `oxia_server_kv_pebble_per_level_read` | gauge | bytes | Bytes read per level. |
+
+### Checksums
+
+| Name | Type | Unit | Purpose |
+|---|---|---|---|
+| `oxia_dataserver_db_checksum` | gauge | count | Current DB checksum — used by the checksum scheduler to detect replica divergence. |
+| `oxia_dataserver_wal_checksum` | gauge | count | Current WAL checksum. |
+
+### Notifications
+
+| Name | Type | Unit | Purpose |
+|---|---|---|---|
+| `oxia_server_notifications_read` | counter | count | Notification events read by clients. |
+| `oxia_server_notifications_read_batches` | counter | count | Notification batches delivered. |
+
+### Sessions
+
+| Name | Type | Unit | Purpose |
+|---|---|---|---|
+| `oxia_server_sessions_created` | counter | count | Sessions created. |
+| `oxia_server_sessions_closed` | counter | count | Sessions closed explicitly. |
+| `oxia_server_sessions_expired` | counter | count | Sessions expired (missed heartbeats / partition). |
+| `oxia_server_session_active` | gauge | count | Sessions currently active. |
+
+### Shard assignments
+
+| Name | Type | Unit | Purpose |
+|---|---|---|---|
+| `oxia_server_shards_assignments_active_clients` | gauge | count | Clients currently subscribed to the `GetShardAssignments` stream. |
+
+## Coordinator metrics
+
+Published at `/metrics` on the `oxia coordinator` process.
+
+### Leader election
+
+| Name | Type | Unit | Purpose |
+|---|---|---|---|
+| `oxia_coordinator_leader_election_latency` | histogram | ms | End-to-end leader-election duration. |
+| `oxia_coordinator_leader_election_failed` | counter | count | Failed leader elections. |
+| `oxia_coordinator_new_term_quorum_latency` | histogram | ms | Time to advance the ensemble to a new term. |
+| `oxia_coordinator_become_leader_latency` | histogram | ms | Time from election to the new leader serving traffic. |
+| `oxia_coordinator_term` | gauge | count | Current term of each shard. |
+
+### Node health
+
+| Name | Type | Unit | Purpose |
+|---|---|---|---|
+| `oxia_coordinator_node_health_checks_failed` | counter | count | Health-check failures observed against a data server. |
+| `oxia_coordinator_node_running` | gauge | count | `1` if the coordinator considers the node alive, `0` otherwise. |
+
+### Metadata persistence
+
+| Name | Type | Unit | Purpose |
+|---|---|---|---|
+| `oxia_coordinator_metadata_get_latency` | histogram | ms | Time to read coordinator metadata from the backing provider. |
+| `oxia_coordinator_metadata_store_latency` | histogram | ms | Time to store coordinator metadata. |
+| `oxia_coordinator_metadata_size` | gauge | bytes | Size of the coordinator metadata. |
+
+## Scraping
+
+Every Oxia process exposes a Prometheus `/metrics` endpoint on its metrics bind address.
+Defaults:
+
+- Storage node: `0.0.0.0:8080` (override with `-m, --metrics-addr` or
+  `observability.metric.bindAddress`).
+- Coordinator: same.
+- Standalone: same.
+
+On Kubernetes the Helm chart ships a `ServiceMonitor` for the Prometheus operator; see
+[Kubernetes resources](../deployment/kubernetes/resources.mdx).
+
+## Source of truth
+
+Metric registrations are spread across the relevant subsystems in the Oxia source:
+
+- [`oxia/internal/metrics/`](https://github.com/oxia-db/oxia/tree/main/oxia/internal/metrics) — client SDK metrics.
+- [`oxiad/coordinator/controller/`](https://github.com/oxia-db/oxia/tree/main/oxiad/coordinator/controller) — coordinator election, health, and metadata metrics.
+- [`oxiad/dataserver/`](https://github.com/oxia-db/oxia/tree/main/oxiad/dataserver) — every `oxia_server_*` metric (DB, WAL, KV, sessions, snapshots).
+- [`common/metric/`](https://github.com/oxia-db/oxia/tree/main/common/metric) — the metric helpers and labelling conventions.
