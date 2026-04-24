@@ -34,7 +34,7 @@ For example, given the following keys, the storage order would be:
 
 Querying for the direct children of `/xyz/`:
 
-<Tabs items={['Go', 'Java', 'Python', 'CLI']}>
+<Tabs items={['Go', 'Java', 'Python', 'Node.js', 'CLI']}>
     <Tabs.Tab>
         ```go
         keys, _ := client.List(context.Background(), "/xyz/", "/xyz//")
@@ -51,6 +51,12 @@ Querying for the direct children of `/xyz/`:
         ```python
         keys = client.list("/xyz/", "/xyz//")
         # Returns: ["/xyz/A", "/xyz/B", "/xyz/C"]
+        ```
+    </Tabs.Tab>
+    <Tabs.Tab>
+        ```ts
+        const keys = await client.list('/xyz/', '/xyz//');
+        // Returns: ["/xyz/A", "/xyz/B", "/xyz/C"]
         ```
     </Tabs.Tab>
     <Tabs.Tab>

@@ -30,7 +30,7 @@ are routed to the same shard.
 
 ## Using sequence keys
 
-<Tabs items={['Go', 'Java', 'Python', 'CLI']}>
+<Tabs items={['Go', 'Java', 'Python', 'Node.js', 'CLI']}>
     <Tabs.Tab>
         ```go
         // Write a record with a server-assigned sequence key.
@@ -62,6 +62,17 @@ are routed to the same shard.
         ```
     </Tabs.Tab>
     <Tabs.Tab>
+        ```ts
+        // Write a record with a server-assigned sequence key.
+        // The final key will be something like "/events/00000000000000000001"
+        const { key } = await client.put('/events/', 'event-data', {
+          sequenceKeysDeltas: [1],
+          partitionKey: '/events/',
+        });
+        console.log('Inserted at:', key);
+        ```
+    </Tabs.Tab>
+    <Tabs.Tab>
         ```shell
         $ oxia client put /events/ -c --partition-key /events/ --sequence-keys-deltas 1 <<< "event-data"
         ```
@@ -88,7 +99,7 @@ insertedKey, _, err := client.Put(context.Background(),
 Clients can subscribe to receive updates whenever new sequence keys are generated for a given
 prefix. This is useful for consumers that need to react to new entries.
 
-<Tabs items={['Go', 'Java', 'Python', 'CLI']}>
+<Tabs items={['Go', 'Java', 'Python', 'Node.js', 'CLI']}>
     <Tabs.Tab>
         ```go
         ch, err := client.GetSequenceUpdates(context.Background(),
@@ -113,6 +124,20 @@ prefix. This is useful for consumers that need to react to new entries.
         for key in client.get_sequence_updates("/events/",
                                                partition_key="/events/"):
             print("New sequence key:", key)
+        ```
+    </Tabs.Tab>
+    <Tabs.Tab>
+        ```ts
+        const updates = client.getSequenceUpdates('/events/', {
+          partitionKey: '/events/',
+        });
+        try {
+          for await (const key of updates) {
+            console.log('New sequence key:', key);
+          }
+        } finally {
+          updates.close();
+        }
         ```
     </Tabs.Tab>
     <Tabs.Tab>
