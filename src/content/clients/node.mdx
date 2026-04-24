@@ -1,0 +1,229 @@
+---
+sidebarTitle: Node.js
+---
+
+# Node.js Client SDK
+
+
+## Installing Node.js client SDK
+
+```shell
+npm install @oxia-db/client
+```
+
+The package is published on [npm as `@oxia-db/client`](https://www.npmjs.com/package/@oxia-db/client).
+TSDoc reference documentation is available at
+https://oxia-db.github.io/oxia-client-node/api/.
+
+## Client API
+
+The Node.js client is fully asynchronous — every operation returns a
+`Promise`, and streaming operations return an `AsyncIterable`. It targets
+Node.js 18+ and ships with TypeScript type definitions.
+
+### Initializing the client
+
+To use the Oxia client, create an instance via `OxiaClient.connect()`.
+Once created, a client can be used from multiple async contexts until
+`close()` is called.
+
+```ts
+import { OxiaClient } from '@oxia-db/client';
+
+const client = await OxiaClient.connect('localhost:6648');
+```
+
+When creating the client it is possible to pass several options:
+
+```ts
+const client = await OxiaClient.connect('localhost:6648', {
+  namespace: 'my-namespace',
+  clientIdentifier: 'my-client-identity',
+});
+```
+
+Available `OxiaClient.connect()` options:
+
+| Option | Type | Description | Default |
+|---|---|---|---|
+| `namespace` | `string` | Oxia namespace to use. | `"default"` |
+| `sessionTimeoutMs` | `number` | Session timeout for ephemeral records, in milliseconds. | `30000` |
+| `heartbeatIntervalMs` | `number` | Heartbeat cadence. Must be `<` `sessionTimeoutMs`. | `max(sessionTimeoutMs/10, 2000ms)` |
+| `clientIdentifier` | `string` | Stable client identity attached to ephemeral records. | Random UUID |
+| `requestTimeoutMs` | `number` | Deadline for each unary RPC. Long-lived streams are unbounded. | `30000` |
+| `initTimeoutMs` | `number` | Timeout for the initial shard-assignment fetch. | `30000` |
+| `authentication` | `Authentication` | Credentials attached as gRPC metadata. See `TokenAuthentication`. | `undefined` |
+
+For the full parameter list see the
+[OxiaClient.connect TSDoc](https://oxia-db.github.io/oxia-client-node/api/classes/OxiaClient.html#connect).
+
+### Writing records
+
+```ts
+import { EXPECTED_RECORD_DOES_NOT_EXIST } from '@oxia-db/client';
+
+// Write a record to Oxia with the specified key and value, and with the
+// expectation that the record does not already exist.
+const first = await client.put('my-key', 'value-1', {
+  expectedVersionId: EXPECTED_RECORD_DOES_NOT_EXIST,
+});
+
+// Write a record with the expectation that it has not changed since the
+// previous write. If there was any change, the operation will fail.
+const second = await client.put('my-key', 'value-2', {
+  expectedVersionId: first.version.versionId,
+});
+
+// Ephemeral record: deleted automatically when the client session ends.
+await client.put('/workers/worker-1', 'host:port', { ephemeral: true });
+
+// Atomic sequence key: server appends a monotonic suffix; requires a partition key.
+const { key } = await client.put('/events/', 'event-data', {
+  sequenceKeysDeltas: [1],
+  partitionKey: '/events/',
+});
+
+// Attach a secondary index entry at write time.
+await client.put('/offset/12345', '...', {
+  secondaryIndexes: { partition: 'p-17' },
+});
+```
+
+`put()` options:
+
+| Option | Description |
+|---|---|
+| `partitionKey` | Route to a specific shard (co-locate related keys). |
+| `expectedVersionId` | Conditional write; use `EXPECTED_RECORD_DOES_NOT_EXIST` to assert absence. |
+| `ephemeral` | Bind the record to the client session — see [ephemerals](../features/ephemerals.mdx). |
+| `sequenceKeysDeltas` | Server-assigned monotonic suffixes — see [sequence keys](../features/sequence-keys.mdx). |
+| `secondaryIndexes` | `{ indexName: secondaryKey }` — see [secondary indexes](../features/secondary-indexes.mdx). |
+
+Full reference:
+[put() method TSDoc](https://oxia-db.github.io/oxia-client-node/api/classes/OxiaClient.html#put).
+
+### Reading records
+
+Reading the value of a record:
+
+```ts
+import { ComparisonType } from '@oxia-db/client';
+
+const { key, value, version } = await client.get('my-key');
+console.log(new TextDecoder().decode(value));
+
+// Metadata-only read (skips the value payload).
+const meta = await client.get('my-key', { includeValue: false });
+
+// Range-style Get: returns the closest key ≤ the lookup key.
+const floor = await client.get('/users/50', {
+  comparisonType: ComparisonType.FLOOR,
+});
+```
+
+`get()` options:
+
+| Option | Description |
+|---|---|
+| `comparisonType` | `EQUAL` (default), `FLOOR`, `CEILING`, `LOWER`, `HIGHER`. Non-equal modes scan all shards unless `partitionKey` is set. |
+| `includeValue` | Set to `false` for a metadata-only read. |
+| `partitionKey` | Route to a specific shard. |
+| `useIndex` | Look up via a named [secondary index](../features/secondary-indexes.mdx). |
+
+Full reference:
+[get() method TSDoc](https://oxia-db.github.io/oxia-client-node/api/classes/OxiaClient.html#get).
+
+### Deleting records
+
+Delete a single record by key. Supports conditional deletes using version-based expectations.
+
+```ts
+// Unconditional delete
+await client.delete('my-key');
+
+// Conditional delete: only succeed if the version matches
+await client.delete('my-key', { expectedVersionId: version.versionId });
+```
+
+All the options for the delete operation are available in the
+[delete() method TSDoc](https://oxia-db.github.io/oxia-client-node/api/classes/OxiaClient.html#delete).
+
+### Deleting a range of records
+
+Delete all records whose keys fall within `[min, max)`:
+
+```ts
+await client.deleteRange('/users/', '/users//');
+```
+
+Without `partitionKey`, the call fans out to every shard. Pass
+`partitionKey` to scope the delete to a single shard.
+
+### Listing keys
+
+List keys in `[min, max)` without fetching values:
+
+```ts
+const keys = await client.list('/users/', '/users//');
+for (const key of keys) {
+  console.log(key);
+}
+
+// Narrow to a single shard via partitionKey, or query a secondary index via useIndex.
+const scoped = await client.list('/users/', '/users//', { partitionKey: '/users/' });
+const byEmail = await client.list('', '\xff', { useIndex: 'email' });
+```
+
+### Scanning records
+
+Scan records in a key range, returning both keys and values. The result
+is an `AsyncIterable`, so records stream as they arrive — break out of
+the loop to cancel the underlying server streams.
+
+```ts
+const decoder = new TextDecoder();
+for await (const { key, value, version } of client.rangeScan('/users/', '/users//')) {
+  console.log(`key: ${key}, value: ${decoder.decode(value)}, version: ${version.versionId}`);
+}
+
+// With a secondary index.
+for await (const { key } of client.rangeScan('', '\xff', { useIndex: 'email' })) {
+  console.log(key);
+}
+```
+
+`list()` and `rangeScan()` both accept `partitionKey` and `useIndex`.
+
+### Sessions and ephemerals
+
+Sessions are managed transparently: the first `put(..., { ephemeral: true })`
+creates a per-shard session, the client SDK heartbeats it, and ephemerals
+are cleaned up when the client closes or the session expires. See
+[ephemerals](../features/ephemerals.mdx) for the lifecycle details.
+
+### Notifications and sequence updates
+
+Both streams are exposed as `CloseableAsyncIterable<T>` — iterate with
+`for await (...)` and call `.close()` when you're done to end the
+subscription.
+
+```ts
+// Change feed for the namespace.
+const notifications = client.getNotifications();
+for await (const n of notifications) {
+  console.log(n.type, n.key, n.versionId);
+  if (shouldStop()) notifications.close();
+}
+
+// Updates for a specific sequence prefix.
+const updates = client.getSequenceUpdates('/events/', { partitionKey: '/events/' });
+for await (const latestKey of updates) {
+  console.log(`New sequence key: ${latestKey}`);
+}
+```
+
+See [notifications](../features/notifications.mdx) and
+[sequence keys](../features/sequence-keys.mdx) for semantics.
+
+For the complete reference see the
+[TSDoc reference](https://oxia-db.github.io/oxia-client-node/api/).
