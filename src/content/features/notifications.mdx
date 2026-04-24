@@ -11,7 +11,7 @@ of failures.
 
 ## Subscribing to notifications
 
- <Tabs items={['Go', 'Java', 'Python', 'CLI']}>
+ <Tabs items={['Go', 'Java', 'Python', 'Node.js', 'CLI']}>
         <Tabs.Tab>
             ```go
             notifications, err := client.GetNotifications()
@@ -33,6 +33,18 @@ of failures.
             ```python
             for n in client.get_notifications():
                 print(n)
+            ```
+        </Tabs.Tab>
+        <Tabs.Tab>
+            ```ts
+            const notifications = client.getNotifications();
+            try {
+              for await (const n of notifications) {
+                console.log(n);
+              }
+            } finally {
+              notifications.close();
+            }
             ```
         </Tabs.Tab>
         <Tabs.Tab>

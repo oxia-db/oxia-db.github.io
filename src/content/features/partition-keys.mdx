@@ -32,7 +32,7 @@ All operations that need to interact with co-located records should use the same
 The `PartitionKey` option is available on all client operations: `Put`, `Get`, `Delete`,
 `DeleteRange`, `List`, and `RangeScan`.
 
-<Tabs items={['Go', 'Java', 'Python', 'CLI']}>
+<Tabs items={['Go', 'Java', 'Python', 'Node.js', 'CLI']}>
     <Tabs.Tab>
         ```go
         // Store related records on the same shard
@@ -72,6 +72,27 @@ The `PartitionKey` option is available on all client operations: `Put`, `Get`, `
                    partition_key="/users/123")
         client.put("/users/123/settings", b"settings-data",
                    partition_key="/users/123")
+        ```
+    </Tabs.Tab>
+    <Tabs.Tab>
+        ```ts
+        // Store related records on the same shard
+        await client.put('/users/123/profile', 'profile-data', {
+          partitionKey: '/users/123',
+        });
+        await client.put('/users/123/settings', 'settings-data', {
+          partitionKey: '/users/123',
+        });
+
+        // List all records for user 123 (works because they share a partition key)
+        const keys = await client.list('/users/123/', '/users/123//', {
+          partitionKey: '/users/123',
+        });
+
+        // Delete all records for user 123
+        await client.deleteRange('/users/123/', '/users/123//', {
+          partitionKey: '/users/123',
+        });
         ```
     </Tabs.Tab>
     <Tabs.Tab>

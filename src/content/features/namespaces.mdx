@@ -12,7 +12,7 @@ Each namespace has its own independent key-space and set of shards.
 When creating an Oxia client, it's possible to specify the namespace to be used. If not provided,
 the client will use the `default` namespace.
 
- <Tabs items={['Go', 'Java', 'Python', 'CLI']}>
+ <Tabs items={['Go', 'Java', 'Python', 'Node.js', 'CLI']}>
         <Tabs.Tab>
             ```go
             client, err := oxia.NewClient("localhost:6648", oxia.WithNamespace("my-namespace"))
@@ -28,6 +28,13 @@ the client will use the `default` namespace.
         <Tabs.Tab>
             ```python
             client = oxia.Client("localhost:6648", namespace="my-namespace")
+            ```
+        </Tabs.Tab>
+        <Tabs.Tab>
+            ```ts
+            const client = await OxiaClient.connect('localhost:6648', {
+              namespace: 'my-namespace',
+            });
             ```
         </Tabs.Tab>
         <Tabs.Tab>
