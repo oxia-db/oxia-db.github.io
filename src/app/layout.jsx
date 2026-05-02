@@ -3,6 +3,7 @@ import { Layout, Navbar, Footer } from 'nextra-theme-docs'
 import { Head } from 'nextra/components'
 import { SiSlack } from 'react-icons/si';
 import { getPageMap } from 'nextra/page-map'
+import { GoogleAnalytics } from '@next/third-parties/google'
 import 'nextra-theme-docs/style.css'
 
 export const metadata = {
@@ -60,6 +61,7 @@ export default async function RootLayout({ children }) {
         >
           {children}
         </Layout>
+        <GoogleAnalytics gaId="G-44L7SCK5HT" />
       </body>
     </html>
   )

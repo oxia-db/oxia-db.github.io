@@ -9,6 +9,7 @@
     "start": "next start"
   },
   "dependencies": {
+    "@next/third-parties": "^16.2.4",
     "@theguild/remark-mermaid": "^0.3.0",
     "@theguild/remark-npm2yarn": "^0.3.3",
     "clsx": "^2.1.0",
