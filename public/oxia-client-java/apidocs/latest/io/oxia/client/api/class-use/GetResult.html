@@ -97,13 +97,13 @@ loadScripts(document, 'script');</script>
 <div class="col-last odd-row-color">
 <div class="block">Returns the record associated with the specified key.</div>
 </div>
-<div class="col-first even-row-color"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Iterable.html" title="class or interface in java.lang" class="external-link">Iterable</a>&lt;<a href="../GetResult.html" title="class in io.oxia.client.api">GetResult</a>&gt;</code></div>
+<div class="col-first even-row-color"><code><a href="../CloseableIterable.html" title="interface in io.oxia.client.api">CloseableIterable</a>&lt;<a href="../GetResult.html" title="class in io.oxia.client.api">GetResult</a>&gt;</code></div>
 <div class="col-second even-row-color"><span class="type-name-label">SyncOxiaClient.</span><code><a href="../SyncOxiaClient.html#rangeScan(java.lang.String,java.lang.String)" class="member-name-link">rangeScan</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;startKeyInclusive,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;endKeyExclusive)</code></div>
 <div class="col-last even-row-color">
 <div class="block">Scan any existing records within the specified range of keys.</div>
 </div>
-<div class="col-first odd-row-color"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Iterable.html" title="class or interface in java.lang" class="external-link">Iterable</a>&lt;<a href="../GetResult.html" title="class in io.oxia.client.api">GetResult</a>&gt;</code></div>
+<div class="col-first odd-row-color"><code><a href="../CloseableIterable.html" title="interface in io.oxia.client.api">CloseableIterable</a>&lt;<a href="../GetResult.html" title="class in io.oxia.client.api">GetResult</a>&gt;</code></div>
 <div class="col-second odd-row-color"><span class="type-name-label">SyncOxiaClient.</span><code><a href="../SyncOxiaClient.html#rangeScan(java.lang.String,java.lang.String,java.util.Set)" class="member-name-link">rangeScan</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;startKeyInclusive,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;endKeyExclusive,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Set.html" title="class or interface in java.util" class="external-link">Set</a>&lt;<a href="../options/RangeScanOption.html" title="interface in io.oxia.client.api.options">RangeScanOption</a>&gt;&nbsp;options)</code></div>
@@ -116,7 +116,7 @@ loadScripts(document, 'script');</script>
 <div class="table-header col-first">Modifier and Type</div>
 <div class="table-header col-second">Method</div>
 <div class="table-header col-last">Description</div>
-<div class="col-first even-row-color"><code>void</code></div>
+<div class="col-first even-row-color"><code>boolean</code></div>
 <div class="col-second even-row-color"><span class="type-name-label">RangeScanConsumer.</span><code><a href="../RangeScanConsumer.html#onNext(io.oxia.client.api.GetResult)" class="member-name-link">onNext</a><wbr>(<a href="../GetResult.html" title="class in io.oxia.client.api">GetResult</a>&nbsp;result)</code></div>
 <div class="col-last even-row-color">
 <div class="block">Invoked for each record returned by the range scan operation.</div>
