@@ -223,10 +223,12 @@ extends <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/ja
 <div class="member-signature"><span class="return-type"><a href="PutResult.html" title="class in io.oxia.client.api">PutResult</a></span>&nbsp;<span class="element-name">put</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;key,
  byte[]&nbsp;value,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Set.html" title="class or interface in java.util" class="external-link">Set</a>&lt;<a href="options/PutOption.html" title="interface in io.oxia.client.api.options">PutOption</a>&gt;&nbsp;options)</span>
-       throws <span class="exceptions"><a href="exceptions/UnexpectedVersionIdException.html" title="class in io.oxia.client.api.exceptions">UnexpectedVersionIdException</a></span></div>
+       throws <span class="exceptions"><a href="exceptions/UnexpectedVersionIdException.html" title="class in io.oxia.client.api.exceptions">UnexpectedVersionIdException</a>,
+<a href="exceptions/KeyAlreadyExistsException.html" title="class in io.oxia.client.api.exceptions">KeyAlreadyExistsException</a></span></div>
 <div class="block">Conditionally associates a value with a key if the server's versionId of the record is as
  specified, at the instant when the put is applied. The put will not be applied if the server's
- versionId of the record does not match the expectation set in the call.</div>
+ versionId of the record does not match the expectation set in the call. If you wish the put to
+ succeed only if the key does not already exist on the server, then pass the <a href="options/PutOption.html#IfRecordDoesNotExist"><code>PutOption.IfRecordDoesNotExist</code></a> value.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
 <dd><code>key</code> - The key with which the value should be associated.</dd>
@@ -237,6 +239,8 @@ extends <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/ja
 <dt>Throws:</dt>
 <dd><code><a href="exceptions/UnexpectedVersionIdException.html" title="class in io.oxia.client.api.exceptions">UnexpectedVersionIdException</a></code> - The versionId at the server did not that match supplied in
      the call.</dd>
+<dd><code><a href="exceptions/KeyAlreadyExistsException.html" title="class in io.oxia.client.api.exceptions">KeyAlreadyExistsException</a></code> - The key already exists on the server and the put was
+     conditional on it not existing (via <a href="options/PutOption.html#IfRecordDoesNotExist"><code>PutOption.IfRecordDoesNotExist</code></a>).</dd>
 </dl>
 </section>
 </li>
