@@ -71,7 +71,7 @@ loadScripts(document, 'script');</script>
 <div class="table-header col-last">Description</div>
 <div class="col-first even-row-color"><a href="class-use/AsyncOxiaClient.html#io.oxia.client.api">AsyncOxiaClient</a></div>
 <div class="col-last even-row-color">
-<div class="block">Asynchronous client for the Oxia service.</div>
+<div class="block">Non-blocking client for the Oxia service.</div>
 </div>
 <div class="col-first odd-row-color"><a href="class-use/Authentication.html#io.oxia.client.api">Authentication</a></div>
 <div class="col-last odd-row-color">
@@ -83,7 +83,7 @@ loadScripts(document, 'script');</script>
 </div>
 <div class="col-first odd-row-color"><a href="class-use/GetResult.html#io.oxia.client.api">GetResult</a></div>
 <div class="col-last odd-row-color">
-<div class="block">The result of a client get request.</div>
+<div class="block">The result of a successful get / range-scan operation.</div>
 </div>
 <div class="col-first even-row-color"><a href="class-use/Notification.html#io.oxia.client.api">Notification</a></div>
 <div class="col-last even-row-color">
@@ -91,24 +91,24 @@ loadScripts(document, 'script');</script>
 </div>
 <div class="col-first odd-row-color"><a href="class-use/OxiaClientBuilder.html#io.oxia.client.api">OxiaClientBuilder</a></div>
 <div class="col-last odd-row-color">
-<div class="block">Builder for <a href="SyncOxiaClient.html" title="interface in io.oxia.client.api"><code>SyncOxiaClient</code></a> and <a href="AsyncOxiaClient.html" title="interface in io.oxia.client.api"><code>AsyncOxiaClient</code></a>.</div>
+<div class="block">Entry point for creating an Oxia client.</div>
 </div>
 <div class="col-first even-row-color"><a href="class-use/PutResult.html#io.oxia.client.api">PutResult</a></div>
 <div class="col-last even-row-color">
-<div class="block">The result of a client get request.</div>
+<div class="block">The result of a successful put operation.</div>
 </div>
 <div class="col-first odd-row-color"><a href="class-use/RangeScanConsumer.html#io.oxia.client.api">RangeScanConsumer</a></div>
 <div class="col-last odd-row-color">
-<div class="block">Interface defining a consumer for Range Scan operations, allowing handling of chunked results,
- errors, or completion signals for a range scan process.</div>
+<div class="block">Callback used by <a href="AsyncOxiaClient.html#rangeScan(java.lang.String,java.lang.String,io.oxia.client.api.RangeScanConsumer)"><code>AsyncOxiaClient.rangeScan(String, String, RangeScanConsumer)</code></a> to deliver
+ records, errors, and the completion signal for a streaming range scan.</div>
 </div>
 <div class="col-first even-row-color"><a href="class-use/SyncOxiaClient.html#io.oxia.client.api">SyncOxiaClient</a></div>
 <div class="col-last even-row-color">
-<div class="block">Synchronous client for the Oxia service.</div>
+<div class="block">Blocking client for the Oxia service.</div>
 </div>
 <div class="col-first odd-row-color"><a href="class-use/Version.html#io.oxia.client.api">Version</a></div>
 <div class="col-last odd-row-color">
-<div class="block">Oxia record metadata.</div>
+<div class="block">Metadata associated with an Oxia record.</div>
 </div>
 </div>
 </section>
@@ -121,7 +121,7 @@ loadScripts(document, 'script');</script>
 <div class="table-header col-last">Description</div>
 <div class="col-first even-row-color"><a href="class-use/OxiaClientBuilder.html#io.oxia.client.internal">OxiaClientBuilder</a></div>
 <div class="col-last even-row-color">
-<div class="block">Builder for <a href="SyncOxiaClient.html" title="interface in io.oxia.client.api"><code>SyncOxiaClient</code></a> and <a href="AsyncOxiaClient.html" title="interface in io.oxia.client.api"><code>AsyncOxiaClient</code></a>.</div>
+<div class="block">Entry point for creating an Oxia client.</div>
 </div>
 </div>
 </section>

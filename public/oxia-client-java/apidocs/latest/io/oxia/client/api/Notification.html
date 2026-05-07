@@ -79,7 +79,22 @@ loadScripts(document, 'script');</script>
 <hr>
 <div class="type-signature"><span class="modifiers">public sealed interface </span><span class="element-name type-name-label">Notification</span>
 <span class="permits">permits <a href="Notification.KeyCreated.html" title="class in io.oxia.client.api">Notification.KeyCreated</a>, <a href="Notification.KeyDeleted.html" title="class in io.oxia.client.api">Notification.KeyDeleted</a>, <a href="Notification.KeyModified.html" title="class in io.oxia.client.api">Notification.KeyModified</a>, <a href="Notification.KeyRangeDelete.html" title="class in io.oxia.client.api">Notification.KeyRangeDelete</a></span></div>
-<div class="block">A notification from an Oxia server indicating a change to a record associated with a key.</div>
+<div class="block">A notification from an Oxia server indicating a change to a record associated with a key.
+
+ <p>Register a callback through <a href="SyncOxiaClient.html#notifications(java.util.function.Consumer)"><code>SyncOxiaClient.notifications(java.util.function.Consumer)</code></a>
+ or <a href="AsyncOxiaClient.html#notifications(java.util.function.Consumer)"><code>AsyncOxiaClient.notifications(java.util.function.Consumer)</code></a> and dispatch on the sealed
+ subtypes:
+
+ <pre><code>
+ client.notifications(n -&gt; {
+     switch (n) {
+         case Notification.KeyCreated c     -&gt; onCreated(c.key(), c.version());
+         case Notification.KeyModified m    -&gt; onModified(m.key(), m.version());
+         case Notification.KeyDeleted d     -&gt; onDeleted(d.key());
+         case Notification.KeyRangeDelete r -&gt; onRangeDeleted(r.startKeyInclusive(), r.endKeyExclusive());
+     }
+ });
+ </code></pre></div>
 </section>
 <section class="summary">
 <ul class="summary-list">

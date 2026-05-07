@@ -79,17 +79,24 @@ loadScripts(document, 'script');</script>
 <section class="class-description" id="class-description">
 <dl class="notes">
 <dt>Record Components:</dt>
-<dd><code><span id="param-versionId">versionId</span></code> - The current versionId of the record.</dd>
-<dd><code><span id="param-createdTimestamp">createdTimestamp</span></code> - The instant at which the record was created. In epoch milliseconds.</dd>
-<dd><code><span id="param-modifiedTimestamp">modifiedTimestamp</span></code> - The instant at which the record was last updated. In epoch milliseconds.</dd>
-<dd><code><span id="param-modificationsCount">modificationsCount</span></code> - The number of modifications since the record was last created.</dd>
-<dd><code><span id="param-sessionId">sessionId</span></code> - The session to which this record is scoped.</dd>
-<dd><code><span id="param-clientIdentifier">clientIdentifier</span></code> - The client to which this record was scoped.</dd>
+<dd><code><span id="param-versionId">versionId</span></code> - the current versionId of the record (monotonically increasing per record)</dd>
+<dd><code><span id="param-createdTimestamp">createdTimestamp</span></code> - the instant at which the record was first created, in epoch milliseconds</dd>
+<dd><code><span id="param-modifiedTimestamp">modifiedTimestamp</span></code> - the instant at which the record was last updated, in epoch milliseconds</dd>
+<dd><code><span id="param-modificationsCount">modificationsCount</span></code> - the number of modifications since the record was created</dd>
+<dd><code><span id="param-sessionId">sessionId</span></code> - for ephemeral records, the session to which the record is scoped</dd>
+<dd><code><span id="param-clientIdentifier">clientIdentifier</span></code> - for ephemeral records, the client to which the record is scoped</dd>
 </dl>
 <hr>
 <div class="type-signature"><span class="modifiers">public record </span><span class="element-name type-name-label">Version</span>(long&nbsp;versionId, long&nbsp;createdTimestamp, long&nbsp;modifiedTimestamp, long&nbsp;modificationsCount, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Optional.html" title="class or interface in java.util" class="external-link">Optional</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Long.html" title="class or interface in java.lang" class="external-link">Long</a>&gt;&nbsp;sessionId, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Optional.html" title="class or interface in java.util" class="external-link">Optional</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;&nbsp;clientIdentifier)
 <span class="extends-implements">extends <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Record.html" title="class or interface in java.lang" class="external-link">Record</a></span></div>
-<div class="block">Oxia record metadata.</div>
+<div class="block">Metadata associated with an Oxia record.
+
+ <p>The <code>versionId</code> is the value that drives optimistic concurrency control: pass it back
+ via <a href="options/PutOption.html#IfVersionIdEquals(long)"><code>PutOption.IfVersionIdEquals(long)</code></a> or <a href="options/DeleteOption.html#IfVersionIdEquals(long)"><code>DeleteOption.IfVersionIdEquals(long)</code></a> to make a write conditional on
+ the record not having changed since it was read.
+
+ <p><a href="#sessionId()"><code>sessionId()</code></a> and <a href="#clientIdentifier()"><code>clientIdentifier()</code></a> are present only on ephemeral records —
+ see <a href="options/PutOption.html#AsEphemeralRecord"><code>PutOption.AsEphemeralRecord</code></a>.</div>
 </section>
 <section class="summary">
 <ul class="summary-list">

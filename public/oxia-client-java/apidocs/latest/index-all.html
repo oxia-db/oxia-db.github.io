@@ -63,7 +63,7 @@ loadScripts(document, 'script');</script>
 </dd>
 <dt><a href="io/oxia/client/api/AsyncOxiaClient.html" class="type-name-link" title="interface in io.oxia.client.api">AsyncOxiaClient</a> - Interface in <a href="io/oxia/client/api/package-summary.html">io.oxia.client.api</a></dt>
 <dd>
-<div class="block">Asynchronous client for the Oxia service.</div>
+<div class="block">Non-blocking client for the Oxia service.</div>
 </dd>
 <dt><a href="io/oxia/client/api/OxiaClientBuilder.html#authentication(io.oxia.client.api.Authentication)" class="member-name-link">authentication(Authentication)</a> - Method in interface <a href="io/oxia/client/api/OxiaClientBuilder.html" title="interface in io.oxia.client.api">OxiaClientBuilder</a></dt>
 <dd>
@@ -273,7 +273,7 @@ loadScripts(document, 'script');</script>
 </dd>
 <dt><a href="io/oxia/client/api/GetResult.html" class="type-name-link" title="class in io.oxia.client.api">GetResult</a> - Record Class in <a href="io/oxia/client/api/package-summary.html">io.oxia.client.api</a></dt>
 <dd>
-<div class="block">The result of a client get request.</div>
+<div class="block">The result of a successful get / range-scan operation.</div>
 </dd>
 <dt><a href="io/oxia/client/api/GetResult.html#%3Cinit%3E(java.lang.String,byte%5B%5D,io.oxia.client.api.Version)" class="member-name-link">GetResult(String, byte[], Version)</a> - Constructor for record class <a href="io/oxia/client/api/GetResult.html" title="class in io.oxia.client.api">GetResult</a></dt>
 <dd>
@@ -353,11 +353,11 @@ loadScripts(document, 'script');</script>
 </dd>
 <dt><a href="io/oxia/client/api/exceptions/package-summary.html">io.oxia.client.api.exceptions</a> - package io.oxia.client.api.exceptions</dt>
 <dd>
-<div class="block">Defines the exceptions that can be thrown by the Oxia client.</div>
+<div class="block">Checked exceptions raised by the Oxia client.</div>
 </dd>
 <dt><a href="io/oxia/client/api/options/package-summary.html">io.oxia.client.api.options</a> - package io.oxia.client.api.options</dt>
 <dd>
-<div class="block">The definitions for options that can be passed to the Oxia client operations.</div>
+<div class="block">Per-operation options for the Oxia client.</div>
 </dd>
 <dt><a href="io/oxia/client/api/options/defs/package-summary.html">io.oxia.client.api.options.defs</a> - package io.oxia.client.api.options.defs</dt>
 <dd>&nbsp;</dd>
@@ -524,7 +524,7 @@ loadScripts(document, 'script');</script>
 </dd>
 <dt><a href="io/oxia/client/api/OxiaClientBuilder.html" class="type-name-link" title="interface in io.oxia.client.api">OxiaClientBuilder</a> - Interface in <a href="io/oxia/client/api/package-summary.html">io.oxia.client.api</a></dt>
 <dd>
-<div class="block">Builder for <a href="io/oxia/client/api/SyncOxiaClient.html" title="interface in io.oxia.client.api"><code>SyncOxiaClient</code></a> and <a href="io/oxia/client/api/AsyncOxiaClient.html" title="interface in io.oxia.client.api"><code>AsyncOxiaClient</code></a>.</div>
+<div class="block">Entry point for creating an Oxia client.</div>
 </dd>
 <dt><a href="io/oxia/client/api/exceptions/OxiaException.html" class="type-name-link" title="class in io.oxia.client.api.exceptions">OxiaException</a> - Exception in <a href="io/oxia/client/api/exceptions/package-summary.html">io.oxia.client.api.exceptions</a></dt>
 <dd>
@@ -595,7 +595,7 @@ loadScripts(document, 'script');</script>
 </dd>
 <dt><a href="io/oxia/client/api/PutResult.html" class="type-name-link" title="class in io.oxia.client.api">PutResult</a> - Record Class in <a href="io/oxia/client/api/package-summary.html">io.oxia.client.api</a></dt>
 <dd>
-<div class="block">The result of a client get request.</div>
+<div class="block">The result of a successful put operation.</div>
 </dd>
 <dt><a href="io/oxia/client/api/PutResult.html#%3Cinit%3E(java.lang.String,io.oxia.client.api.Version)" class="member-name-link">PutResult(String, Version)</a> - Constructor for record class <a href="io/oxia/client/api/PutResult.html" title="class in io.oxia.client.api">PutResult</a></dt>
 <dd>
@@ -622,8 +622,8 @@ loadScripts(document, 'script');</script>
 </dd>
 <dt><a href="io/oxia/client/api/RangeScanConsumer.html" class="type-name-link" title="interface in io.oxia.client.api">RangeScanConsumer</a> - Interface in <a href="io/oxia/client/api/package-summary.html">io.oxia.client.api</a></dt>
 <dd>
-<div class="block">Interface defining a consumer for Range Scan operations, allowing handling of chunked results,
- errors, or completion signals for a range scan process.</div>
+<div class="block">Callback used by <a href="io/oxia/client/api/AsyncOxiaClient.html#rangeScan(java.lang.String,java.lang.String,io.oxia.client.api.RangeScanConsumer)"><code>AsyncOxiaClient.rangeScan(String, String, RangeScanConsumer)</code></a> to deliver
+ records, errors, and the completion signal for a streaming range scan.</div>
 </dd>
 <dt><a href="io/oxia/client/api/options/RangeScanOption.html" class="type-name-link" title="interface in io.oxia.client.api.options">RangeScanOption</a> - Interface in <a href="io/oxia/client/api/options/package-summary.html">io.oxia.client.api.options</a></dt>
 <dd>
@@ -674,7 +674,7 @@ loadScripts(document, 'script');</script>
 </dd>
 <dt><a href="io/oxia/client/api/SyncOxiaClient.html" class="type-name-link" title="interface in io.oxia.client.api">SyncOxiaClient</a> - Interface in <a href="io/oxia/client/api/package-summary.html">io.oxia.client.api</a></dt>
 <dd>
-<div class="block">Synchronous client for the Oxia service.</div>
+<div class="block">Blocking client for the Oxia service.</div>
 </dd>
 </dl>
 <h2 class="title" id="I:T">T</h2>
@@ -768,7 +768,7 @@ loadScripts(document, 'script');</script>
 </dd>
 <dt><a href="io/oxia/client/api/Version.html" class="type-name-link" title="class in io.oxia.client.api">Version</a> - Record Class in <a href="io/oxia/client/api/package-summary.html">io.oxia.client.api</a></dt>
 <dd>
-<div class="block">Oxia record metadata.</div>
+<div class="block">Metadata associated with an Oxia record.</div>
 </dd>
 <dt><a href="io/oxia/client/api/Version.html#%3Cinit%3E(long,long,long,long,java.util.Optional,java.util.Optional)" class="member-name-link">Version(long, long, long, long, Optional&lt;Long&gt;, Optional&lt;String&gt;)</a> - Constructor for record class <a href="io/oxia/client/api/Version.html" title="class in io.oxia.client.api">Version</a></dt>
 <dd>

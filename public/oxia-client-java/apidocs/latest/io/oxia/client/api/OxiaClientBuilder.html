@@ -74,7 +74,20 @@ loadScripts(document, 'script');</script>
 <section class="class-description" id="class-description">
 <hr>
 <div class="type-signature"><span class="modifiers">public interface </span><span class="element-name type-name-label">OxiaClientBuilder</span></div>
-<div class="block">Builder for <a href="SyncOxiaClient.html" title="interface in io.oxia.client.api"><code>SyncOxiaClient</code></a> and <a href="AsyncOxiaClient.html" title="interface in io.oxia.client.api"><code>AsyncOxiaClient</code></a>.</div>
+<div class="block">Entry point for creating an Oxia client.
+
+ <p>Obtain a builder via <a href="#create(java.lang.String)"><code>create(String)</code></a> with the address of an Oxia server, configure it
+ fluently, and then call <a href="#syncClient()"><code>syncClient()</code></a> or <a href="#asyncClient()"><code>asyncClient()</code></a> to produce a <a href="SyncOxiaClient.html" title="interface in io.oxia.client.api"><code>SyncOxiaClient</code></a> or <a href="AsyncOxiaClient.html" title="interface in io.oxia.client.api"><code>AsyncOxiaClient</code></a>.
+
+ <pre><code>
+ SyncOxiaClient client = OxiaClientBuilder.create("localhost:6648")
+         .namespace("my-namespace")
+         .requestTimeout(Duration.ofSeconds(10))
+         .syncClient();
+ </code></pre>
+
+ <p>Most settings have defaults that work well for typical workloads — only override what you
+ need.</div>
 </section>
 <section class="summary">
 <ul class="summary-list">

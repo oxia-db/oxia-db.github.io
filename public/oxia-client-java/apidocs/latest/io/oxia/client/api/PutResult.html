@@ -80,12 +80,16 @@ loadScripts(document, 'script');</script>
 <dl class="notes">
 <dt>Record Components:</dt>
 <dd><code><span id="param-key">key</span></code> - the effective key stored in Oxia</dd>
-<dd><code><span id="param-version">version</span></code> - Metadata for the record associated with the key specified in the call.</dd>
+<dd><code><span id="param-version">version</span></code> - metadata describing the record after the put was applied (use <a href="Version.html#versionId()"><code>Version.versionId()</code></a> for subsequent conditional writes)</dd>
 </dl>
 <hr>
 <div class="type-signature"><span class="modifiers">public record </span><span class="element-name type-name-label">PutResult</span>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;key, <a href="Version.html" title="class in io.oxia.client.api">Version</a>&nbsp;version)
 <span class="extends-implements">extends <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Record.html" title="class or interface in java.lang" class="external-link">Record</a></span></div>
-<div class="block">The result of a client get request.</div>
+<div class="block">The result of a successful put operation.
+
+ <p>The <code>key</code> returned here is the effective key stored on the server. It usually matches
+ the key supplied to the put call; with <a href="options/PutOption.html#SequenceKeysDeltas(java.util.List)"><code>sequence-key</code></a> options the server assigns
+ the key, so callers must use this value to read the record back.</div>
 </section>
 <section class="summary">
 <ul class="summary-list">

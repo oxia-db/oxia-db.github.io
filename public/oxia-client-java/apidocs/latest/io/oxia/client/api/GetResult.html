@@ -79,14 +79,19 @@ loadScripts(document, 'script');</script>
 <section class="class-description" id="class-description">
 <dl class="notes">
 <dt>Record Components:</dt>
-<dd><code><span id="param-key">key</span></code> - The key associated with the record.</dd>
-<dd><code><span id="param-value">value</span></code> - The value associated with the key specified in the call.</dd>
-<dd><code><span id="param-version">version</span></code> - Metadata for the record associated with the key specified in the call.</dd>
+<dd><code><span id="param-key">key</span></code> - the key of the record returned by the server (may differ from the key supplied to
+     <code>get</code> when a non-equal <a href="options/GetOption.html" title="interface in io.oxia.client.api.options"><code>comparison</code></a> is used)</dd>
+<dd><code><span id="param-value">value</span></code> - the record's value, or <code>null</code> if the value was not requested</dd>
+<dd><code><span id="param-version">version</span></code> - metadata describing the record at the time it was read</dd>
 </dl>
 <hr>
 <div class="type-signature"><span class="modifiers">public record </span><span class="element-name type-name-label">GetResult</span>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;key, byte[]&nbsp;value, <a href="Version.html" title="class in io.oxia.client.api">Version</a>&nbsp;version)
 <span class="extends-implements">extends <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Record.html" title="class or interface in java.lang" class="external-link">Record</a></span></div>
-<div class="block">The result of a client get request.</div>
+<div class="block">The result of a successful get / range-scan operation.
+
+ <p>A <code>null</code> <code>GetResult</code> from a <code>get</code> call signals that no record exists for the
+ requested key. When <a href="options/GetOption.html#ExcludeValue"><code>GetOption.ExcludeValue</code></a> is used, the <code>
+ value</code> field will be <code>null</code> but <code>key</code> and <code>version</code> are still populated.</div>
 </section>
 <section class="summary">
 <ul class="summary-list">

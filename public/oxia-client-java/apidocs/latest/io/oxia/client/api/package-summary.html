@@ -67,20 +67,98 @@ loadScripts(document, 'script');</script>
 <section class="package-description" id="package-description">
 <div class="block">The public API for interacting with Oxia.
 
- <pre>
-     SyncOxiaClient client = OxiaClientBuilder.create("localhost:6648")
+ <h2>Getting started</h2>
+
+ Every client is created through <a href="OxiaClientBuilder.html" title="interface in io.oxia.client.api"><code>OxiaClientBuilder</code></a>. The builder lets
+ you produce either a <a href="SyncOxiaClient.html" title="interface in io.oxia.client.api"><code>blocking</code></a> or <a href="AsyncOxiaClient.html" title="interface in io.oxia.client.api"><code>non-blocking</code></a> client; both speak to the same Oxia cluster and
+ expose the same operations. Pick whichever fits your code style — if in doubt, start with the
+ synchronous one.
+
+ <h3>Synchronous client</h3>
+
+ <pre><code>
+ try (SyncOxiaClient client = OxiaClientBuilder.create("localhost:6648")
          .namespace("my-namespace")
-         .syncClient();
+         .syncClient()) {
 
-     PutResult res = client.put("my-key", "my-value".getBytes());
+     PutResult put = client.put("my-key", "my-value".getBytes(StandardCharsets.UTF_8));
 
-     GetResult res = client.get("my-key");
- </pre></div>
+     GetResult got = client.get("my-key");
+     if (got != null) {
+         String value = new String(got.value(), StandardCharsets.UTF_8);
+     }
+
+     boolean wasPresent = client.delete("my-key");
+ }
+ </code></pre>
+
+ <h3>Asynchronous client</h3>
+
+ <pre><code>
+ AsyncOxiaClient client = OxiaClientBuilder.create("localhost:6648")
+         .namespace("my-namespace")
+         .asyncClient()
+         .join();
+
+ client.put("my-key", "my-value".getBytes(StandardCharsets.UTF_8))
+         .thenCompose(put -&gt; client.get("my-key"))
+         .thenAccept(got -&gt; System.out.println(new String(got.value(), StandardCharsets.UTF_8)));
+ </code></pre>
+
+ <h3>Conditional puts and optimistic concurrency</h3>
+
+ <p>Operations can be made conditional by passing <a href="options/package-summary.html"><code>options</code></a>.
+ Conditional writes that fail produce an <a href="exceptions/UnexpectedVersionIdException.html" title="class in io.oxia.client.api.exceptions"><code>UnexpectedVersionIdException</code></a>.
+
+ <pre><code>
+ // Only insert if the key does not already exist.
+ client.put("my-key", value, Set.of(PutOption.IfRecordDoesNotExist));
+
+ // Read-modify-write with version check.
+ GetResult current = client.get("my-key");
+ client.put("my-key", newValue, Set.of(PutOption.IfVersionIdEquals(current.version().versionId())));
+ </code></pre>
+
+ <h3>Listing and scanning ranges</h3>
+
+ <pre><code>
+ List&lt;String&gt; keys = client.list("a", "z");
+
+ try (CloseableIterable&lt;GetResult&gt; scan = client.rangeScan("a", "z")) {
+     for (GetResult r : scan) {
+         // process r
+     }
+ }
+ </code></pre>
+
+ <h3>Watching for changes</h3>
+
+ <pre><code>
+ client.notifications(n -&gt; {
+     switch (n) {
+         case Notification.KeyCreated c  -&gt; { /* ... *\/ }
+         case Notification.KeyModified m -&gt; { /* ... *\/ }
+         case Notification.KeyDeleted d  -&gt; { /* ... *\/ }
+         case Notification.KeyRangeDelete r -&gt; { /* ... *\/ }
+     }
+ });
+ </code></pre>
+
+ <h2>Package layout</h2>
+
+ <ul>
+   <li><a href="package-summary.html"><code>io.oxia.client.api</code></a> — client interfaces, builder, and result/notification types.
+   <li><a href="options/package-summary.html"><code>io.oxia.client.api.options</code></a> — operation options (<code>PutOption</code>, <code>
+       GetOption</code>, ...) passed as a <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Set.html" title="class or interface in java.util" class="external-link"><code>Set</code></a> to each call.
+   <li><a href="exceptions/package-summary.html"><code>io.oxia.client.api.exceptions</code></a> — checked exceptions raised by client operations.
+ </ul></div>
 <dl class="notes">
 <dt>See Also:</dt>
 <dd>
 <ul class="see-list">
 <li><a href="OxiaClientBuilder.html" title="interface in io.oxia.client.api"><code>OxiaClientBuilder</code></a></li>
+<li><a href="SyncOxiaClient.html" title="interface in io.oxia.client.api"><code>SyncOxiaClient</code></a></li>
+<li><a href="AsyncOxiaClient.html" title="interface in io.oxia.client.api"><code>AsyncOxiaClient</code></a></li>
 </ul>
 </dd>
 </dl>
@@ -95,11 +173,11 @@ loadScripts(document, 'script');</script>
 <div class="table-header col-last">Description</div>
 <div class="col-first even-row-color"><a href="exceptions/package-summary.html">io.oxia.client.api.exceptions</a></div>
 <div class="col-last even-row-color">
-<div class="block">Defines the exceptions that can be thrown by the Oxia client.</div>
+<div class="block">Checked exceptions raised by the Oxia client.</div>
 </div>
 <div class="col-first odd-row-color"><a href="options/package-summary.html">io.oxia.client.api.options</a></div>
 <div class="col-last odd-row-color">
-<div class="block">The definitions for options that can be passed to the Oxia client operations.</div>
+<div class="block">Per-operation options for the Oxia client.</div>
 </div>
 </div>
 </div>
@@ -113,7 +191,7 @@ loadScripts(document, 'script');</script>
 <div class="table-header col-last">Description</div>
 <div class="col-first even-row-color class-summary class-summary-tab1"><a href="AsyncOxiaClient.html" title="interface in io.oxia.client.api">AsyncOxiaClient</a></div>
 <div class="col-last even-row-color class-summary class-summary-tab1">
-<div class="block">Asynchronous client for the Oxia service.</div>
+<div class="block">Non-blocking client for the Oxia service.</div>
 </div>
 <div class="col-first odd-row-color class-summary class-summary-tab1"><a href="Authentication.html" title="interface in io.oxia.client.api">Authentication</a></div>
 <div class="col-last odd-row-color class-summary class-summary-tab1">
@@ -125,7 +203,7 @@ loadScripts(document, 'script');</script>
 </div>
 <div class="col-first odd-row-color class-summary class-summary-tab4"><a href="GetResult.html" title="class in io.oxia.client.api">GetResult</a></div>
 <div class="col-last odd-row-color class-summary class-summary-tab4">
-<div class="block">The result of a client get request.</div>
+<div class="block">The result of a successful get / range-scan operation.</div>
 </div>
 <div class="col-first even-row-color class-summary class-summary-tab1"><a href="Notification.html" title="interface in io.oxia.client.api">Notification</a></div>
 <div class="col-last even-row-color class-summary class-summary-tab1">
@@ -149,24 +227,24 @@ loadScripts(document, 'script');</script>
 </div>
 <div class="col-first odd-row-color class-summary class-summary-tab1"><a href="OxiaClientBuilder.html" title="interface in io.oxia.client.api">OxiaClientBuilder</a></div>
 <div class="col-last odd-row-color class-summary class-summary-tab1">
-<div class="block">Builder for <a href="SyncOxiaClient.html" title="interface in io.oxia.client.api"><code>SyncOxiaClient</code></a> and <a href="AsyncOxiaClient.html" title="interface in io.oxia.client.api"><code>AsyncOxiaClient</code></a>.</div>
+<div class="block">Entry point for creating an Oxia client.</div>
 </div>
 <div class="col-first even-row-color class-summary class-summary-tab4"><a href="PutResult.html" title="class in io.oxia.client.api">PutResult</a></div>
 <div class="col-last even-row-color class-summary class-summary-tab4">
-<div class="block">The result of a client get request.</div>
+<div class="block">The result of a successful put operation.</div>
 </div>
 <div class="col-first odd-row-color class-summary class-summary-tab1"><a href="RangeScanConsumer.html" title="interface in io.oxia.client.api">RangeScanConsumer</a></div>
 <div class="col-last odd-row-color class-summary class-summary-tab1">
-<div class="block">Interface defining a consumer for Range Scan operations, allowing handling of chunked results,
- errors, or completion signals for a range scan process.</div>
+<div class="block">Callback used by <a href="AsyncOxiaClient.html#rangeScan(java.lang.String,java.lang.String,io.oxia.client.api.RangeScanConsumer)"><code>AsyncOxiaClient.rangeScan(String, String, RangeScanConsumer)</code></a> to deliver
+ records, errors, and the completion signal for a streaming range scan.</div>
 </div>
 <div class="col-first even-row-color class-summary class-summary-tab1"><a href="SyncOxiaClient.html" title="interface in io.oxia.client.api">SyncOxiaClient</a></div>
 <div class="col-last even-row-color class-summary class-summary-tab1">
-<div class="block">Synchronous client for the Oxia service.</div>
+<div class="block">Blocking client for the Oxia service.</div>
 </div>
 <div class="col-first odd-row-color class-summary class-summary-tab4"><a href="Version.html" title="class in io.oxia.client.api">Version</a></div>
 <div class="col-last odd-row-color class-summary class-summary-tab4">
-<div class="block">Oxia record metadata.</div>
+<div class="block">Metadata associated with an Oxia record.</div>
 </div>
 </div>
 </div>

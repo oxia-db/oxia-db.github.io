@@ -79,7 +79,35 @@ loadScripts(document, 'script');</script>
 <hr>
 <div class="type-signature"><span class="modifiers">public interface </span><span class="element-name type-name-label">AsyncOxiaClient</span><span class="extends-implements">
 extends <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/AutoCloseable.html" title="class or interface in java.lang" class="external-link">AutoCloseable</a></span></div>
-<div class="block">Asynchronous client for the Oxia service.</div>
+<div class="block">Non-blocking client for the Oxia service.
+
+ <p>Each method returns immediately and reports its outcome on a <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/concurrent/CompletableFuture.html" title="class or interface in java.util.concurrent" class="external-link"><code>CompletableFuture</code></a>.
+ Failures complete the future exceptionally; checked exceptions defined for the corresponding
+ <a href="SyncOxiaClient.html" title="interface in io.oxia.client.api"><code>SyncOxiaClient</code></a> method are wrapped in the future's failure rather than being thrown by the
+ call itself.
+
+ <p>Instances are created via <a href="OxiaClientBuilder.html#asyncClient()"><code>OxiaClientBuilder.asyncClient()</code></a> and are safe to share across
+ threads. Always close the client when done.
+
+ <pre><code>
+ AsyncOxiaClient client = OxiaClientBuilder.create("localhost:6648").asyncClient().join();
+
+ client.put("k", "v".getBytes(StandardCharsets.UTF_8))
+         .thenCompose(p -&gt; client.get("k"))
+         .thenAccept(r -&gt; System.out.println(new String(r.value(), StandardCharsets.UTF_8)));
+ </code></pre>
+
+ <p>Operation options (e.g. <a href="options/PutOption.html" title="interface in io.oxia.client.api.options"><code>PutOption</code></a>, <a href="options/GetOption.html" title="interface in io.oxia.client.api.options"><code>GetOption</code></a>) are passed as a <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Set.html" title="class or interface in java.util" class="external-link"><code>Set</code></a>.
+ Pass an empty set or use the no-options overload when no options are needed.</div>
+<dl class="notes">
+<dt>See Also:</dt>
+<dd>
+<ul class="see-list">
+<li><a href="SyncOxiaClient.html" title="interface in io.oxia.client.api"><code>SyncOxiaClient</code></a></li>
+<li><a href="OxiaClientBuilder.html" title="interface in io.oxia.client.api"><code>OxiaClientBuilder</code></a></li>
+</ul>
+</dd>
+</dl>
 </section>
 <section class="summary">
 <ul class="summary-list">

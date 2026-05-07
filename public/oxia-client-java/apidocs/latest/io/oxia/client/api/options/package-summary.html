@@ -61,7 +61,46 @@ loadScripts(document, 'script');</script>
 <hr>
 <div class="package-signature">package <span class="element-name">io.oxia.client.api.options</span></div>
 <section class="package-description" id="package-description">
-<div class="block">The definitions for options that can be passed to the Oxia client operations.</div>
+<div class="block">Per-operation options for the Oxia client.
+
+ <p>Every option is a marker or a value type implementing one of the operation-specific marker
+ interfaces (<a href="PutOption.html" title="interface in io.oxia.client.api.options"><code>PutOption</code></a>, <a href="GetOption.html" title="interface in io.oxia.client.api.options"><code>GetOption</code></a>, <a href="DeleteOption.html" title="interface in io.oxia.client.api.options"><code>DeleteOption</code></a>, <a href="DeleteRangeOption.html" title="interface in io.oxia.client.api.options"><code>DeleteRangeOption</code></a>, <a href="ListOption.html" title="interface in io.oxia.client.api.options"><code>ListOption</code></a>,
+ <a href="RangeScanOption.html" title="interface in io.oxia.client.api.options"><code>RangeScanOption</code></a>, <a href="GetSequenceUpdatesOption.html" title="interface in io.oxia.client.api.options"><code>GetSequenceUpdatesOption</code></a>). They are passed to client methods as a
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Set.html" title="class or interface in java.util" class="external-link"><code>Set</code></a>, so multiple compatible options can be combined.
+
+ <h2>Examples</h2>
+
+ <pre><code>
+ // Insert only if the key is new.
+ client.put("k", value, Set.of(PutOption.IfRecordDoesNotExist));
+
+ // Compare-and-swap with a known versionId.
+ client.put("k", value, Set.of(PutOption.IfVersionIdEquals(currentVersionId)));
+
+ // Co-locate records under the same partition and add a secondary index.
+ client.put("k", value, Set.of(
+         PutOption.PartitionKey("tenant-1"),
+         PutOption.SecondaryIndex("by-name", "alice")));
+
+ // Read using a comparison instead of equality (find the floor key).
+ GetResult floor = client.get("k", Set.of(GetOption.ComparisonFloor));
+
+ // Read by following a secondary index.
+ GetResult byName = client.get("alice", Set.of(GetOption.UseIndex("by-name")));
+ </code></pre>
+
+ <h2>Common options</h2>
+
+ <ul>
+   <li><b>PartitionKey</b> — available on every operation. Routes the call to the shard determined
+       by <code>partitionKey</code> instead of the record key, guaranteeing co-location of records that
+       share the same <code>partitionKey</code>.
+   <li><b>UseIndex</b> — available on <code>GetOption</code>, <code>ListOption</code> and <code>
+       RangeScanOption</code>; follows a secondary index registered via <code>
+       PutOption.SecondaryIndex</code>.
+   <li><b>IfVersionIdEquals / IfRecordDoesNotExist</b> — conditional writes used for optimistic
+       concurrency control.
+ </ul></div>
 </section>
 <section class="summary">
 <ul class="summary-list">
@@ -79,7 +118,7 @@ loadScripts(document, 'script');</script>
 <div class="col-last odd-row-color">&nbsp;</div>
 <div class="col-first even-row-color"><a href="../exceptions/package-summary.html">io.oxia.client.api.exceptions</a></div>
 <div class="col-last even-row-color">
-<div class="block">Defines the exceptions that can be thrown by the Oxia client.</div>
+<div class="block">Checked exceptions raised by the Oxia client.</div>
 </div>
 </div>
 </div>

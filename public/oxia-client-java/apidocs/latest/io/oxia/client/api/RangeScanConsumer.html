@@ -74,8 +74,25 @@ loadScripts(document, 'script');</script>
 <section class="class-description" id="class-description">
 <hr>
 <div class="type-signature"><span class="modifiers">public interface </span><span class="element-name type-name-label">RangeScanConsumer</span></div>
-<div class="block">Interface defining a consumer for Range Scan operations, allowing handling of chunked results,
- errors, or completion signals for a range scan process.</div>
+<div class="block">Callback used by <a href="AsyncOxiaClient.html#rangeScan(java.lang.String,java.lang.String,io.oxia.client.api.RangeScanConsumer)"><code>AsyncOxiaClient.rangeScan(String, String, RangeScanConsumer)</code></a> to deliver
+ records, errors, and the completion signal for a streaming range scan.
+
+ <p>Exactly one of <a href="#onError(java.lang.Throwable)"><code>onError(Throwable)</code></a> or <a href="#onCompleted()"><code>onCompleted()</code></a> is invoked per scan, and
+ always after the final <a href="#onNext(io.oxia.client.api.GetResult)"><code>onNext(GetResult)</code></a> call. Returning <code>false</code> from <code>
+ onNext</code> stops iteration early; the underlying server stream is cancelled and <a href="#onCompleted()"><code>onCompleted()</code></a> is invoked once.
+
+ <pre><code>
+ client.rangeScan("a", "z", new RangeScanConsumer() {
+     public boolean onNext(GetResult result) {
+         process(result);
+         return true; // return false to abort iteration early
+     }
+     public void onError(Throwable t) { log.warn("scan failed", t); }
+     public void onCompleted() { log.info("scan finished"); }
+ });
+ </code></pre>
+
+ <p>For a synchronous, iterator-style alternative, see <a href="SyncOxiaClient.html#rangeScan(java.lang.String,java.lang.String)"><code>SyncOxiaClient.rangeScan(String, String)</code></a> which returns a <a href="CloseableIterable.html" title="interface in io.oxia.client.api"><code>CloseableIterable</code></a>.</div>
 </section>
 <section class="summary">
 <ul class="summary-list">
