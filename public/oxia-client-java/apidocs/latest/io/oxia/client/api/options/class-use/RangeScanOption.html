@@ -81,29 +81,12 @@ loadScripts(document, 'script');</script>
 <div class="col-last even-row-color">
 <div class="block">Scan any existing records within the specified range of keys.</div>
 </div>
-<div class="col-first odd-row-color"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Iterable.html" title="class or interface in java.lang" class="external-link">Iterable</a>&lt;<a href="../../GetResult.html" title="class in io.oxia.client.api">GetResult</a>&gt;</code></div>
+<div class="col-first odd-row-color"><code><a href="../../CloseableIterable.html" title="interface in io.oxia.client.api">CloseableIterable</a>&lt;<a href="../../GetResult.html" title="class in io.oxia.client.api">GetResult</a>&gt;</code></div>
 <div class="col-second odd-row-color"><span class="type-name-label">SyncOxiaClient.</span><code><a href="../../SyncOxiaClient.html#rangeScan(java.lang.String,java.lang.String,java.util.Set)" class="member-name-link">rangeScan</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;startKeyInclusive,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;endKeyExclusive,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Set.html" title="class or interface in java.util" class="external-link">Set</a>&lt;<a href="../RangeScanOption.html" title="interface in io.oxia.client.api.options">RangeScanOption</a>&gt;&nbsp;options)</code></div>
 <div class="col-last odd-row-color">
 <div class="block">Scan any existing records within the specified range of keys.</div>
-</div>
-<div class="col-first even-row-color"><code><a href="../../CloseableIterable.html" title="interface in io.oxia.client.api">CloseableIterable</a>&lt;<a href="../../GetResult.html" title="class in io.oxia.client.api">GetResult</a>&gt;</code></div>
-<div class="col-second even-row-color"><span class="type-name-label">SyncOxiaClient.</span><code><a href="../../SyncOxiaClient.html#rangeScanCloseable(java.lang.String,java.lang.String,java.util.Set)" class="member-name-link">rangeScanCloseable</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;startKeyInclusive,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;endKeyExclusive,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Set.html" title="class or interface in java.util" class="external-link">Set</a>&lt;<a href="../RangeScanOption.html" title="interface in io.oxia.client.api.options">RangeScanOption</a>&gt;&nbsp;options)</code></div>
-<div class="col-last even-row-color">
-<div class="block">Scan any existing records within the specified range of keys, returning an iterable that can be
- closed when iteration is abandoned before completion.</div>
-</div>
-<div class="col-first odd-row-color"><code>void</code></div>
-<div class="col-second odd-row-color"><span class="type-name-label">AsyncOxiaClient.</span><code><a href="../../AsyncOxiaClient.html#rangeScanWithCancellation(java.lang.String,java.lang.String,io.oxia.client.api.CancelableRangeScanConsumer,java.util.Set)" class="member-name-link">rangeScanWithCancellation</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;startKeyInclusive,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;endKeyExclusive,
- <a href="../../CancelableRangeScanConsumer.html" title="interface in io.oxia.client.api">CancelableRangeScanConsumer</a>&nbsp;consumer,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Set.html" title="class or interface in java.util" class="external-link">Set</a>&lt;<a href="../RangeScanOption.html" title="interface in io.oxia.client.api.options">RangeScanOption</a>&gt;&nbsp;options)</code></div>
-<div class="col-last odd-row-color">
-<div class="block">Scan any existing records within the specified range of keys, allowing the consumer to stop
- iteration early.</div>
 </div>
 </div>
 </section>
