@@ -88,7 +88,7 @@ extends <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/ja
  <p>Intended for use with try-with-resources:
 
  <pre><code>
- try (CloseableIterable&lt;GetResult&gt; scan = client.rangeScan(start, end)) {
+ try (CloseableIterable&lt;GetResult&gt; scan = client.rangeScanCloseable(start, end)) {
      for (GetResult r : scan) {
          if (done) break;
      }

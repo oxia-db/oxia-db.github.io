@@ -197,18 +197,33 @@ extends <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/ja
 <div class="block">Conditionally associates a value with a key if the server's versionId of the record is as
  specified, at the instant when the put is applied.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="CloseableIterable.html" title="interface in io.oxia.client.api">CloseableIterable</a>&lt;<a href="GetResult.html" title="class in io.oxia.client.api">GetResult</a>&gt;</code></div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Iterable.html" title="class or interface in java.lang" class="external-link">Iterable</a>&lt;<a href="GetResult.html" title="class in io.oxia.client.api">GetResult</a>&gt;</code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#rangeScan(java.lang.String,java.lang.String)" class="member-name-link">rangeScan</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;startKeyInclusive,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;endKeyExclusive)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">
 <div class="block">Scan any existing records within the specified range of keys.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="CloseableIterable.html" title="interface in io.oxia.client.api">CloseableIterable</a>&lt;<a href="GetResult.html" title="class in io.oxia.client.api">GetResult</a>&gt;</code></div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Iterable.html" title="class or interface in java.lang" class="external-link">Iterable</a>&lt;<a href="GetResult.html" title="class in io.oxia.client.api">GetResult</a>&gt;</code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#rangeScan(java.lang.String,java.lang.String,java.util.Set)" class="member-name-link">rangeScan</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;startKeyInclusive,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;endKeyExclusive,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Set.html" title="class or interface in java.util" class="external-link">Set</a>&lt;<a href="options/RangeScanOption.html" title="interface in io.oxia.client.api.options">RangeScanOption</a>&gt;&nbsp;options)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">
 <div class="block">Scan any existing records within the specified range of keys.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="CloseableIterable.html" title="interface in io.oxia.client.api">CloseableIterable</a>&lt;<a href="GetResult.html" title="class in io.oxia.client.api">GetResult</a>&gt;</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#rangeScanCloseable(java.lang.String,java.lang.String)" class="member-name-link">rangeScanCloseable</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;startKeyInclusive,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;endKeyExclusive)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">
+<div class="block">Scan any existing records within the specified range of keys, returning an iterable that can be
+ closed when iteration is abandoned before completion.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="CloseableIterable.html" title="interface in io.oxia.client.api">CloseableIterable</a>&lt;<a href="GetResult.html" title="class in io.oxia.client.api">GetResult</a>&gt;</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#rangeScanCloseable(java.lang.String,java.lang.String,java.util.Set)" class="member-name-link">rangeScanCloseable</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;startKeyInclusive,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;endKeyExclusive,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Set.html" title="class or interface in java.util" class="external-link">Set</a>&lt;<a href="options/RangeScanOption.html" title="interface in io.oxia.client.api.options">RangeScanOption</a>&gt;&nbsp;options)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">
+<div class="block">Scan any existing records within the specified range of keys, returning an iterable that can be
+ closed when iteration is abandoned before completion.</div>
 </div>
 </div>
 </div>
@@ -412,13 +427,11 @@ extends <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/ja
 <li>
 <section class="detail" id="rangeScan(java.lang.String,java.lang.String)">
 <h3>rangeScan</h3>
-<div class="member-signature"><span class="return-type"><a href="CloseableIterable.html" title="interface in io.oxia.client.api">CloseableIterable</a>&lt;<a href="GetResult.html" title="class in io.oxia.client.api">GetResult</a>&gt;</span>&nbsp;<span class="element-name">rangeScan</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;startKeyInclusive,
+<div class="member-signature"><span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Iterable.html" title="class or interface in java.lang" class="external-link">Iterable</a>&lt;<a href="GetResult.html" title="class in io.oxia.client.api">GetResult</a>&gt;</span>&nbsp;<span class="element-name">rangeScan</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;startKeyInclusive,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;endKeyExclusive)</span></div>
 <div class="block">Scan any existing records within the specified range of keys.
 
- <p>The returned iterable holds an active server stream and should be closed (e.g. via
- try-with-resources) when iteration is abandoned before completion, otherwise the stream is only
- torn down when iteration runs to its natural end.</div>
+ <p>For cancellation when iteration is abandoned before completion, use <a href="#rangeScanCloseable(java.lang.String,java.lang.String)"><code>rangeScanCloseable(String, String)</code></a>.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
 <dd><code>startKeyInclusive</code> - The key that declares start of the range, and is <b>included</b> from
@@ -433,14 +446,12 @@ extends <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/ja
 <li>
 <section class="detail" id="rangeScan(java.lang.String,java.lang.String,java.util.Set)">
 <h3>rangeScan</h3>
-<div class="member-signature"><span class="return-type"><a href="CloseableIterable.html" title="interface in io.oxia.client.api">CloseableIterable</a>&lt;<a href="GetResult.html" title="class in io.oxia.client.api">GetResult</a>&gt;</span>&nbsp;<span class="element-name">rangeScan</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;startKeyInclusive,
+<div class="member-signature"><span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Iterable.html" title="class or interface in java.lang" class="external-link">Iterable</a>&lt;<a href="GetResult.html" title="class in io.oxia.client.api">GetResult</a>&gt;</span>&nbsp;<span class="element-name">rangeScan</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;startKeyInclusive,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;endKeyExclusive,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Set.html" title="class or interface in java.util" class="external-link">Set</a>&lt;<a href="options/RangeScanOption.html" title="interface in io.oxia.client.api.options">RangeScanOption</a>&gt;&nbsp;options)</span></div>
 <div class="block">Scan any existing records within the specified range of keys.
 
- <p>The returned iterable holds an active server stream and should be closed (e.g. via
- try-with-resources) when iteration is abandoned before completion, otherwise the stream is only
- torn down when iteration runs to its natural end.</div>
+ <p>For cancellation when iteration is abandoned before completion, use <a href="#rangeScanCloseable(java.lang.String,java.lang.String,java.util.Set)"><code>rangeScanCloseable(String, String, Set)</code></a>.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
 <dd><code>startKeyInclusive</code> - The key that declares start of the range, and is <b>included</b> from
@@ -450,6 +461,46 @@ extends <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/ja
 <dd><code>options</code> - the range scan options</dd>
 <dt>Returns:</dt>
 <dd>An iterable object that will provide all the records and their version objects.</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="rangeScanCloseable(java.lang.String,java.lang.String)">
+<h3>rangeScanCloseable</h3>
+<div class="member-signature"><span class="return-type"><a href="CloseableIterable.html" title="interface in io.oxia.client.api">CloseableIterable</a>&lt;<a href="GetResult.html" title="class in io.oxia.client.api">GetResult</a>&gt;</span>&nbsp;<span class="element-name">rangeScanCloseable</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;startKeyInclusive,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;endKeyExclusive)</span></div>
+<div class="block">Scan any existing records within the specified range of keys, returning an iterable that can be
+ closed when iteration is abandoned before completion.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>startKeyInclusive</code> - The key that declares start of the range, and is <b>included</b> from
+     the range.</dd>
+<dd><code>endKeyExclusive</code> - The key that declares the end of the range, and is <b>excluded</b> from
+     the range.</dd>
+<dt>Returns:</dt>
+<dd>A closeable iterable object that will provide all the records and their version
+     objects.</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="rangeScanCloseable(java.lang.String,java.lang.String,java.util.Set)">
+<h3>rangeScanCloseable</h3>
+<div class="member-signature"><span class="return-type"><a href="CloseableIterable.html" title="interface in io.oxia.client.api">CloseableIterable</a>&lt;<a href="GetResult.html" title="class in io.oxia.client.api">GetResult</a>&gt;</span>&nbsp;<span class="element-name">rangeScanCloseable</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;startKeyInclusive,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;endKeyExclusive,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Set.html" title="class or interface in java.util" class="external-link">Set</a>&lt;<a href="options/RangeScanOption.html" title="interface in io.oxia.client.api.options">RangeScanOption</a>&gt;&nbsp;options)</span></div>
+<div class="block">Scan any existing records within the specified range of keys, returning an iterable that can be
+ closed when iteration is abandoned before completion.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>startKeyInclusive</code> - The key that declares start of the range, and is <b>included</b> from
+     the range.</dd>
+<dd><code>endKeyExclusive</code> - The key that declares the end of the range, and is <b>excluded</b> from
+     the range.</dd>
+<dd><code>options</code> - the range scan options</dd>
+<dt>Returns:</dt>
+<dd>A closeable iterable object that will provide all the records and their version
+     objects.</dd>
 </dl>
 </section>
 </li>

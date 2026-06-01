@@ -87,6 +87,11 @@ loadScripts(document, 'script');</script>
 </dl>
 <h2 class="title" id="I:C">C</h2>
 <dl class="index">
+<dt><a href="io/oxia/client/api/CancelableRangeScanConsumer.html" class="type-name-link" title="interface in io.oxia.client.api">CancelableRangeScanConsumer</a> - Interface in <a href="io/oxia/client/api/package-summary.html">io.oxia.client.api</a></dt>
+<dd>
+<div class="block">Callback used by <a href="io/oxia/client/api/AsyncOxiaClient.html#rangeScanWithCancellation(java.lang.String,java.lang.String,io.oxia.client.api.CancelableRangeScanConsumer)"><code>AsyncOxiaClient.rangeScanWithCancellation(String, String, CancelableRangeScanConsumer)</code></a> to deliver records while allowing callers to stop a streaming range
+ scan early.</div>
+</dd>
 <dt><a href="io/oxia/client/api/Version.html#clientIdentifier()" class="member-name-link">clientIdentifier()</a> - Method in record class <a href="io/oxia/client/api/Version.html" title="class in io.oxia.client.api">Version</a></dt>
 <dd>
 <div class="block">Returns the value of the <a href="./io/oxia/client/api/Version.html#param-clientIdentifier"><code>clientIdentifier</code></a> record component.</div>
@@ -506,13 +511,25 @@ loadScripts(document, 'script');</script>
 </dl>
 <h2 class="title" id="I:O">O</h2>
 <dl class="index">
+<dt><a href="io/oxia/client/api/CancelableRangeScanConsumer.html#onCompleted()" class="member-name-link">onCompleted()</a> - Method in interface <a href="io/oxia/client/api/CancelableRangeScanConsumer.html" title="interface in io.oxia.client.api">CancelableRangeScanConsumer</a></dt>
+<dd>
+<div class="block">Invoked when the range scan operation completes.</div>
+</dd>
 <dt><a href="io/oxia/client/api/RangeScanConsumer.html#onCompleted()" class="member-name-link">onCompleted()</a> - Method in interface <a href="io/oxia/client/api/RangeScanConsumer.html" title="interface in io.oxia.client.api">RangeScanConsumer</a></dt>
 <dd>
 <div class="block">Invoked when the range scan operation completes.</div>
 </dd>
+<dt><a href="io/oxia/client/api/CancelableRangeScanConsumer.html#onError(java.lang.Throwable)" class="member-name-link">onError(Throwable)</a> - Method in interface <a href="io/oxia/client/api/CancelableRangeScanConsumer.html" title="interface in io.oxia.client.api">CancelableRangeScanConsumer</a></dt>
+<dd>
+<div class="block">Invoked when an error occurs during the range scan operation.</div>
+</dd>
 <dt><a href="io/oxia/client/api/RangeScanConsumer.html#onError(java.lang.Throwable)" class="member-name-link">onError(Throwable)</a> - Method in interface <a href="io/oxia/client/api/RangeScanConsumer.html" title="interface in io.oxia.client.api">RangeScanConsumer</a></dt>
 <dd>
 <div class="block">Invoked when an error occurs during the range scan operation.</div>
+</dd>
+<dt><a href="io/oxia/client/api/CancelableRangeScanConsumer.html#onNext(io.oxia.client.api.GetResult)" class="member-name-link">onNext(GetResult)</a> - Method in interface <a href="io/oxia/client/api/CancelableRangeScanConsumer.html" title="interface in io.oxia.client.api">CancelableRangeScanConsumer</a></dt>
+<dd>
+<div class="block">Invoked for each record returned by the range scan operation.</div>
 </dd>
 <dt><a href="io/oxia/client/api/RangeScanConsumer.html#onNext(io.oxia.client.api.GetResult)" class="member-name-link">onNext(GetResult)</a> - Method in interface <a href="io/oxia/client/api/RangeScanConsumer.html" title="interface in io.oxia.client.api">RangeScanConsumer</a></dt>
 <dd>
@@ -620,6 +637,16 @@ loadScripts(document, 'script');</script>
 <dd>
 <div class="block">Scan any existing records within the specified range of keys.</div>
 </dd>
+<dt><a href="io/oxia/client/api/SyncOxiaClient.html#rangeScanCloseable(java.lang.String,java.lang.String)" class="member-name-link">rangeScanCloseable(String, String)</a> - Method in interface <a href="io/oxia/client/api/SyncOxiaClient.html" title="interface in io.oxia.client.api">SyncOxiaClient</a></dt>
+<dd>
+<div class="block">Scan any existing records within the specified range of keys, returning an iterable that can be
+ closed when iteration is abandoned before completion.</div>
+</dd>
+<dt><a href="io/oxia/client/api/SyncOxiaClient.html#rangeScanCloseable(java.lang.String,java.lang.String,java.util.Set)" class="member-name-link">rangeScanCloseable(String, String, Set&lt;RangeScanOption&gt;)</a> - Method in interface <a href="io/oxia/client/api/SyncOxiaClient.html" title="interface in io.oxia.client.api">SyncOxiaClient</a></dt>
+<dd>
+<div class="block">Scan any existing records within the specified range of keys, returning an iterable that can be
+ closed when iteration is abandoned before completion.</div>
+</dd>
 <dt><a href="io/oxia/client/api/RangeScanConsumer.html" class="type-name-link" title="interface in io.oxia.client.api">RangeScanConsumer</a> - Interface in <a href="io/oxia/client/api/package-summary.html">io.oxia.client.api</a></dt>
 <dd>
 <div class="block">Callback used by <a href="io/oxia/client/api/AsyncOxiaClient.html#rangeScan(java.lang.String,java.lang.String,io.oxia.client.api.RangeScanConsumer)"><code>AsyncOxiaClient.rangeScan(String, String, RangeScanConsumer)</code></a> to deliver
@@ -629,6 +656,16 @@ loadScripts(document, 'script');</script>
 <dd>
 <div class="block">RangeScanOption is a sealed interface that represents options for controlling range scan
  operations.</div>
+</dd>
+<dt><a href="io/oxia/client/api/AsyncOxiaClient.html#rangeScanWithCancellation(java.lang.String,java.lang.String,io.oxia.client.api.CancelableRangeScanConsumer)" class="member-name-link">rangeScanWithCancellation(String, String, CancelableRangeScanConsumer)</a> - Method in interface <a href="io/oxia/client/api/AsyncOxiaClient.html" title="interface in io.oxia.client.api">AsyncOxiaClient</a></dt>
+<dd>
+<div class="block">Scan any existing records within the specified range of keys, allowing the consumer to stop
+ iteration early.</div>
+</dd>
+<dt><a href="io/oxia/client/api/AsyncOxiaClient.html#rangeScanWithCancellation(java.lang.String,java.lang.String,io.oxia.client.api.CancelableRangeScanConsumer,java.util.Set)" class="member-name-link">rangeScanWithCancellation(String, String, CancelableRangeScanConsumer, Set&lt;RangeScanOption&gt;)</a> - Method in interface <a href="io/oxia/client/api/AsyncOxiaClient.html" title="interface in io.oxia.client.api">AsyncOxiaClient</a></dt>
+<dd>
+<div class="block">Scan any existing records within the specified range of keys, allowing the consumer to stop
+ iteration early.</div>
 </dd>
 <dt><a href="io/oxia/client/api/OxiaClientBuilder.html#requestTimeout(java.time.Duration)" class="member-name-link">requestTimeout(Duration)</a> - Method in interface <a href="io/oxia/client/api/OxiaClientBuilder.html" title="interface in io.oxia.client.api">OxiaClientBuilder</a></dt>
 <dd>
