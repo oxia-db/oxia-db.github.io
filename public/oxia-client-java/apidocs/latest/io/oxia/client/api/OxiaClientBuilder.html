@@ -36,6 +36,7 @@ loadScripts(document, 'script');</script>
 <li class="nav-bar-cell1-rev">Class</li>
 <li><a href="class-use/OxiaClientBuilder.html">Use</a></li>
 <li><a href="package-tree.html">Tree</a></li>
+<li><a href="../../../../deprecated-list.html">Deprecated</a></li>
 <li><a href="../../../../index-all.html">Index</a></li>
 <li><a href="../../../../help-doc.html#class">Help</a></li>
 </ul>
@@ -96,7 +97,7 @@ loadScripts(document, 'script');</script>
 <section class="method-summary" id="method-summary">
 <h2>Method Summary</h2>
 <div id="method-summary-table">
-<div class="table-tabs" role="tablist" aria-orientation="horizontal"><button id="method-summary-table-tab0" role="tab" aria-selected="true" aria-controls="method-summary-table.tabpanel" tabindex="0" onkeydown="switchTab(event)" onclick="show('method-summary-table', 'method-summary-table', 3)" class="active-table-tab">All Methods</button><button id="method-summary-table-tab1" role="tab" aria-selected="false" aria-controls="method-summary-table.tabpanel" tabindex="-1" onkeydown="switchTab(event)" onclick="show('method-summary-table', 'method-summary-table-tab1', 3)" class="table-tab">Static Methods</button><button id="method-summary-table-tab2" role="tab" aria-selected="false" aria-controls="method-summary-table.tabpanel" tabindex="-1" onkeydown="switchTab(event)" onclick="show('method-summary-table', 'method-summary-table-tab2', 3)" class="table-tab">Instance Methods</button><button id="method-summary-table-tab3" role="tab" aria-selected="false" aria-controls="method-summary-table.tabpanel" tabindex="-1" onkeydown="switchTab(event)" onclick="show('method-summary-table', 'method-summary-table-tab3', 3)" class="table-tab">Abstract Methods</button></div>
+<div class="table-tabs" role="tablist" aria-orientation="horizontal"><button id="method-summary-table-tab0" role="tab" aria-selected="true" aria-controls="method-summary-table.tabpanel" tabindex="0" onkeydown="switchTab(event)" onclick="show('method-summary-table', 'method-summary-table', 3)" class="active-table-tab">All Methods</button><button id="method-summary-table-tab1" role="tab" aria-selected="false" aria-controls="method-summary-table.tabpanel" tabindex="-1" onkeydown="switchTab(event)" onclick="show('method-summary-table', 'method-summary-table-tab1', 3)" class="table-tab">Static Methods</button><button id="method-summary-table-tab2" role="tab" aria-selected="false" aria-controls="method-summary-table.tabpanel" tabindex="-1" onkeydown="switchTab(event)" onclick="show('method-summary-table', 'method-summary-table-tab2', 3)" class="table-tab">Instance Methods</button><button id="method-summary-table-tab3" role="tab" aria-selected="false" aria-controls="method-summary-table.tabpanel" tabindex="-1" onkeydown="switchTab(event)" onclick="show('method-summary-table', 'method-summary-table-tab3', 3)" class="table-tab">Abstract Methods</button><button id="method-summary-table-tab6" role="tab" aria-selected="false" aria-controls="method-summary-table.tabpanel" tabindex="-1" onkeydown="switchTab(event)" onclick="show('method-summary-table', 'method-summary-table-tab6', 3)" class="table-tab">Deprecated Methods</button></div>
 <div id="method-summary-table.tabpanel" role="tabpanel" aria-labelledby="method-summary-table-tab0">
 <div class="summary-table three-column-summary">
 <div class="table-header col-first">Modifier and Type</div>
@@ -119,65 +120,80 @@ loadScripts(document, 'script');</script>
 <div class="block">Configure the authentication plugin and its parameters.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="OxiaClientBuilder.html" title="interface in io.oxia.client.api">OxiaClientBuilder</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#batchLinger(java.time.Duration)" class="member-name-link">batchLinger</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/time/Duration.html" title="class or interface in java.time" class="external-link">Duration</a>&nbsp;batchLinger)</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#batchingThreads(int)" class="member-name-link">batchingThreads</a><wbr>(int&nbsp;batchingThreads)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">
-<div class="block">Specify the maximum time to wait for a batch to be sent.</div>
+<div class="block">Specify the number of threads dedicated to assembling operation batches, shared by all the
+ shards.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3 method-summary-table-tab6"><code><a href="OxiaClientBuilder.html" title="interface in io.oxia.client.api">OxiaClientBuilder</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3 method-summary-table-tab6"><code><a href="#batchLinger(java.time.Duration)" class="member-name-link">batchLinger</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/time/Duration.html" title="class or interface in java.time" class="external-link">Duration</a>&nbsp;batchLinger)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3 method-summary-table-tab6">
+<div class="block"><span class="deprecated-label">Deprecated, for removal: This API element is subject to removal in a future version.</span>
+<div class="deprecation-comment">Batching is adaptive: operations are grouped while a batch is in progress and a
+     batch is flushed as soon as no more operations are pending, so this setting has no effect.</div>
+</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="OxiaClientBuilder.html" title="interface in io.oxia.client.api">OxiaClientBuilder</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#clientIdentifier(java.lang.String)" class="member-name-link">clientIdentifier</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;clientIdentifier)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">
+<div class="block">Specify the client identifier for this client instance.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="OxiaClientBuilder.html" title="interface in io.oxia.client.api">OxiaClientBuilder</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#clientIdentifier(java.lang.String)" class="member-name-link">clientIdentifier</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;clientIdentifier)</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#clientIdentifier(java.util.function.Supplier)" class="member-name-link">clientIdentifier</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/function/Supplier.html" title="class or interface in java.util.function" class="external-link">Supplier</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;&nbsp;clientIdentifier)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">
 <div class="block">Specify the client identifier for this client instance.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="OxiaClientBuilder.html" title="interface in io.oxia.client.api">OxiaClientBuilder</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#clientIdentifier(java.util.function.Supplier)" class="member-name-link">clientIdentifier</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/function/Supplier.html" title="class or interface in java.util.function" class="external-link">Supplier</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;&nbsp;clientIdentifier)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">
-<div class="block">Specify the client identifier for this client instance.</div>
-</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="OxiaClientBuilder.html" title="interface in io.oxia.client.api">OxiaClientBuilder</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#connectionBackoff(java.time.Duration,java.time.Duration)" class="member-name-link">connectionBackoff</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/time/Duration.html" title="class or interface in java.time" class="external-link">Duration</a>&nbsp;minDelay,
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#connectionBackoff(java.time.Duration,java.time.Duration)" class="member-name-link">connectionBackoff</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/time/Duration.html" title="class or interface in java.time" class="external-link">Duration</a>&nbsp;minDelay,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/time/Duration.html" title="class or interface in java.time" class="external-link">Duration</a>&nbsp;maxDelay)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">
 <div class="block">Configure the connection backoff policy.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="OxiaClientBuilder.html" title="interface in io.oxia.client.api">OxiaClientBuilder</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#connectionKeepAliveTime(java.time.Duration)" class="member-name-link">connectionKeepAliveTime</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/time/Duration.html" title="class or interface in java.time" class="external-link">Duration</a>&nbsp;connectionKeepAlive)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="OxiaClientBuilder.html" title="interface in io.oxia.client.api">OxiaClientBuilder</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#connectionKeepAliveTime(java.time.Duration)" class="member-name-link">connectionKeepAliveTime</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/time/Duration.html" title="class or interface in java.time" class="external-link">Duration</a>&nbsp;connectionKeepAlive)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">
 <div class="block">Configure the keep alive interval for the connection.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="OxiaClientBuilder.html" title="interface in io.oxia.client.api">OxiaClientBuilder</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#connectionKeepAliveTimeout(java.time.Duration)" class="member-name-link">connectionKeepAliveTimeout</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/time/Duration.html" title="class or interface in java.time" class="external-link">Duration</a>&nbsp;connectionKeepAliveTimeout)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="OxiaClientBuilder.html" title="interface in io.oxia.client.api">OxiaClientBuilder</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#connectionKeepAliveTimeout(java.time.Duration)" class="member-name-link">connectionKeepAliveTimeout</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/time/Duration.html" title="class or interface in java.time" class="external-link">Duration</a>&nbsp;connectionKeepAliveTimeout)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">
 <div class="block">Configure the keep alive timeout for the connection.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab1"><code>static <a href="OxiaClientBuilder.html" title="interface in io.oxia.client.api">OxiaClientBuilder</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab1"><code><a href="#create(java.lang.String)" class="member-name-link">create</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serviceAddress)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab1">
+<div class="col-first even-row-color method-summary-table method-summary-table-tab1"><code>static <a href="OxiaClientBuilder.html" title="interface in io.oxia.client.api">OxiaClientBuilder</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab1"><code><a href="#create(java.lang.String)" class="member-name-link">create</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serviceAddress)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab1">
 <div class="block">Create a new client builder.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="OxiaClientBuilder.html" title="interface in io.oxia.client.api">OxiaClientBuilder</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#enableTls(boolean)" class="member-name-link">enableTls</a><wbr>(boolean&nbsp;enableTls)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="OxiaClientBuilder.html" title="interface in io.oxia.client.api">OxiaClientBuilder</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#enableTls(boolean)" class="member-name-link">enableTls</a><wbr>(boolean&nbsp;enableTls)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">
 <div class="block">Configures whether to enable TLS (Transport Layer Security) for the client connection.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="OxiaClientBuilder.html" title="interface in io.oxia.client.api">OxiaClientBuilder</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#loadConfig(java.io.File)" class="member-name-link">loadConfig</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/io/File.html" title="class or interface in java.io" class="external-link">File</a>&nbsp;configFile)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">
-<div class="block">Load the configuration from the specified configuration file.</div>
-</div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="OxiaClientBuilder.html" title="interface in io.oxia.client.api">OxiaClientBuilder</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#loadConfig(java.lang.String)" class="member-name-link">loadConfig</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;configPath)</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#loadConfig(java.io.File)" class="member-name-link">loadConfig</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/io/File.html" title="class or interface in java.io" class="external-link">File</a>&nbsp;configFile)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">
 <div class="block">Load the configuration from the specified configuration file.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="OxiaClientBuilder.html" title="interface in io.oxia.client.api">OxiaClientBuilder</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#loadConfig(java.util.Properties)" class="member-name-link">loadConfig</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Properties.html" title="class or interface in java.util" class="external-link">Properties</a>&nbsp;properties)</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#loadConfig(java.lang.String)" class="member-name-link">loadConfig</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;configPath)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">
+<div class="block">Load the configuration from the specified configuration file.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="OxiaClientBuilder.html" title="interface in io.oxia.client.api">OxiaClientBuilder</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#loadConfig(java.util.Properties)" class="member-name-link">loadConfig</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Properties.html" title="class or interface in java.util" class="external-link">Properties</a>&nbsp;properties)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">
 <div class="block">Load the configuration from the specified properties.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="OxiaClientBuilder.html" title="interface in io.oxia.client.api">OxiaClientBuilder</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#maxConnectionPerNode(int)" class="member-name-link">maxConnectionPerNode</a><wbr>(int&nbsp;connections)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="OxiaClientBuilder.html" title="interface in io.oxia.client.api">OxiaClientBuilder</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#maxConnectionPerNode(int)" class="member-name-link">maxConnectionPerNode</a><wbr>(int&nbsp;connections)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">
 <div class="block">Configure the maximum number of connections to each Oxia server node.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="OxiaClientBuilder.html" title="interface in io.oxia.client.api">OxiaClientBuilder</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#maxPendingBytes(long)" class="member-name-link">maxPendingBytes</a><wbr>(long&nbsp;maxPendingBytes)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">
+<div class="block">Specify the maximum total size of the operations that the client has accepted and not yet
+ completed.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="OxiaClientBuilder.html" title="interface in io.oxia.client.api">OxiaClientBuilder</a></code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#maxRequestsPerBatch(int)" class="member-name-link">maxRequestsPerBatch</a><wbr>(int&nbsp;maxRequestsPerBatch)</code></div>
@@ -281,15 +297,14 @@ loadScripts(document, 'script');</script>
 <li>
 <section class="detail" id="batchLinger(java.time.Duration)">
 <h3>batchLinger</h3>
-<div class="member-signature"><span class="return-type"><a href="OxiaClientBuilder.html" title="interface in io.oxia.client.api">OxiaClientBuilder</a></span>&nbsp;<span class="element-name">batchLinger</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/time/Duration.html" title="class or interface in java.time" class="external-link">Duration</a>&nbsp;batchLinger)</span></div>
-<div class="block">Specify the maximum time to wait for a batch to be sent.
-
- <p>Default is <code>5 millis</code>
-
- <p>A larger linger time might help in creating batches with more ops in them and thus might
- improve the overall throughput.
-
- <p>A shorter linger time might help in minimizing the latency.</div>
+<div class="member-signature"><span class="annotations"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Deprecated.html" title="class or interface in java.lang" class="external-link">@Deprecated</a>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Deprecated.html#since()" title="class or interface in java.lang" class="external-link">since</a>="0.9.0",
+            <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Deprecated.html#forRemoval()" title="class or interface in java.lang" class="external-link">forRemoval</a>=true)
+</span><span class="return-type"><a href="OxiaClientBuilder.html" title="interface in io.oxia.client.api">OxiaClientBuilder</a></span>&nbsp;<span class="element-name">batchLinger</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/time/Duration.html" title="class or interface in java.time" class="external-link">Duration</a>&nbsp;batchLinger)</span></div>
+<div class="deprecation-block"><span class="deprecated-label">Deprecated, for removal: This API element is subject to removal in a future version.</span>
+<div class="deprecation-comment">Batching is adaptive: operations are grouped while a batch is in progress and a
+     batch is flushed as soon as no more operations are pending, so this setting has no effect.</div>
+</div>
+<div class="block">Specify the maximum time to wait for a batch to be sent.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
 <dd><code>batchLinger</code> - the batch linger duration</dd>
@@ -308,6 +323,39 @@ loadScripts(document, 'script');</script>
 <dl class="notes">
 <dt>Parameters:</dt>
 <dd><code>maxRequestsPerBatch</code> - the maximum number of requests per batch</dd>
+<dt>Returns:</dt>
+<dd>the builder instance</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="maxPendingBytes(long)">
+<h3>maxPendingBytes</h3>
+<div class="member-signature"><span class="return-type"><a href="OxiaClientBuilder.html" title="interface in io.oxia.client.api">OxiaClientBuilder</a></span>&nbsp;<span class="element-name">maxPendingBytes</span><wbr><span class="parameters">(long&nbsp;maxPendingBytes)</span></div>
+<div class="block">Specify the maximum total size of the operations that the client has accepted and not yet
+ completed. When the limit is reached, further operations block the calling thread until enough
+ pending operations complete, providing backpressure to the application.
+
+ <p>Default is <code>256 MiB</code>. A value of <code>0</code> disables the limit.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>maxPendingBytes</code> - the maximum total size of pending operations, or 0 to disable</dd>
+<dt>Returns:</dt>
+<dd>the builder instance</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="batchingThreads(int)">
+<h3>batchingThreads</h3>
+<div class="member-signature"><span class="return-type"><a href="OxiaClientBuilder.html" title="interface in io.oxia.client.api">OxiaClientBuilder</a></span>&nbsp;<span class="element-name">batchingThreads</span><wbr><span class="parameters">(int&nbsp;batchingThreads)</span></div>
+<div class="block">Specify the number of threads dedicated to assembling operation batches, shared by all the
+ shards.
+
+ <p>Default is <code>1</code>.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>batchingThreads</code> - the number of batching threads</dd>
 <dt>Returns:</dt>
 <dd>the builder instance</dd>
 </dl>

@@ -32,6 +32,7 @@ loadScripts(document, 'script');</script>
 <li>Class</li>
 <li>Use</li>
 <li><a href="overview-tree.html">Tree</a></li>
+<li><a href="deprecated-list.html">Deprecated</a></li>
 <li class="nav-bar-cell1-rev">Index</li>
 <li><a href="help-doc.html#index">Help</a></li>
 </ul>
@@ -80,9 +81,17 @@ loadScripts(document, 'script');</script>
 </dl>
 <h2 class="title" id="I:B">B</h2>
 <dl class="index">
+<dt><a href="io/oxia/client/api/OxiaClientBuilder.html#batchingThreads(int)" class="member-name-link">batchingThreads(int)</a> - Method in interface <a href="io/oxia/client/api/OxiaClientBuilder.html" title="interface in io.oxia.client.api">OxiaClientBuilder</a></dt>
+<dd>
+<div class="block">Specify the number of threads dedicated to assembling operation batches, shared by all the
+ shards.</div>
+</dd>
 <dt><a href="io/oxia/client/api/OxiaClientBuilder.html#batchLinger(java.time.Duration)" class="member-name-link">batchLinger(Duration)</a> - Method in interface <a href="io/oxia/client/api/OxiaClientBuilder.html" title="interface in io.oxia.client.api">OxiaClientBuilder</a></dt>
 <dd>
-<div class="block">Specify the maximum time to wait for a batch to be sent.</div>
+<div class="deprecation-block"><span class="deprecated-label">Deprecated, for removal: This API element is subject to removal in a future version.</span>
+<div class="deprecation-comment">Batching is adaptive: operations are grouped while a batch is in progress and a
+     batch is flushed as soon as no more operations are pending, so this setting has no effect.</div>
+</div>
 </dd>
 </dl>
 <h2 class="title" id="I:C">C</h2>
@@ -455,6 +464,11 @@ loadScripts(document, 'script');</script>
 <dt><a href="io/oxia/client/api/OxiaClientBuilder.html#maxConnectionPerNode(int)" class="member-name-link">maxConnectionPerNode(int)</a> - Method in interface <a href="io/oxia/client/api/OxiaClientBuilder.html" title="interface in io.oxia.client.api">OxiaClientBuilder</a></dt>
 <dd>
 <div class="block">Configure the maximum number of connections to each Oxia server node.</div>
+</dd>
+<dt><a href="io/oxia/client/api/OxiaClientBuilder.html#maxPendingBytes(long)" class="member-name-link">maxPendingBytes(long)</a> - Method in interface <a href="io/oxia/client/api/OxiaClientBuilder.html" title="interface in io.oxia.client.api">OxiaClientBuilder</a></dt>
+<dd>
+<div class="block">Specify the maximum total size of the operations that the client has accepted and not yet
+ completed.</div>
 </dd>
 <dt><a href="io/oxia/client/api/OxiaClientBuilder.html#maxRequestsPerBatch(int)" class="member-name-link">maxRequestsPerBatch(int)</a> - Method in interface <a href="io/oxia/client/api/OxiaClientBuilder.html" title="interface in io.oxia.client.api">OxiaClientBuilder</a></dt>
 <dd>
