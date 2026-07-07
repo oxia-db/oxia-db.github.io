@@ -1,0 +1,129 @@
+# Benchmarks
+
+---
+
+This page is the comprehensive benchmark report for Oxia: full methodology, system
+configurations, complete results across cluster sizes, value sizes, and coordination
+primitives, and links to the raw data. A condensed subset of these results appears in the
+Oxia paper; this page is the extended record and is kept up to date as new runs land.
+
+All results were collected with the open-source, service-agnostic
+[benchmark framework](https://github.com/oxia-db/benchmark), which drives identical
+workloads against Oxia, ZooKeeper, and etcd using asynchronous clients so that the target
+systems — not the load generators — are the bottleneck.
+
+## Methodology
+
+Two rules govern every comparison on this page:
+
+1. **Contract-equivalent recipes.** Where a system cannot express an operation natively
+   (e.g., atomic `+N` sequence assignment), we implement the closest contract-equivalent
+   recipe with its native primitives (e.g., ZooKeeper sequential znodes, etcd
+   transactions) and report the extra round-trips alongside the numbers, together with any
+   remaining semantic difference.
+2. **Documented limits are measurements.** Where a system cannot hold the state or sustain
+   the load at all, we run it to its vendor-documented operational limit and report that
+   boundary as a result, with the configuration disclosed.
+
+### Environment
+
+| | |
+|---|---|
+| Cloud / instances | AWS `i7ie.xlarge` |
+| Orchestration | Kubernetes |
+| Replication factor | 3 (all systems) |
+| Cluster sizes | Oxia: 3 / 6 / 12 data servers · ZooKeeper, etcd: 3-node ensembles |
+| Load generators | 2 benchmark workers per data server, asynchronous clients |
+| Dataset (default) | 10M keys, 64-byte values |
+
+{/* TODO(new runs): add exact software versions (Oxia, ZooKeeper, etcd, JVM, Kubernetes),
+    instance specs (vCPU/RAM/NVMe), storage layout, and client placement. */}
+
+### Per-system configuration
+
+Full configurations are disclosed so results can be scrutinized and reproduced.
+
+{/* TODO(new runs): fill in for each system —
+    Oxia: WAL sync mode (fsync per commit, default), shards per namespace, coordinator mode.
+    ZooKeeper: version, JVM heap and GC flags, snapCount, forceSync, znode layout used by the recipes.
+    etcd: version, storage quota, auto-compaction settings, read consistency mode.
+    State explicitly: all systems run at equivalent durability (fsync before acknowledgment)
+    and linearizable read settings. */}
+
+## Throughput scalability
+
+Four workloads, chosen to stress different paths: insert-only with ordered keys (bulk
+metadata creation), 100% updates with Zipf-distributed keys (cursor/offset traffic), a
+50/50 read-update mix, and 100% reads (routing lookups). Sustained throughput in
+operations per second:
+
+| Workload | ZooKeeper-3 | etcd-3 | oxia-3 | oxia-6 | oxia-12 |
+|---|---|---|---|---|---|
+| Insert-only (ordered keys) | 18.1k | 11.9k | 115k | 230k | 369k |
+| Updates, Zipf (100% writes) | 0.5k | 8.6k | 85k | 197k | 331k |
+| Mixed, Zipf (50% reads / 50% updates) | &lt;0.1k | 11.0k | 120k | 290k | 453k |
+| Reads, Zipf (100% reads) | 4.4k | 14.6k | 120k | 320k | 840k |
+
+Oxia's throughput is stable for the duration of every run. Under sustained writes, both
+ZooKeeper and etcd degrade as accumulated state grows.
+
+{/* TODO(new runs): embed per-workload time-series charts, add 18- and 24-server results,
+    and the value-size sweep (64 B / 1 KB / 10 KB). Add root-cause notes for the ZooKeeper
+    and etcd degradation (GC pauses, snapshot I/O, compaction) with evidence. */}
+
+## Latency
+
+{/* TODO(new runs): p50/p99/p999 tables per workload; throughput–latency curves under
+    increasing offered load for all systems. */}
+
+## Coordination primitives
+
+These benchmarks exercise the coordination primitives directly.
+
+**Sessions and ephemerals** — directly comparable across all three systems (ZooKeeper
+sessions + ephemerals, etcd leases + lease-attached keys): session churn rate, heartbeat
+overhead on foreground traffic, and ephemeral-cleanup latency from expiry to visible
+deletion.
+
+**Notifications** — end-to-end delivery latency from write acknowledgment to subscriber
+delivery, across subscriber counts and write rates. etcd watches (resumable by revision)
+are compared directly; ZooKeeper's single-fire watches are driven in their standard
+watch–fire–re-register–re-read loop, with re-read amplification reported.
+
+**Atomic sequences** — two experiments: a single hot sequence (one shard's assignment
+ceiling, across concurrent-writer counts) and many sequences spread across shards
+(horizontal scaling). Compared against contract-equivalent recipes: ZooKeeper sequential
+znodes (create + set + eventual delete, `+1` only) and etcd transactional
+read-modify-write on a counter key, each implementing the same job — assign a batch of N
+offsets, record the index entry, notify consumers.
+
+{/* TODO(new runs): results tables + charts for all three primitive benchmarks, plus the
+    ops-per-assignment (round-trip amplification) comparison table. */}
+
+## Capacity: beyond-memory state
+
+Single-RSM coordination services hold the entire dataset in memory on every node; Oxia
+stores shard state in per-replica LSM trees. This experiment grows the dataset until the
+baselines reach their documented operational limits — etcd's recommended storage quota and
+ZooKeeper's JVM-heap-resident data tree — and reports sustained throughput as state grows,
+with each system's termination point annotated.
+
+{/* TODO(new runs): dataset-size sweep results with ZK/etcd ceiling annotations and the
+    Oxia beyond-RAM curve. */}
+
+## Failure recovery
+
+Leader failover timeline for a single shard: failure injection, coordinator detection,
+term advancement and fencing, new-leader election, and resumed service — plus aggregate
+throughput through the failover window and shard-isolation results (leader failure on one
+shard leaving other shards unaffected).
+
+{/* TODO(new runs): failover timeline chart and throughput-during-failover series. */}
+
+## Reproducing these results
+
+- Benchmark framework: [github.com/oxia-db/benchmark](https://github.com/oxia-db/benchmark)
+- Workload definitions and per-system configurations: {/* TODO: link configs directory */}
+- Raw data (CSV): {/* TODO: link raw data location */}
+
+*Last updated: July 2026.*
