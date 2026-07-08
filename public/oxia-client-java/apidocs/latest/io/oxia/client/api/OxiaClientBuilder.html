@@ -220,9 +220,14 @@ loadScripts(document, 'script');</script>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">
 <div class="block">Specify the session timeout for this client instance.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="SyncOxiaClient.html" title="interface in io.oxia.client.api">SyncOxiaClient</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#syncClient()" class="member-name-link">syncClient</a>()</code></div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="OxiaClientBuilder.html" title="interface in io.oxia.client.api">OxiaClientBuilder</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#sharedResources(io.oxia.client.api.SharedResources)" class="member-name-link">sharedResources</a><wbr>(<a href="SharedResources.html" title="interface in io.oxia.client.api">SharedResources</a>&nbsp;sharedResources)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">
+<div class="block">Build this client on top of a shared <a href="SharedResources.html" title="interface in io.oxia.client.api"><code>SharedResources</code></a> pool.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="SyncOxiaClient.html" title="interface in io.oxia.client.api">SyncOxiaClient</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#syncClient()" class="member-name-link">syncClient</a>()</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">
 <div class="block">Create a synchronous client.</div>
 </div>
 </div>
@@ -559,6 +564,31 @@ loadScripts(document, 'script');</script>
 <dd><code>enableTls</code> - true to enable TLS, false to disable it</dd>
 <dt>Returns:</dt>
 <dd>the builder instance for method chaining</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="sharedResources(io.oxia.client.api.SharedResources)">
+<h3>sharedResources</h3>
+<div class="member-signature"><span class="return-type"><a href="OxiaClientBuilder.html" title="interface in io.oxia.client.api">OxiaClientBuilder</a></span>&nbsp;<span class="element-name">sharedResources</span><wbr><span class="parameters">(<a href="SharedResources.html" title="interface in io.oxia.client.api">SharedResources</a>&nbsp;sharedResources)</span></div>
+<div class="block">Build this client on top of a shared <a href="SharedResources.html" title="interface in io.oxia.client.api"><code>SharedResources</code></a> pool.
+
+ <p>The client will use the pool's background thread pool, gRPC connection pool and
+ shard-assignment stream instead of creating its own, so that many clients in the same process
+ share a single transport footprint. Closing the client only releases its own per-client state
+ (sessions, notifications, batching); the shared resources live until the pool is closed.
+
+ <p>Transport-level settings (TLS, authentication, connection keep-alive and pool size) are
+ taken from the pool. Setting any of them on this builder together with <code>sharedResources</code>
+ is a configuration error and makes <a href="#asyncClient()"><code>asyncClient()</code></a> / <a href="#syncClient()"><code>syncClient()</code></a> throw an
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/IllegalArgumentException.html" title="class or interface in java.lang" class="external-link"><code>IllegalArgumentException</code></a>. Per-client settings such as namespace, client identifier and
+ timeouts still apply.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>sharedResources</code> - the shared resources pool, or <code>null</code> to build a standalone client
+     that owns its own resources</dd>
+<dt>Returns:</dt>
+<dd>the builder instance</dd>
 </dl>
 </section>
 </li>

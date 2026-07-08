@@ -70,6 +70,10 @@ loadScripts(document, 'script');</script>
 <dd>
 <div class="block">Configure the authentication plugin and its parameters.</div>
 </dd>
+<dt><a href="io/oxia/client/api/SharedResources.Builder.html#authentication(io.oxia.client.api.Authentication)" class="member-name-link">authentication(Authentication)</a> - Method in interface <a href="io/oxia/client/api/SharedResources.Builder.html" title="interface in io.oxia.client.api">SharedResources.Builder</a></dt>
+<dd>
+<div class="block">Configure the authentication used by the shared connections.</div>
+</dd>
 <dt><a href="io/oxia/client/api/OxiaClientBuilder.html#authentication(java.lang.String,java.lang.String)" class="member-name-link">authentication(String, String)</a> - Method in interface <a href="io/oxia/client/api/OxiaClientBuilder.html" title="interface in io.oxia.client.api">OxiaClientBuilder</a></dt>
 <dd>
 <div class="block">Configure the authentication plugin and its parameters.</div>
@@ -93,6 +97,14 @@ loadScripts(document, 'script');</script>
      batch is flushed as soon as no more operations are pending, so this setting has no effect.</div>
 </div>
 </dd>
+<dt><a href="io/oxia/client/api/SharedResources.Builder.html#build()" class="member-name-link">build()</a> - Method in interface <a href="io/oxia/client/api/SharedResources.Builder.html" title="interface in io.oxia.client.api">SharedResources.Builder</a></dt>
+<dd>
+<div class="block">Build the <a href="io/oxia/client/api/SharedResources.html" title="interface in io.oxia.client.api"><code>SharedResources</code></a> pool.</div>
+</dd>
+<dt><a href="io/oxia/client/api/SharedResources.html#builder()" class="member-name-link">builder()</a> - Static method in interface <a href="io/oxia/client/api/SharedResources.html" title="interface in io.oxia.client.api">SharedResources</a></dt>
+<dd>
+<div class="block">Create a new builder for a <a href="io/oxia/client/api/SharedResources.html" title="interface in io.oxia.client.api"><code>SharedResources</code></a> pool.</div>
+</dd>
 </dl>
 <h2 class="title" id="I:C">C</h2>
 <dl class="index">
@@ -111,6 +123,10 @@ loadScripts(document, 'script');</script>
 <dt><a href="io/oxia/client/api/CloseableIterable.html#close()" class="member-name-link">close()</a> - Method in interface <a href="io/oxia/client/api/CloseableIterable.html" title="interface in io.oxia.client.api">CloseableIterable</a></dt>
 <dd>
 <div class="block">Releases any resources held by this iterable, cancelling iteration in progress.</div>
+</dd>
+<dt><a href="io/oxia/client/api/SharedResources.html#close()" class="member-name-link">close()</a> - Method in interface <a href="io/oxia/client/api/SharedResources.html" title="interface in io.oxia.client.api">SharedResources</a></dt>
+<dd>
+<div class="block">Release the shared executor, connections and shard-assignment streams.</div>
 </dd>
 <dt><a href="io/oxia/client/api/CloseableIterable.html" class="type-name-link" title="interface in io.oxia.client.api">CloseableIterable</a>&lt;<a href="io/oxia/client/api/CloseableIterable.html" title="type parameter in CloseableIterable">T</a>&gt; - Interface in <a href="io/oxia/client/api/package-summary.html">io.oxia.client.api</a></dt>
 <dd>
@@ -149,13 +165,25 @@ loadScripts(document, 'script');</script>
 <dd>
 <div class="block">Configure the connection backoff policy.</div>
 </dd>
+<dt><a href="io/oxia/client/api/SharedResources.Builder.html#connectionBackoff(java.time.Duration,java.time.Duration)" class="member-name-link">connectionBackoff(Duration, Duration)</a> - Method in interface <a href="io/oxia/client/api/SharedResources.Builder.html" title="interface in io.oxia.client.api">SharedResources.Builder</a></dt>
+<dd>
+<div class="block">Configure the connection backoff policy for the shared connections.</div>
+</dd>
 <dt><a href="io/oxia/client/api/OxiaClientBuilder.html#connectionKeepAliveTime(java.time.Duration)" class="member-name-link">connectionKeepAliveTime(Duration)</a> - Method in interface <a href="io/oxia/client/api/OxiaClientBuilder.html" title="interface in io.oxia.client.api">OxiaClientBuilder</a></dt>
 <dd>
 <div class="block">Configure the keep alive interval for the connection.</div>
 </dd>
+<dt><a href="io/oxia/client/api/SharedResources.Builder.html#connectionKeepAliveTime(java.time.Duration)" class="member-name-link">connectionKeepAliveTime(Duration)</a> - Method in interface <a href="io/oxia/client/api/SharedResources.Builder.html" title="interface in io.oxia.client.api">SharedResources.Builder</a></dt>
+<dd>
+<div class="block">Configure the keep-alive interval for the shared connections.</div>
+</dd>
 <dt><a href="io/oxia/client/api/OxiaClientBuilder.html#connectionKeepAliveTimeout(java.time.Duration)" class="member-name-link">connectionKeepAliveTimeout(Duration)</a> - Method in interface <a href="io/oxia/client/api/OxiaClientBuilder.html" title="interface in io.oxia.client.api">OxiaClientBuilder</a></dt>
 <dd>
 <div class="block">Configure the keep alive timeout for the connection.</div>
+</dd>
+<dt><a href="io/oxia/client/api/SharedResources.Builder.html#connectionKeepAliveTimeout(java.time.Duration)" class="member-name-link">connectionKeepAliveTimeout(Duration)</a> - Method in interface <a href="io/oxia/client/api/SharedResources.Builder.html" title="interface in io.oxia.client.api">SharedResources.Builder</a></dt>
+<dd>
+<div class="block">Configure the keep-alive timeout for the shared connections.</div>
 </dd>
 <dt><a href="io/oxia/client/api/OxiaClientBuilder.html#create(java.lang.String)" class="member-name-link">create(String)</a> - Static method in interface <a href="io/oxia/client/api/OxiaClientBuilder.html" title="interface in io.oxia.client.api">OxiaClientBuilder</a></dt>
 <dd>
@@ -216,6 +244,10 @@ loadScripts(document, 'script');</script>
 <dt><a href="io/oxia/client/api/OxiaClientBuilder.html#enableTls(boolean)" class="member-name-link">enableTls(boolean)</a> - Method in interface <a href="io/oxia/client/api/OxiaClientBuilder.html" title="interface in io.oxia.client.api">OxiaClientBuilder</a></dt>
 <dd>
 <div class="block">Configures whether to enable TLS (Transport Layer Security) for the client connection.</div>
+</dd>
+<dt><a href="io/oxia/client/api/SharedResources.Builder.html#enableTls(boolean)" class="member-name-link">enableTls(boolean)</a> - Method in interface <a href="io/oxia/client/api/SharedResources.Builder.html" title="interface in io.oxia.client.api">SharedResources.Builder</a></dt>
+<dd>
+<div class="block">Configure whether to enable TLS for the shared connections.</div>
 </dd>
 <dt><a href="io/oxia/client/api/Notification.KeyRangeDelete.html#endKeyExclusive()" class="member-name-link">endKeyExclusive()</a> - Method in record class <a href="io/oxia/client/api/Notification.KeyRangeDelete.html" title="class in io.oxia.client.api">Notification.KeyRangeDelete</a></dt>
 <dd>
@@ -465,6 +497,10 @@ loadScripts(document, 'script');</script>
 <dd>
 <div class="block">Configure the maximum number of connections to each Oxia server node.</div>
 </dd>
+<dt><a href="io/oxia/client/api/SharedResources.Builder.html#maxConnectionPerNode(int)" class="member-name-link">maxConnectionPerNode(int)</a> - Method in interface <a href="io/oxia/client/api/SharedResources.Builder.html" title="interface in io.oxia.client.api">SharedResources.Builder</a></dt>
+<dd>
+<div class="block">Configure the maximum number of shared connections to each Oxia server node.</div>
+</dd>
 <dt><a href="io/oxia/client/api/OxiaClientBuilder.html#maxPendingBytes(long)" class="member-name-link">maxPendingBytes(long)</a> - Method in interface <a href="io/oxia/client/api/OxiaClientBuilder.html" title="interface in io.oxia.client.api">OxiaClientBuilder</a></dt>
 <dd>
 <div class="block">Specify the maximum total size of the operations that the client has accepted and not yet
@@ -517,6 +553,10 @@ loadScripts(document, 'script');</script>
 <dd>
 <div class="block">Registers a callback to receive Oxia <a href="io/oxia/client/api/Notification.html" title="interface in io.oxia.client.api"><code>record change notifications</code></a>.</div>
 </dd>
+<dt><a href="io/oxia/client/api/SharedResources.Builder.html#numWorkerThreads(int)" class="member-name-link">numWorkerThreads(int)</a> - Method in interface <a href="io/oxia/client/api/SharedResources.Builder.html" title="interface in io.oxia.client.api">SharedResources.Builder</a></dt>
+<dd>
+<div class="block">Set the number of threads in the shared background thread pool.</div>
+</dd>
 </dl>
 <h2 class="title" id="I:O">O</h2>
 <dl class="index">
@@ -535,6 +575,10 @@ loadScripts(document, 'script');</script>
 <dt><a href="io/oxia/client/api/OxiaClientBuilder.html#openTelemetry(io.opentelemetry.api.OpenTelemetry)" class="member-name-link">openTelemetry(OpenTelemetry)</a> - Method in interface <a href="io/oxia/client/api/OxiaClientBuilder.html" title="interface in io.oxia.client.api">OxiaClientBuilder</a></dt>
 <dd>
 <div class="block">Specify the OpenTelemetry instance to use for this client instance.</div>
+</dd>
+<dt><a href="io/oxia/client/api/SharedResources.Builder.html#openTelemetry(io.opentelemetry.api.OpenTelemetry)" class="member-name-link">openTelemetry(OpenTelemetry)</a> - Method in interface <a href="io/oxia/client/api/SharedResources.Builder.html" title="interface in io.oxia.client.api">SharedResources.Builder</a></dt>
+<dd>
+<div class="block">Configure the OpenTelemetry instance used for shared-resource metrics.</div>
 </dd>
 <dt><a href="io/oxia/client/api/OxiaClientBuilder.html" class="type-name-link" title="interface in io.oxia.client.api">OxiaClientBuilder</a> - Interface in <a href="io/oxia/client/api/package-summary.html">io.oxia.client.api</a></dt>
 <dd>
@@ -677,6 +721,18 @@ loadScripts(document, 'script');</script>
 <dt><a href="io/oxia/client/api/OxiaClientBuilder.html#sessionTimeout(java.time.Duration)" class="member-name-link">sessionTimeout(Duration)</a> - Method in interface <a href="io/oxia/client/api/OxiaClientBuilder.html" title="interface in io.oxia.client.api">OxiaClientBuilder</a></dt>
 <dd>
 <div class="block">Specify the session timeout for this client instance.</div>
+</dd>
+<dt><a href="io/oxia/client/api/OxiaClientBuilder.html#sharedResources(io.oxia.client.api.SharedResources)" class="member-name-link">sharedResources(SharedResources)</a> - Method in interface <a href="io/oxia/client/api/OxiaClientBuilder.html" title="interface in io.oxia.client.api">OxiaClientBuilder</a></dt>
+<dd>
+<div class="block">Build this client on top of a shared <a href="io/oxia/client/api/SharedResources.html" title="interface in io.oxia.client.api"><code>SharedResources</code></a> pool.</div>
+</dd>
+<dt><a href="io/oxia/client/api/SharedResources.html" class="type-name-link" title="interface in io.oxia.client.api">SharedResources</a> - Interface in <a href="io/oxia/client/api/package-summary.html">io.oxia.client.api</a></dt>
+<dd>
+<div class="block">A pool of resources that can be shared by multiple Oxia client instances in the same JVM process.</div>
+</dd>
+<dt><a href="io/oxia/client/api/SharedResources.Builder.html" class="type-name-link" title="interface in io.oxia.client.api">SharedResources.Builder</a> - Interface in <a href="io/oxia/client/api/package-summary.html">io.oxia.client.api</a></dt>
+<dd>
+<div class="block">Builder for a <a href="io/oxia/client/api/SharedResources.html" title="interface in io.oxia.client.api"><code>SharedResources</code></a> pool.</div>
 </dd>
 <dt><a href="io/oxia/client/api/Notification.KeyRangeDelete.html#startKeyInclusive()" class="member-name-link">startKeyInclusive()</a> - Method in record class <a href="io/oxia/client/api/Notification.KeyRangeDelete.html" title="class in io.oxia.client.api">Notification.KeyRangeDelete</a></dt>
 <dd>
