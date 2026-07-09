@@ -77,45 +77,50 @@ loadScripts(document, 'script');</script>
 <div class="col-last even-row-color">
 <div class="block">Configure the authentication used by the shared connections.</div>
 </div>
-<div class="col-first odd-row-color"><code>static <a href="../SharedResources.Builder.html" title="interface in io.oxia.client.api">SharedResources.Builder</a></code></div>
-<div class="col-second odd-row-color"><span class="type-name-label">SharedResources.</span><code><a href="../SharedResources.html#builder()" class="member-name-link">builder</a>()</code></div>
+<div class="col-first odd-row-color"><code><a href="../SharedResources.Builder.html" title="interface in io.oxia.client.api">SharedResources.Builder</a></code></div>
+<div class="col-second odd-row-color"><span class="type-name-label">SharedResources.Builder.</span><code><a href="../SharedResources.Builder.html#batchingThreads(int)" class="member-name-link">batchingThreads</a><wbr>(int&nbsp;batchingThreads)</code></div>
 <div class="col-last odd-row-color">
+<div class="block">Set the number of shared batch-assembly threads (reads and writes each get this many).</div>
+</div>
+<div class="col-first even-row-color"><code>static <a href="../SharedResources.Builder.html" title="interface in io.oxia.client.api">SharedResources.Builder</a></code></div>
+<div class="col-second even-row-color"><span class="type-name-label">SharedResources.</span><code><a href="../SharedResources.html#builder()" class="member-name-link">builder</a>()</code></div>
+<div class="col-last even-row-color">
 <div class="block">Create a new builder for a <a href="../SharedResources.html" title="interface in io.oxia.client.api"><code>SharedResources</code></a> pool.</div>
 </div>
-<div class="col-first even-row-color"><code><a href="../SharedResources.Builder.html" title="interface in io.oxia.client.api">SharedResources.Builder</a></code></div>
-<div class="col-second even-row-color"><span class="type-name-label">SharedResources.Builder.</span><code><a href="../SharedResources.Builder.html#connectionBackoff(java.time.Duration,java.time.Duration)" class="member-name-link">connectionBackoff</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/time/Duration.html" title="class or interface in java.time" class="external-link">Duration</a>&nbsp;minDelay,
+<div class="col-first odd-row-color"><code><a href="../SharedResources.Builder.html" title="interface in io.oxia.client.api">SharedResources.Builder</a></code></div>
+<div class="col-second odd-row-color"><span class="type-name-label">SharedResources.Builder.</span><code><a href="../SharedResources.Builder.html#connectionBackoff(java.time.Duration,java.time.Duration)" class="member-name-link">connectionBackoff</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/time/Duration.html" title="class or interface in java.time" class="external-link">Duration</a>&nbsp;minDelay,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/time/Duration.html" title="class or interface in java.time" class="external-link">Duration</a>&nbsp;maxDelay)</code></div>
-<div class="col-last even-row-color">
+<div class="col-last odd-row-color">
 <div class="block">Configure the connection backoff policy for the shared connections.</div>
 </div>
-<div class="col-first odd-row-color"><code><a href="../SharedResources.Builder.html" title="interface in io.oxia.client.api">SharedResources.Builder</a></code></div>
-<div class="col-second odd-row-color"><span class="type-name-label">SharedResources.Builder.</span><code><a href="../SharedResources.Builder.html#connectionKeepAliveTime(java.time.Duration)" class="member-name-link">connectionKeepAliveTime</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/time/Duration.html" title="class or interface in java.time" class="external-link">Duration</a>&nbsp;keepAliveTime)</code></div>
-<div class="col-last odd-row-color">
+<div class="col-first even-row-color"><code><a href="../SharedResources.Builder.html" title="interface in io.oxia.client.api">SharedResources.Builder</a></code></div>
+<div class="col-second even-row-color"><span class="type-name-label">SharedResources.Builder.</span><code><a href="../SharedResources.Builder.html#connectionKeepAliveTime(java.time.Duration)" class="member-name-link">connectionKeepAliveTime</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/time/Duration.html" title="class or interface in java.time" class="external-link">Duration</a>&nbsp;keepAliveTime)</code></div>
+<div class="col-last even-row-color">
 <div class="block">Configure the keep-alive interval for the shared connections.</div>
 </div>
-<div class="col-first even-row-color"><code><a href="../SharedResources.Builder.html" title="interface in io.oxia.client.api">SharedResources.Builder</a></code></div>
-<div class="col-second even-row-color"><span class="type-name-label">SharedResources.Builder.</span><code><a href="../SharedResources.Builder.html#connectionKeepAliveTimeout(java.time.Duration)" class="member-name-link">connectionKeepAliveTimeout</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/time/Duration.html" title="class or interface in java.time" class="external-link">Duration</a>&nbsp;keepAliveTimeout)</code></div>
-<div class="col-last even-row-color">
+<div class="col-first odd-row-color"><code><a href="../SharedResources.Builder.html" title="interface in io.oxia.client.api">SharedResources.Builder</a></code></div>
+<div class="col-second odd-row-color"><span class="type-name-label">SharedResources.Builder.</span><code><a href="../SharedResources.Builder.html#connectionKeepAliveTimeout(java.time.Duration)" class="member-name-link">connectionKeepAliveTimeout</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/time/Duration.html" title="class or interface in java.time" class="external-link">Duration</a>&nbsp;keepAliveTimeout)</code></div>
+<div class="col-last odd-row-color">
 <div class="block">Configure the keep-alive timeout for the shared connections.</div>
 </div>
-<div class="col-first odd-row-color"><code><a href="../SharedResources.Builder.html" title="interface in io.oxia.client.api">SharedResources.Builder</a></code></div>
-<div class="col-second odd-row-color"><span class="type-name-label">SharedResources.Builder.</span><code><a href="../SharedResources.Builder.html#enableTls(boolean)" class="member-name-link">enableTls</a><wbr>(boolean&nbsp;enableTls)</code></div>
-<div class="col-last odd-row-color">
+<div class="col-first even-row-color"><code><a href="../SharedResources.Builder.html" title="interface in io.oxia.client.api">SharedResources.Builder</a></code></div>
+<div class="col-second even-row-color"><span class="type-name-label">SharedResources.Builder.</span><code><a href="../SharedResources.Builder.html#enableTls(boolean)" class="member-name-link">enableTls</a><wbr>(boolean&nbsp;enableTls)</code></div>
+<div class="col-last even-row-color">
 <div class="block">Configure whether to enable TLS for the shared connections.</div>
 </div>
-<div class="col-first even-row-color"><code><a href="../SharedResources.Builder.html" title="interface in io.oxia.client.api">SharedResources.Builder</a></code></div>
-<div class="col-second even-row-color"><span class="type-name-label">SharedResources.Builder.</span><code><a href="../SharedResources.Builder.html#maxConnectionPerNode(int)" class="member-name-link">maxConnectionPerNode</a><wbr>(int&nbsp;connections)</code></div>
-<div class="col-last even-row-color">
+<div class="col-first odd-row-color"><code><a href="../SharedResources.Builder.html" title="interface in io.oxia.client.api">SharedResources.Builder</a></code></div>
+<div class="col-second odd-row-color"><span class="type-name-label">SharedResources.Builder.</span><code><a href="../SharedResources.Builder.html#maxConnectionPerNode(int)" class="member-name-link">maxConnectionPerNode</a><wbr>(int&nbsp;connections)</code></div>
+<div class="col-last odd-row-color">
 <div class="block">Configure the maximum number of shared connections to each Oxia server node.</div>
 </div>
-<div class="col-first odd-row-color"><code><a href="../SharedResources.Builder.html" title="interface in io.oxia.client.api">SharedResources.Builder</a></code></div>
-<div class="col-second odd-row-color"><span class="type-name-label">SharedResources.Builder.</span><code><a href="../SharedResources.Builder.html#numWorkerThreads(int)" class="member-name-link">numWorkerThreads</a><wbr>(int&nbsp;numWorkerThreads)</code></div>
-<div class="col-last odd-row-color">
+<div class="col-first even-row-color"><code><a href="../SharedResources.Builder.html" title="interface in io.oxia.client.api">SharedResources.Builder</a></code></div>
+<div class="col-second even-row-color"><span class="type-name-label">SharedResources.Builder.</span><code><a href="../SharedResources.Builder.html#numWorkerThreads(int)" class="member-name-link">numWorkerThreads</a><wbr>(int&nbsp;numWorkerThreads)</code></div>
+<div class="col-last even-row-color">
 <div class="block">Set the number of threads in the shared background thread pool.</div>
 </div>
-<div class="col-first even-row-color"><code><a href="../SharedResources.Builder.html" title="interface in io.oxia.client.api">SharedResources.Builder</a></code></div>
-<div class="col-second even-row-color"><span class="type-name-label">SharedResources.Builder.</span><code><a href="../SharedResources.Builder.html#openTelemetry(io.opentelemetry.api.OpenTelemetry)" class="member-name-link">openTelemetry</a><wbr>(OpenTelemetry&nbsp;openTelemetry)</code></div>
-<div class="col-last even-row-color">
+<div class="col-first odd-row-color"><code><a href="../SharedResources.Builder.html" title="interface in io.oxia.client.api">SharedResources.Builder</a></code></div>
+<div class="col-second odd-row-color"><span class="type-name-label">SharedResources.Builder.</span><code><a href="../SharedResources.Builder.html#openTelemetry(io.opentelemetry.api.OpenTelemetry)" class="member-name-link">openTelemetry</a><wbr>(OpenTelemetry&nbsp;openTelemetry)</code></div>
+<div class="col-last odd-row-color">
 <div class="block">Configure the OpenTelemetry instance used for shared-resource metrics.</div>
 </div>
 </div>
