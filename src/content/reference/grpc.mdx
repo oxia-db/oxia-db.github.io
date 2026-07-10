@@ -33,7 +33,7 @@ are kept within the `v1` prefix.
 | Service | Purpose | Implemented by | Typical caller |
 |---|---|---|---|
 | `OxiaClient` | Read, write, notifications, sessions, sequences | Every storage node (public port) | Application code |
-| `OxiaAdmin` | Namespace and node introspection, shard split | Coordinator | Operators, admin CLI |
+| `OxiaAdmin` | Data server and namespace management, shard split | Coordinator | Operators, admin CLI |
 
 Typical topology: clients connect to any storage node and discover the shard → leader
 mapping through `OxiaClient.GetShardAssignments`. Admin traffic is separate and goes to the
@@ -131,11 +131,20 @@ emits `KEY_DELETED` notifications on the affected shard.
 
 | RPC | Request → Response | Purpose |
 |---|---|---|
+| `ListDataServers` | `ListDataServersRequest` → `ListDataServersResponse` | Enumerate configured data servers. |
+| `GetDataServer` | `GetDataServerRequest` → `GetDataServerResponse` | Read a configured data server. |
+| `CreateDataServer` | `CreateDataServerRequest` → `CreateDataServerResponse` | Add a data server definition. |
+| `PatchDataServer` | `PatchDataServerRequest` → `PatchDataServerResponse` | Update a data server definition. |
+| `DeleteDataServer` | `DeleteDataServerRequest` → `DeleteDataServerResponse` | Remove a data server definition. |
+| `CreateNamespace` | `CreateNamespaceRequest` → `CreateNamespaceResponse` | Create a namespace. |
+| `PatchNamespace` | `PatchNamespaceRequest` → `PatchNamespaceResponse` | Update namespace configuration. |
+| `DeleteNamespace` | `DeleteNamespaceRequest` → `DeleteNamespaceResponse` | Delete a namespace. |
+| `GetNamespace` | `GetNamespaceRequest` → `GetNamespaceResponse` | Read a namespace by name. |
 | `ListNamespaces` | `ListNamespacesRequest` → `ListNamespacesResponse` | Enumerate configured namespaces. |
-| `ListNodes` | `ListNodesRequest` → `ListNodesResponse` | Enumerate storage nodes with their public and internal addresses. |
 | `SplitShard` | `SplitShardRequest` → `SplitShardResponse` | Manually split a shard at an optional explicit hash point. |
 
-The admin service is implemented only by the coordinator.
+The admin service is implemented only by the coordinator. The request and response
+messages are listed in the draft [Admin API](./admin-api.mdx) reference.
 
 ## Status codes
 
