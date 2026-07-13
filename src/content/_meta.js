@@ -16,4 +16,5 @@ export default {
   architecture: '',
   correctness: '',
   consensus: '',
+  benchmarks: '',
 }

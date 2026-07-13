@@ -1,0 +1,377 @@
+import ThroughputYcsb from '../components/benchmarks/ThroughputYcsb'
+import LatencyA from '../components/benchmarks/LatencyA'
+import LatencyB from '../components/benchmarks/LatencyB'
+import LatencyC from '../components/benchmarks/LatencyC'
+import LatencyD from '../components/benchmarks/LatencyD'
+import Scaling from '../components/benchmarks/Scaling'
+import Capacity from '../components/benchmarks/Capacity'
+import Failover from '../components/benchmarks/Failover'
+import Sessions from '../components/benchmarks/Sessions'
+
+# Benchmarks
+
+---
+
+This page is the comprehensive benchmark report for Oxia: full methodology, system
+configurations, complete results across cluster sizes, and links to the raw data. A
+condensed subset of these results appears in the Oxia paper; this page is the extended
+record and is kept up to date as new runs land.
+
+All results were collected with the open-source, service-agnostic
+[benchmark framework](https://github.com/oxia-db/benchmark), which drives identical
+workloads against Oxia, ZooKeeper, and etcd using asynchronous clients so that the target
+systems — not the load generators — are the bottleneck.
+
+## Methodology
+
+Two rules govern every comparison on this page:
+
+1. **Contract-equivalent recipes.** Where a system cannot express an operation natively
+   (e.g., atomic `+N` sequence assignment), we implement the closest contract-equivalent
+   recipe with its native primitives (e.g., ZooKeeper sequential znodes, etcd
+   transactions) and report the extra round-trips alongside the numbers, together with any
+   remaining semantic difference.
+2. **Documented limits are measurements.** Where a system cannot hold the state or sustain
+   the load at all, we run it to its vendor-documented operational limit and report that
+   boundary as a result, with the configuration disclosed.
+
+### Workloads: YCSB, re-implemented
+
+The workload mixes on this page follow [YCSB](https://github.com/brianfrankcooper/YCSB)
+(the Yahoo! Cloud Serving Benchmark, Cooper et al., SoCC 2010) — the de-facto standard
+suite of key-value workloads against which many databases have published results. The
+core mixes define the read/update ratio and key distribution: A (50/50, Zipfian),
+B (95/5, Zipfian), C (read-only, Zipfian), D (read-latest). Using them keeps these
+numbers comparable with the wider literature.
+
+We do **not** run the original YCSB tool itself. Its driver issues synchronous,
+thread-per-request operations, which caps the load a worker can generate and makes the
+client — not the system under test — the bottleneck long before systems like Oxia
+saturate. Instead, the [benchmark framework](https://github.com/oxia-db/benchmark)
+re-implements the same workload mixes in a purpose-built KV load generator: fully
+asynchronous clients with bounded per-worker in-flight windows, precise rate pacing for
+latency runs, pluggable per-system drivers behind one KV interface, exact
+(HdrHistogram-merged) percentiles across workers, and Kubernetes-orchestrated multi-worker
+runs. Same operation mixes, delivered at rates that can actually push the servers.
+
+### Environment
+
+| | |
+|---|---|
+| Cloud | AWS (us-east-1), Kubernetes (EKS), EC2 `c6a`-family instances |
+| Storage | EBS `gp3` volumes (3,000 IOPS / 125 MB/s baseline) |
+| Server pods | **2 vCPU / 4 GiB** per data server (requests = limits), for every system |
+| Volumes per server | **2 × 10 GiB** — the write-ahead / transaction log on its own volume, separate from the data volume, for every system |
+| Replication factor | 3 (all systems) |
+| Cluster sizes | Oxia: 3 / 6 / 12 data servers · ZooKeeper, etcd: 3-node ensembles |
+| Load generators | 10 worker pods (2 vCPU / 4 GiB JVMs, generational ZGC), asynchronous clients, up to 10,000 outstanding operations per worker |
+| Dataset | 1M keys, 64-byte values, populated by a sequential load phase before every measured run |
+| Workloads | YCSB core: A (50/50 read/update, Zipf), B (95/5, Zipf), C (100% read, Zipf), D (95/5, latest-key distribution) |
+
+### Per-system configuration
+
+Full configurations are disclosed so results can be scrutinized and reproduced; the exact
+Helm values are in the framework repository under
+[`charts/benchmark-stack/comparison`](https://github.com/oxia-db/benchmark/tree/main/charts/benchmark-stack/comparison).
+
+| | |
+|---|---|
+| **Oxia** | v0.17, `replicationFactor: 3`, 2 shards per data server (6 / 12 / 24 shards), WAL fsync before acknowledgment, 2 GiB Pebble read cache. Java client with rate-adaptive read and write batching (bounded per-shard in-flight windows). |
+| **ZooKeeper** | 3.9.3, 3-node ensemble, 2 GiB JVM heap, `snapCount` 1M, transaction log on a dedicated volume (`dataLogDir`), snapshot auto-purge enabled. |
+| **etcd** | 3.6.1, 3-node cluster, WAL on a dedicated volume, periodic MVCC auto-compaction (5m), default linearizable reads. |
+
+All systems run at equivalent durability: every acknowledged write is fsynced to the
+write-ahead / transaction log on a majority of replicas before the client sees success.
+
+## YCSB throughput
+
+Maximum sustained throughput: no target rate — each of the 10 workers keeps up to 10,000
+operations in flight and the achieved rate is measured over a 60-second window per
+workload (after warm-up), preceded by the sequential load phase. Values are aggregate
+operations per second across the cluster; every run below completed with **zero failed
+operations**.
+
+<ThroughputYcsb />
+
+| Workload | oxia-3 | oxia-6 | oxia-12 | ZooKeeper | etcd |
+|---|---|---|---|---|---|
+| Insert (load, 100% writes) | 184k | 401k | 590k | 13.5k | 21.7k |
+| YCSB A (50% reads / 50% updates) | 308k | 369k | 469k | 35.8k | 23.7k |
+| YCSB B (95% reads) | 849k | 1.21M | 1.15M | 104k | 35.8k |
+| YCSB C (100% reads) | 1.36M | 1.80M | 1.70M | 78k | 43k |
+| YCSB D (95% reads, latest) | 989k | 1.10M | 1.12M | 104k | 35.3k |
+
+Notes on reading the numbers:
+
+- **Writes scale near-linearly with cluster size**: the insert workload grows
+  184k → 401k → 590k ops/s from 3 → 6 → 12 servers, because uniformly-distributed writes
+  use every shard. ZooKeeper and etcd are single consensus groups: adding servers cannot
+  add write throughput, and both sit at 13–22k writes/s with the same per-node resources.
+- **Pure-read workloads saturate the load generators, not Oxia**: at ~1.7–1.8M reads/s
+  the ten 2-vCPU workers are the bottleneck (~180k reads/s per worker), which is why
+  oxia-6 and oxia-12 measure the same. The Oxia servers still have headroom — visible in
+  the mixed workloads (A, D), which keep scaling with cluster size.
+- **etcd reads are linearizable by default** and pay a quorum round-trip; ZooKeeper
+  serves reads locally from each node. Both behaviors are kept as shipped.
+
+## Scaling with cluster size
+
+Under a **uniform** key distribution — operations spread evenly across the whole key space,
+and therefore across every shard — both write and read throughput grow with the number of
+servers. This run uses two single-operation, max-throughput workloads (100% writes and
+100% reads, uniform over the 1M-key space) on the same 3 / 6 / 12-server clusters (2 vCPU
+/ 4 GiB pods, 10 workers).
+
+**Writes** scale near-linearly by construction: every key maps to a shard, so more shards
+means more write capacity.
+
+<Scaling mode="write" />
+
+**Reads** scale the same way — *when the load is spread across shards*. The YCSB read
+workloads earlier use a **Zipf** distribution, where a few hot keys take most of the
+traffic; those reads concentrate on a handful of shards and stop scaling (YCSB C is flat
+from 6 to 12 servers). That is a property of the workload, not of Oxia: the uniform read
+line keeps climbing while the Zipf line (YCSB C) plateaus.
+
+<Scaling mode="read" />
+
+| Cluster | Write-only (uniform) | Read-only (uniform) | Read-only (Zipf, YCSB C) |
+|---|---|---|---|
+| 3 servers | 143k | 646k | 1.36M |
+| 6 servers | 291k | 1.61M | 1.80M |
+| 12 servers | 487k | 2.07M | 1.70M |
+
+- **Uniform reads scale 3.2× from 3 to 12 servers** (646k → 1.61M → 2.07M) and **writes
+  scale 3.4×** (143k → 291k → 487k), while the Zipf read workload plateaus
+  (1.36M → 1.80M → 1.70M): adding servers adds capacity, but a hot-key workload can only
+  use the shards its hot keys land on.
+- Uniform reads start *lower* than Zipf at a given cluster size — Zipf re-reads a small hot
+  set that stays in cache, whereas uniform touches the whole dataset — but only the uniform
+  curve keeps climbing as servers are added.
+- The 6→12 read step (1.29×) is gentler than 3→6 (2.49×) because the ten 2-vCPU worker pods
+  begin to co-limit above ~2M reads/s; a larger client fleet would extend the curve further.
+
+## YCSB latency
+
+Latency at a fixed, non-saturating aggregate rate of **10,000 ops/s** (two workers at
+5,000 ops/s each), measured for 3 minutes per workload after 30 seconds of warm-up.
+Percentiles are exact: HdrHistogram, merged across workers. Axes are logarithmic; lower
+is better. The Oxia cluster is 3 servers (same 2 vCPU / 4 GiB pods as above).
+
+### YCSB A — 50% reads / 50% updates
+
+<LatencyA />
+
+### YCSB B — 95% reads / 5% updates
+
+<LatencyB />
+
+### YCSB C — 100% reads
+
+<LatencyC />
+
+### YCSB D — 95% reads / 5% updates, latest-key distribution
+
+<LatencyD />
+
+| Workload | System | write p50 | write p99 | write p99.9 | read p50 | read p99 | read p99.9 |
+|---|---|---|---|---|---|---|---|
+| A | Oxia | 3.6 ms | 9.2 ms | 13.6 ms | **0.50 ms** | 1.2 ms | 3.2 ms |
+| A | ZooKeeper | 3.2 ms | 8.3 ms | 39.8 ms | 2.6 ms | 7.4 ms | 39.3 ms |
+| A | etcd | 373 ms | 2.36 s | 2.42 s | 376 ms | 2.37 s | 2.43 s |
+| B | Oxia | 2.6 ms | 7.0 ms | 7.7 ms | **0.46 ms** | 0.70 ms | 1.2 ms |
+| B | ZooKeeper | 1.7 ms | 3.8 ms | 4.2 ms | 0.40 ms | 2.4 ms | 3.7 ms |
+| B | etcd | 3.7 ms | 144 ms | 175 ms | 3.9 ms | 147 ms | 179 ms |
+| C | Oxia | — | — | — | 0.47 ms | **0.72 ms** | **0.98 ms** |
+| C | ZooKeeper | — | — | — | 0.34 ms | 0.52 ms | 1.2 ms |
+| C | etcd | — | — | — | 2.3 ms | 101 ms | 151 ms |
+| D | Oxia | 2.6 ms | 7.1 ms | 12.0 ms | **0.48 ms** | 0.73 ms | 1.6 ms |
+| D | ZooKeeper | 1.7 ms | 3.5 ms | 4.3 ms | 0.40 ms | 2.3 ms | 3.3 ms |
+| D | etcd | 3.7 ms | 142 ms | 188 ms | 3.9 ms | 145 ms | 188 ms |
+
+Notes:
+
+- **Oxia keeps sub-millisecond read p50 in every workload, including the write-heavy
+  mix (A)** — reads and writes ride independent paths, so a 5,000 writes/s stream does
+  not queue the reads. ZooKeeper matches Oxia on pure reads (C) but its reads degrade
+  ~5× under the mixed workload, where reads serialize behind the commit pipeline.
+- **Quorum writes cost single-digit milliseconds** on both Oxia (2.6–3.6 ms p50) and
+  ZooKeeper (1.7–3.2 ms p50). ZooKeeper's dedicated transaction-log device gives it the
+  edge at p50/p99; Oxia holds the tighter p99.9 under the write-heavy mix.
+- **etcd sits close to its saturation point at this rate**: 5,000 writes/s in workload A
+  drives it into deep queueing (p50 ≈ 370 ms), and its read tail carries 100–190 ms p99
+  in every workload — consistent with its ~24k ops/s ceiling in the throughput runs and
+  its linearizable-read round-trips.
+
+## Coordination primitives
+
+These benchmarks exercise the coordination primitives directly.
+
+### Sessions and ephemerals
+
+Sessions are directly comparable across all three systems: Oxia sessions with ephemeral
+keys, ZooKeeper sessions with ephemeral znodes, etcd leases with lease-attached keys.
+Two experiments, identical session parameters everywhere (10&nbsp;s timeout, 1 ephemeral
+of 16&nbsp;B per session, 10 worker pods):
+
+**Capacity** — how many *live* sessions can the cluster hold before a foreground
+workload suffers? Each system runs a fixed-rate YCSB-A foreground at an operating point
+it comfortably sustains (Oxia 100k&nbsp;ops/s, ZooKeeper 18k, etcd 12k — scaled to each
+system's own saturation), while the live-session count is swept upward. The bars show
+the largest session count each system sustained with ≤1% foreground degradation and no
+failed operations; the 6- and 12-node Oxia bars are the scaling runs (shard count held
+at 6, fixed build — see footnote ² and the scaling table below).
+
+<Sessions mode="capacity" />
+
+| | Oxia | ZooKeeper | etcd |
+|---|---|---|---|
+| Sessions held with ≤1% throughput loss | **100,000** | 25,000¹ | 30,000 |
+| Foreground p99 at that count | 2.4 s (19×) | 46 ms (6×) | 741 ms (35×) |
+| Where it ends | 200k → **server OOM** (4 GiB)² | client-side cap¹ | 60k → 4.8% loss, 7.6k failed ops |
+| Client cost per 10k sessions | ~0 threads | **20,000 threads, ~340 MB heap** | ~0 threads |
+
+¹ A ZooKeeper session *is* a TCP connection with two client threads: 10k sessions cost a
+client 20k threads, so the sweep stops at 2,500 sessions per worker (25k cluster-wide) —
+the practical client-side ceiling, with `maxClientCnxns=0` already raised on the servers.
+Oxia and etcd multiplex sessions over existing connections; holding 100k of them costs
+the clients nothing measurable.
+
+² A follow-up run probed 200k and 300k directly: the servers OOMed during the 200k ramp,
+so the 4&nbsp;GiB ceiling sits between the clean 100k point and 200k — roughly 15–20 KB
+of server-side state per session on the build measured above. Profiling traced this to a
+per-session goroutine + timer in the session manager
+([oxia#1235](https://github.com/oxia-db/oxia/issues/1235)); a fixed build brings the
+steady-state cost under **1 KB per session** (holding 100k sessions costs ~90 MB per
+server). The residual limit on that build is a transient allocation spike while sessions
+are being *established*, still tracked in the same issue — the table above keeps the
+numbers for the build the rest of this page was measured with.
+
+**Sessions scale with the cluster.** Session state lives on shard leaders, so adding
+servers spreads it. Re-running the sweep on the fixed build with the shard count held at
+6 while growing the cluster (same 4&nbsp;GiB pods, same 10-worker foreground):
+
+| Cluster (6 shards) | Leaders per server | Live sessions measured | Foreground p99 at top rung |
+|---|---|---|---|
+| 3 servers | 2 | 100k | 2.4 s |
+| 6 servers | 1–2 | up to **500k** | ~1.0–1.3 s |
+| 12 servers | 1 | up to **700k** | **277 ms** |
+
+At 12 servers each leader held ~117k live sessions with the foreground unaffected. The
+establish-ramp spikes still caused occasional single-server OOMs mid-ramp on the larger
+clusters; the coordinator re-elected the affected shards (sessions are replicated and
+survive leader failover) and every steady-state rung then measured cleanly — the
+capacity above is what the cluster *holds*, with the ramp issue disclosed.
+
+**Churn** — how fast can sessions come and go (established with their ephemeral, then
+gracefully closed) before establish latency knees? No foreground load; the offered
+create+close rate is swept.
+
+<Sessions mode="churn" />
+
+| | Oxia | ZooKeeper | etcd |
+|---|---|---|---|
+| Sustained churn (cluster-wide) | **1,000/s** at 12 ms p99 | 2,000/s at 285 ms p99 | < 70/s |
+| Achieved ceiling | ~4,400/s (p99 ~3 s) | ~2,000/s | ~600/s, failures at every rung |
+| Why | establish = session create + ephemeral write | establish = TCP connect + session handshake (cheap on servers, heavy on clients) | establish = LeaseGrant + keep-alive stream + put, each a Raft write |
+
+etcd's establishes go through consensus, so churn competes with every other write: even
+70 sessions/s cluster-wide showed a 13% establish-failure rate on this footprint, and
+higher rungs failed en masse (150k failures at the top rung). ZooKeeper sustains higher
+raw churn than its capacity story would suggest — its establish path is connection-bound,
+not consensus-bound — at the price of 40× establish-latency inflation across the sweep.
+Oxia holds ~12 ms establish p99 through 1k/s and degrades gradually to its ~4.4k/s
+ceiling.
+
+## Capacity: beyond-memory state
+
+Single-RSM coordination services hold the entire dataset in memory on every node; Oxia
+stores shard state in per-replica LSM trees. This experiment grows the dataset until the
+baselines reach their documented operational limits — etcd's recommended storage quota and
+ZooKeeper's JVM-heap-resident data tree — and reports sustained throughput as state grows,
+with each system's termination point annotated.
+
+The workload is insert-only: 1&nbsp;KB incompressible (random) values under sequential,
+distinct keys, with the keyspace partitioned into disjoint slices across the load
+workers. All three systems run 3-node clusters on the same 2&nbsp;CPU / 4&nbsp;GiB pods
+used throughout this report, and in all three every node stores a full copy of the
+dataset — so the x-axis below is state held *per server*. Oxia's data volumes are sized
+for the experiment (300&nbsp;GB, gp3 at 500&nbsp;MB/s); ZooKeeper and etcd fail long
+before disk size or speed is a factor.
+
+<Capacity />
+
+Each ✕ marks where a system stopped serving writes:
+
+| System | Outcome |
+| :--- | :--- |
+| **ZooKeeper** | Collapses at **~1.5M keys (~1.6 GB)**. The heap-resident `DataTree` fills the 2&nbsp;GiB heap; throughput decays under GC pressure from ~12.5k to under 100 ops/s before the JVM dies (`OutOfMemoryError` / crash-loop). |
+| **etcd** | Goes **read-only at 2.0 GiB** — the default `--quota-backend-bytes`. All members raise a `NOSPACE` alarm and every subsequent write is rejected. The quota can be raised, but etcd documents ~8&nbsp;GB as the operational ceiling for its mmap'd BoltDB backend. |
+| **Oxia** | Keeps serving. **100M keys — 106&nbsp;GiB per node** — 26× the pod's total RAM — with server memory averaging 2.1&nbsp;GiB (peak 3.2&nbsp;GiB: Pebble's 2&nbsp;GiB block cache plus transient compaction buffers) and zero restarts. |
+
+Oxia's throughput on this chart is not free of physics: as the LSM tree deepens, leveled
+compaction rewrites each byte roughly once per level, and with the default Pebble
+configuration we measured **~7–9× write amplification** by the time a node holds
+~100&nbsp;GB. Sustained ingest is therefore bounded by `disk throughput ÷ write
+amplification`, which is what produces the gentle taper in the curve (≈50k writes/s at
+the start of the fill, ≈43k at 100&nbsp;GiB) — a disk-bound tradeoff, not a memory
+limit. For use cases holding hundreds of gigabytes per node,
+this is tunable: more shards per node (shallower trees), larger memtables (fewer, larger
+L0 files), and relaxed level size ratios all trade some read amplification or memory for
+lower write amplification. The defaults favor the small-to-mid datasets typical of
+coordination workloads.
+
+## Failure recovery
+
+What happens to a live workload when a leader dies? Each system runs the same fixed-rate
+50/50 read/update workload (YCSB&nbsp;A, Zipf, 1M × 64&nbsp;B keys, 2-second stats
+resolution) while its leader is force-killed (`kill -9` semantics — no graceful
+shutdown). For ZooKeeper and etcd that is *the* leader of the single consensus group; for
+Oxia it is a server that leads 2 of the 6 shards (~⅓ of the keyspace) — the other shards
+have their leaders elsewhere. Oxia and ZooKeeper are driven at 10k ops/s; etcd at 5k
+ops/s (see the disclosure below).
+
+<Failover mode="availability" />
+
+ZooKeeper's line is not a rendering artifact: throughput is **zero for ~30 seconds** —
+every client stalls through session re-establishment, then the backlog drains in a burst
+of multi-second latencies. etcd re-elects within its ~1&nbsp;s Raft election timeout and
+dips ~30% for a couple of seconds. Oxia never leaves 100%: the four unaffected shards
+don't participate in the failure at all, and operations on the two affected shards wait
+out a sub-second election.
+
+<Failover mode="latency" />
+
+| | **Oxia** (shard leader) | **ZooKeeper** (ensemble leader) | **etcd** (Raft leader) |
+|---|---|---|---|
+| Blast radius | 2 of 6 shards (~⅓ of keyspace) | entire service | entire service |
+| Service outage | none — 10k ops/s flat | **~30 s at 0 ops/s** | none — 2 s dip to −30% |
+| Failed operations | **16** | ~287,000 | 77 |
+| p99 during failover | 432 ms (one 2 s interval) | ∞ during outage; 3.3 s drain burst | 1.25 s (one interval) |
+| Back to baseline | ~4 s | ~40 s | ~12 s |
+| Detection → new leader | **200–300 ms** per shard (coordinator log) | seconds (election) + ~30 s client sessions | ~1 s election timeout |
+
+The Oxia coordinator's own log puts precise timestamps on the failover pipeline: health
+probe fails (EOF) → *failure detected* on both affected shards **1 ms later** → ensembles
+fenced to a new term (+145 ms) → *new leaders elected and followers caught up* at
+**+200–300 ms**. And when the replaced pod rejoined the cluster a minute later, the
+coordinator handed a leadership back to it: that *graceful* swap cost a 56 ms p99 blip —
+about 8× cheaper than the crash failover, which is itself invisible at the service level.
+
+Two fairness notes: **etcd runs at 5k ops/s** here because on this 2-vCPU footprint it
+cannot hold 10k for more than a couple of minutes — the async pipeline fills to the
+outstanding-request cap and measured latency becomes queue sojourn time (~2 s), which
+would bury the failover signal (a saturated 10k run also survived the leader kill, with
+~87 failed ops and a dip to 4.5k ops/s). **ZooKeeper's ~30 s** is dominated by default
+client session behavior (session timeout and reconnect), not ZAB election time — it is
+the out-of-the-box operator experience with the stock client, configuration disclosed.
+
+## Reproducing these results
+
+- Benchmark framework: [github.com/oxia-db/benchmark](https://github.com/oxia-db/benchmark)
+- Workload definitions: [`conf/workload-ycsb-throughput.yaml`](https://github.com/oxia-db/benchmark/blob/main/conf/workload-ycsb-throughput.yaml) (max throughput) and [`conf/workload-ycsb.yaml`](https://github.com/oxia-db/benchmark/blob/main/conf/workload-ycsb.yaml) (rate-paced latency)
+- Per-system configurations: [`charts/benchmark-stack/comparison`](https://github.com/oxia-db/benchmark/tree/main/charts/benchmark-stack/comparison)
+- The harness aggregates per-worker results with exact HdrHistogram merging and emits
+  `summary.json` / `summary.csv` / an HTML report per run (`report` subcommand).
+
+*Last updated: July 2026.*
