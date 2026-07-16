@@ -30,7 +30,7 @@ matching records.
 
 ### Writing records with secondary indexes
 
-<Tabs items={['Go', 'Java', 'Python', 'Node.js', 'CLI']}>
+<Tabs items={['Go', 'Java', 'Python', 'Node.js', 'Rust', 'CLI']}>
     <Tabs.Tab>
         ```go
         // Index a user record by email
@@ -64,6 +64,15 @@ matching records.
         ```
     </Tabs.Tab>
     <Tabs.Tab>
+        ```rust
+        // Index a user record by email
+        client
+            .put("/users/123", r#"{"name":"Alice","email":"alice@example.com"}"#)
+            .secondary_index("by-email", "alice@example.com")
+            .await?;
+        ```
+    </Tabs.Tab>
+    <Tabs.Tab>
         ```shell
         $ oxia client put /users/123 -d '{"name":"Alice","email":"alice@example.com"}'
         ```
@@ -74,7 +83,7 @@ matching records.
 
 Use the `UseIndex` option on `Get`, `List`, or `RangeScan` to query using secondary keys.
 
-<Tabs items={['Go', 'Java', 'Python', 'Node.js', 'CLI']}>
+<Tabs items={['Go', 'Java', 'Python', 'Node.js', 'Rust', 'CLI']}>
     <Tabs.Tab>
         ```go
         // Lookup by secondary index
@@ -138,6 +147,20 @@ Use the `UseIndex` option on `Get`, `List`, or `RangeScan` to query using second
         const decoder = new TextDecoder();
         for await (const r of client.rangeScan('a', 'b', { useIndex: 'by-email' })) {
           console.log(`primary key: ${r.key}, value: ${decoder.decode(r.value)}`);
+        }
+        ```
+    </Tabs.Tab>
+    <Tabs.Tab>
+        ```rust
+        // Lookup by secondary index
+        let record = client.get("alice@example.com").use_index("by-email").await?;
+
+        // List all keys in a secondary index range
+        let keys = client.list("a", "b").use_index("by-email").await?;
+
+        // Range scan using secondary index
+        for record in client.range_scan("a", "b").use_index("by-email").await? {
+            println!("primary key: {}, value: {:?}", record.key, record.value);
         }
         ```
     </Tabs.Tab>
