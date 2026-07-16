@@ -1,0 +1,224 @@
+---
+sidebarTitle: Rust
+---
+
+# Rust Client SDK
+
+
+## Installing Rust client SDK
+
+```shell
+cargo add oxia-client
+```
+
+The crate is `oxia-client`; the import root is `oxia`. The client is asynchronous
+and runs on the [Tokio](https://tokio.rs) runtime. API documentation is available
+at https://docs.rs/oxia-client.
+
+## Client API
+
+### Initializing the client
+
+To use the Oxia client, create a client instance. It is cheap to clone (all clones
+share one set of connections, batchers and sessions), safe to share across tasks,
+and valid until it is explicitly closed. Every operation returns a request builder:
+chain options onto it and `.await` it directly.
+
+```rust
+use oxia::OxiaClient;
+
+#[tokio::main]
+async fn main() -> Result<(), oxia::OxiaError> {
+    let client = OxiaClient::connect("localhost:6648").await?;
+
+    // ... use the client ...
+
+    client.close().await?;
+    Ok(())
+}
+```
+
+When creating the client it is possible to pass several options through the builder:
+
+```rust
+use std::time::Duration;
+
+let client = OxiaClient::builder()
+    .service_address("localhost:6648")
+    .namespace("my-namespace")
+    .identity("my-client-identity")
+    .request_timeout(Duration::from_secs(30))
+    .build()
+    .await?;
+```
+
+Available client options (see [`OxiaClientBuilder`](https://docs.rs/oxia-client/latest/oxia/struct.OxiaClientBuilder.html)):
+
+| Option | Description | Default |
+|---|---|---|
+| `namespace` | Oxia namespace to use. | `default` |
+| `request_timeout` | Deadline for each unary RPC. Long-lived streams are unbounded. | `30s` |
+| `session_timeout` | Session timeout for ephemeral records. | `15s` |
+| `session_keep_alive` | How often the session is heartbeated. | `session_timeout / 10` |
+| `identity` | Stable client identity attached to ephemeral records. | Random UUID |
+| `batch_max_size` | Maximum size of a batched request. | `128 KiB` |
+| `max_requests_per_batch` | Maximum number of operations in a batch. | `1000` |
+
+Errors surface as [`OxiaError`](https://docs.rs/oxia-client/latest/oxia/enum.OxiaError.html);
+a record that does not exist is reported as `Err(OxiaError::KeyNotFound)` rather than
+a null value.
+
+### Writing records
+
+```rust
+// Write a record with the expectation that it does not already exist.
+let res1 = client
+    .put("my-key", "value-1")
+    .expected_record_not_exists()
+    .await?;
+
+// Write with the expectation that it has not changed since the previous write.
+// If it has, the operation fails with OxiaError::UnexpectedVersionId.
+let res2 = client
+    .put("my-key", "value-2")
+    .expected_version_id(res1.version.version_id)
+    .await?;
+
+// Ephemeral record: deleted automatically when the client session ends.
+client.put("/workers/worker-1", "host:port").ephemeral().await?;
+
+// Atomic sequence key: the server appends a monotonic suffix; requires a partition key.
+let seq = client
+    .put("/events/", "event-data")
+    .partition_key("/events/")
+    .sequence_key_deltas([1])
+    .await?;
+
+// Attach a secondary index entry at write time.
+client
+    .put("/offset/12345", "...")
+    .secondary_index("partition", "p-17")
+    .await?;
+```
+
+`put` options:
+
+| Option | Description |
+|---|---|
+| `partition_key` | Route to a specific shard (co-locate related keys). |
+| `expected_version_id` / `expected_record_not_exists` | Conditional write (compare-and-swap, or assert the record is absent). |
+| `ephemeral` | Bind the record to the client session — see [ephemerals](../features/ephemerals.mdx). |
+| `sequence_key_deltas` | Server-assigned monotonic suffixes — see [sequence keys](../features/sequence-keys.mdx). Requires a partition key. |
+| `secondary_index` | Index the record under `(index_name, secondary_key)` — see [secondary indexes](../features/secondary-indexes.mdx). |
+
+### Reading records
+
+```rust
+use oxia::ComparisonType;
+
+let record = client.get("my-key").await?;
+println!("{} = {:?}", record.key, record.value);
+
+// Metadata-only read (skips the value payload).
+let meta = client.get("my-key").include_value(false).await?;
+
+// Range-style get: returns the closest key ≤ the lookup key.
+let floor = client.get("/users/50").comparison(ComparisonType::Floor).await?;
+```
+
+`get` options:
+
+| Option | Description |
+|---|---|
+| `comparison` | `Equal` (default), `Floor`, `Ceiling`, `Lower`, `Higher`. Non-equal modes scan all shards unless `partition_key` is set. |
+| `include_value` | Set to `false` for a metadata-only read. |
+| `partition_key` | Route to a specific shard. |
+| `use_index` | Look up via a named [secondary index](../features/secondary-indexes.mdx). |
+
+### Deleting records
+
+```rust
+// Unconditional delete.
+client.delete("my-key").await?;
+
+// Conditional delete: only succeeds if the version matches.
+client
+    .delete("my-key")
+    .expected_version_id(res2.version.version_id)
+    .await?;
+```
+
+### Deleting a range of records
+
+Delete all records whose keys fall within `[min, max)`:
+
+```rust
+client.delete_range("/users/", "/users//").await?;
+```
+
+Without a partition key, the call fans out to every shard. Pass `partition_key` to
+scope the delete to a single shard.
+
+### Listing keys
+
+List keys in `[min, max)` without fetching values:
+
+```rust
+let keys = client.list("/users/", "/users//").await?;
+for key in keys {
+    println!("{key}");
+}
+
+// Narrow to a single shard via partition_key, or query a secondary index via use_index.
+let keys = client.list("/users/", "/users//").partition_key("/users/").await?;
+let by_email = client.list("", "\u{ffff}").use_index("email").await?;
+```
+
+Keys come back in Oxia's slash-aware key order. For a very large range, use
+`.stream().await?` to obtain an ordered async `Stream` instead of collecting a `Vec`.
+
+### Scanning records
+
+Scan records in a key range, returning keys and values:
+
+```rust
+for record in client.range_scan("/users/", "/users//").await? {
+    println!("key: {}, value: {:?}", record.key, record.value);
+}
+
+// With a secondary index.
+let by_email = client.range_scan("", "\u{ffff}").use_index("email").await?;
+```
+
+Like `list`, `range_scan` accepts `partition_key` and `use_index`, and offers
+`.stream().await?` for an ordered, memory-bounded async stream.
+
+### Sessions and ephemerals
+
+Sessions are managed transparently: the first `put(...).ephemeral()` creates a
+per-shard session, the client heartbeats it, and ephemerals are cleaned up when the
+client closes or the session expires. See [ephemerals](../features/ephemerals.mdx)
+for the lifecycle details.
+
+### Notifications and sequence updates
+
+Both are subscription handles you consume with `recv()` (or as a `Stream`):
+
+```rust
+// Change feed for the namespace.
+let mut notifications = client.notifications().await?;
+while let Some(notification) = notifications.recv().await {
+    println!("{notification}");
+}
+
+// Updates for a specific sequence prefix (pass the sequence's partition key).
+let mut updates = client.sequence_updates("/events/", "/events/").await?;
+while let Some(key) = updates.recv().await {
+    println!("New sequence key: {key}");
+}
+```
+
+See [notifications](../features/notifications.mdx) and
+[sequence keys](../features/sequence-keys.mdx) for semantics.
+
+For the complete reference see the [docs.rs API documentation](https://docs.rs/oxia-client).
