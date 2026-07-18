@@ -70,6 +70,7 @@ Available client options (see [`OxiaClientBuilder`](https://docs.rs/oxia-client/
 | `identity` | Stable client identity attached to ephemeral records. | Random UUID |
 | `batch_max_size` | Maximum size of a batched request. | `128 KiB` |
 | `max_requests_per_batch` | Maximum number of operations in a batch. | `1000` |
+| `auth_token` / `auth_token_provider` | Bearer-token authentication: a static token, or a provider called for every request (so rotated tokens are picked up). | None |
 | `tls` | [TLS](#tls) settings: custom CA, mutual TLS, domain-name override. Requires the `tls` Cargo feature. | Plaintext (or TLS with system roots for an `https://` address) |
 | `meter_provider` | OpenTelemetry meter provider to report [metrics](#metrics) through. Requires the `otel` Cargo feature. | Global provider |
 
