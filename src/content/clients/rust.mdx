@@ -15,6 +15,13 @@ The crate is `oxia-client`; the import root is `oxia`. The client is asynchronou
 and runs on the [Tokio](https://tokio.rs) runtime. API documentation is available
 at https://docs.rs/oxia-client.
 
+Optional Cargo features (all off by default):
+
+| Feature | Description |
+|---|---|
+| `tls` | TLS connections, including custom CA and mutual TLS — see [TLS](#tls). |
+| `otel` | Report client metrics through OpenTelemetry — see [Metrics](#metrics). |
+
 ## Client API
 
 ### Initializing the client
@@ -63,6 +70,8 @@ Available client options (see [`OxiaClientBuilder`](https://docs.rs/oxia-client/
 | `identity` | Stable client identity attached to ephemeral records. | Random UUID |
 | `batch_max_size` | Maximum size of a batched request. | `128 KiB` |
 | `max_requests_per_batch` | Maximum number of operations in a batch. | `1000` |
+| `tls` | [TLS](#tls) settings: custom CA, mutual TLS, domain-name override. Requires the `tls` Cargo feature. | Plaintext (or TLS with system roots for an `https://` address) |
+| `meter_provider` | OpenTelemetry meter provider to report [metrics](#metrics) through. Requires the `otel` Cargo feature. | Global provider |
 
 Errors surface as [`OxiaError`](https://docs.rs/oxia-client/latest/oxia/enum.OxiaError.html);
 a record that does not exist is reported as `Err(OxiaError::KeyNotFound)` rather than
@@ -220,5 +229,76 @@ while let Some(key) = updates.recv().await {
 
 See [notifications](../features/notifications.mdx) and
 [sequence keys](../features/sequence-keys.mdx) for semantics.
+
+### TLS
+
+TLS support is compiled in only when the `tls` Cargo feature is enabled:
+
+```shell
+cargo add oxia-client --features tls
+```
+
+An `https://` service address (or `tls://`, the scheme the Go client uses)
+enables TLS with default settings, verifying the server certificate against
+the operating system's trusted roots:
+
+```rust
+let client = OxiaClient::connect("https://oxia.example.com:6648").await?;
+```
+
+For a custom CA, a client certificate (mutual TLS), or a domain-name
+override, pass `TlsOptions` to the builder:
+
+```rust
+use oxia::TlsOptions;
+
+let ca_pem = std::fs::read("ca.crt")?;
+let cert_pem = std::fs::read("client.crt")?;
+let key_pem = std::fs::read("client.key")?;
+
+let client = OxiaClient::builder()
+    .service_address("https://oxia.example.com:6648")
+    .tls(
+        TlsOptions::new()
+            .trusted_ca_pem(ca_pem)
+            .identity_pem(cert_pem, key_pem),
+    )
+    .build()
+    .await?;
+```
+
+All of the client's connections — including the per-shard connections it
+opens from the cluster's shard assignments — use the same TLS configuration.
+
+### Metrics
+
+The client can report per-operation metrics through
+[OpenTelemetry](https://opentelemetry.io/). Metrics support is compiled in only
+when the `otel` Cargo feature is enabled; without it, metric recording compiles
+to a no-op with zero overhead.
+
+```shell
+cargo add oxia-client --features otel
+```
+
+Attach a meter provider when building the client, or omit it to use the global
+OpenTelemetry meter provider:
+
+```rust
+let client = OxiaClient::builder()
+    .service_address("localhost:6648")
+    .meter_provider(&provider)
+    .build()
+    .await?;
+```
+
+Instruments are reported under the `oxia_client` meter — the same names as the
+Go client — each carrying `type` (`put`, `get`, `delete`, `delete_range`) and
+`result` (`success`, `failure`) attributes:
+
+| Instrument | Unit | Description |
+|---|---|---|
+| `oxia_client_op` | milliseconds | Latency of client operations, measured submit-to-complete (includes internal retries). |
+| `oxia_client_op_value` | bytes | Value size of operations that carry a value (the value written by a put, or returned by a get). |
 
 For the complete reference see the [docs.rs API documentation](https://docs.rs/oxia-client).
