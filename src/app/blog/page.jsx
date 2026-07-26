@@ -8,6 +8,17 @@ export const metadata = {
 
 const posts = [
   {
+    title:
+      'Designing a Distributed Metadata System: From Local State to a Replicated State Machine',
+    date: '2026-07-26',
+    displayDate: 'Jul 26, 2026',
+    author: 'Qiang Zhao',
+    href: 'https://www.linkedin.com/pulse/designing-distributed-metadata-system-from-local-state-qiang-zhao-yszzc/',
+    summary:
+      'How to move beyond single-machine recovery by using independent replicas that preserve the same history and tolerate machine failures.',
+    tags: ['Replication', 'State machines', 'Fault tolerance'],
+  },
+  {
     title: 'Designing a Distributed Metadata System - Foundation',
     date: '2026-07-05',
     displayDate: 'Jul 5, 2026',
