@@ -12,6 +12,6 @@ export default {
   },
   status: {
     type: 'page',
-    title: 'Stability Status'
+    title: 'Status'
   },
 }
