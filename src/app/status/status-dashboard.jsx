@@ -79,13 +79,6 @@ const dashboards = [
     updated: null,
     testCases: createTestCases(),
   },
-  {
-    id: 'alpha',
-    label: 'Alpha',
-    serverVersion: 'main',
-    updated: null,
-    testCases: createTestCases(),
-  },
 ]
 
 function TestHistoryChart({ name, passRate, history }) {
