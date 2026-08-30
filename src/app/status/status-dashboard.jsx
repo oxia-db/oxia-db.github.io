@@ -1,9 +1,14 @@
 'use client'
 
-import { useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import styles from './page.module.css'
 
 const DAY_COUNT = 90
+const STATUS_URL = 'https://oxia-db.github.io/chaos/status/v1/summary.json'
+const channelDefinitions = [
+  { id: 'stable', label: 'Stable', fallbackVersion: '0.16.x' },
+  { id: 'beta', label: 'Beta', fallbackVersion: '0.17.x' },
+]
 const testCases = [
   { id: 'basic-kv', name: 'Basic KV' },
   { id: 'ephemeral', name: 'Ephemeral' },
@@ -28,14 +33,19 @@ const resultLabels = {
   not_run: 'Not run',
 }
 
-function normalizeHistory(history = []) {
-  const publishedHistory = history.slice(-DAY_COUNT)
-  const notRunDays = Array.from(
-    { length: DAY_COUNT - publishedHistory.length },
-    () => ({ result: 'not_run' }),
-  )
+function utcDates() {
+  const today = new Date()
+  const midnight = Date.UTC(today.getUTCFullYear(), today.getUTCMonth(), today.getUTCDate())
 
-  return [...notRunDays, ...publishedHistory]
+  return Array.from({ length: DAY_COUNT }, (_, index) => (
+    new Date(midnight - (DAY_COUNT - index - 1) * 86400000).toISOString().slice(0, 10)
+  ))
+}
+
+function normalizeHistory(history = []) {
+  const entries = new Map(history.map(result => [result.date, result]))
+
+  return utcDates().map(date => entries.get(date) ?? { date, result: 'not_run' })
 }
 
 function calculatePassRate(history) {
@@ -64,22 +74,80 @@ function createTestCases(overrides = {}) {
   })
 }
 
-const dashboards = [
-  {
-    id: 'stable',
-    label: 'Stable',
-    serverVersion: '0.16.x',
-    updated: null,
-    testCases: createTestCases(),
-  },
-  {
-    id: 'beta',
-    label: 'Beta',
-    serverVersion: '0.17.x',
-    updated: null,
-    testCases: createTestCases(),
-  },
-]
+const emptyDashboards = channelDefinitions.map(channel => ({
+  id: channel.id,
+  label: channel.label,
+  serverVersion: channel.fallbackVersion,
+  updated: null,
+  testCases: createTestCases(),
+}))
+
+function requireValue(condition, message) {
+  if (!condition) {
+    throw new Error(message)
+  }
+}
+
+function isUtcDate(value) {
+  return typeof value === 'string'
+    && /^\d{4}-\d{2}-\d{2}$/.test(value)
+    && new Date(`${value}T00:00:00Z`).toISOString().slice(0, 10) === value
+}
+
+function validateHistory(history, location) {
+  requireValue(Array.isArray(history), `${location} must be an array`)
+  const dates = new Set()
+
+  for (const entry of history) {
+    requireValue(entry && typeof entry === 'object', `${location} entries must be objects`)
+    requireValue(isUtcDate(entry.date), `${location} contains an invalid UTC date`)
+    requireValue(!dates.has(entry.date), `${location} contains a duplicate date`)
+    requireValue(['passed', 'failed', 'not_run'].includes(entry.result), `${location} contains an invalid result`)
+    if (entry.result === 'failed') {
+      requireValue(typeof entry.title === 'string' && entry.title, `${location} failure has no title`)
+      requireValue(typeof entry.detail === 'string' && entry.detail, `${location} failure has no detail`)
+    }
+    dates.add(entry.date)
+  }
+
+  return history
+}
+
+function parseSummary(summary) {
+  requireValue(summary && typeof summary === 'object', 'status document must be an object')
+  requireValue(summary.schemaVersion === 1, 'unsupported status schema')
+  requireValue(summary.windowDays === DAY_COUNT, 'unexpected status window')
+  requireValue(Array.isArray(summary.channels), 'status channels must be an array')
+
+  const channels = new Map(summary.channels.map(channel => [channel.id, channel]))
+  requireValue(channels.size === channelDefinitions.length, 'status document has unexpected channels')
+
+  return channelDefinitions.map(definition => {
+    const channel = channels.get(definition.id)
+    requireValue(channel && typeof channel === 'object', `status channel ${definition.id} is missing`)
+    requireValue(typeof channel.serverVersion === 'string' && channel.serverVersion, `status channel ${definition.id} has no server version`)
+    requireValue(typeof channel.updatedAt === 'string' && !Number.isNaN(Date.parse(channel.updatedAt)), `status channel ${definition.id} has an invalid update time`)
+    requireValue(Array.isArray(channel.testCases), `status channel ${definition.id} has no testcases`)
+
+    const publishedCases = new Map(channel.testCases.map(testCase => [testCase.id, testCase]))
+    requireValue(publishedCases.size === testCases.length, `status channel ${definition.id} has unexpected testcases`)
+    const overrides = Object.fromEntries(testCases.map(testCase => {
+      const published = publishedCases.get(testCase.id)
+      requireValue(published && typeof published === 'object', `status testcase ${testCase.id} is missing`)
+      return [testCase.id, {
+        history: validateHistory(published.history, `${definition.id}/${testCase.id}`),
+      }]
+    }))
+
+    return {
+      id: definition.id,
+      label: definition.label,
+      serverVersion: channel.serverVersion,
+      updated: channel.updatedAt,
+      testCases: createTestCases(overrides),
+    }
+  })
+}
 
 function TestHistoryChart({ name, passRate, history }) {
   const passRateLabel = passRate ? `${passRate} pass rate` : 'No completed runs'
@@ -163,8 +231,36 @@ function TestCase({ testCase }) {
 
 export default function StatusDashboard() {
   const [activeId, setActiveId] = useState('stable')
+  const [dashboards, setDashboards] = useState(emptyDashboards)
+  const [dataState, setDataState] = useState('loading')
   const tabRefs = useRef([])
   const dashboard = dashboards.find(item => item.id === activeId) ?? dashboards[0]
+
+  useEffect(() => {
+    const controller = new AbortController()
+
+    async function loadStatus() {
+      try {
+        const response = await fetch(STATUS_URL, { cache: 'no-store', signal: controller.signal })
+        if (response.status === 404) {
+          setDataState('empty')
+          return
+        }
+        if (!response.ok) {
+          throw new Error(`status request failed with ${response.status}`)
+        }
+        setDashboards(parseSummary(await response.json()))
+        setDataState('loaded')
+      } catch (error) {
+        if (error.name !== 'AbortError') {
+          setDataState('error')
+        }
+      }
+    }
+
+    loadStatus()
+    return () => controller.abort()
+  }, [])
 
   function selectAdjacentTab(event, index) {
     const offsets = { ArrowLeft: -1, ArrowRight: 1, Home: -index, End: dashboards.length - index - 1 }
@@ -238,7 +334,10 @@ export default function StatusDashboard() {
           <span><i className={styles.legendNotRun} />Not run</span>
         </div>
         <p className={styles.lastUpdated}>
-          {dashboard.updated ? `Last updated ${dashboard.updated}` : 'No results published yet.'}
+          {dataState === 'loading' && 'Loading published results…'}
+          {dataState === 'error' && 'Published results are temporarily unavailable.'}
+          {dataState === 'empty' && 'No results published yet.'}
+          {dataState === 'loaded' && `Last updated ${dashboard.updated}`}
         </p>
       </div>
     </section>
