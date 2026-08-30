@@ -10,7 +10,6 @@
   --status-text: #24292e;
   --status-tooltip: #24292e;
   --status-tooltip-text: #fff;
-  --status-yellow: #dbab09;
   width: min(90%, 850px);
   margin: 0 auto;
   padding: 56px 0 72px;
@@ -327,6 +326,20 @@
   font-size: 14px;
 }
 
+.failing,
+.notRunStatus {
+  flex: 0 0 auto;
+  font-size: 14px;
+}
+
+.failing {
+  color: var(--status-red);
+}
+
+.notRunStatus {
+  color: var(--status-muted);
+}
+
 .historyChart {
   position: relative;
 }
@@ -447,20 +460,14 @@
   background: var(--status-green);
 }
 
-.inconclusive,
-.legendInconclusive {
-  fill: var(--status-yellow);
-  background: var(--status-yellow);
-}
-
 .failed,
 .legendFailed {
   fill: var(--status-red);
   background: var(--status-red);
 }
 
-.noRun,
-.legendNoRun {
+.not_run,
+.legendNotRun {
   fill: #b3bac5;
   background: #b3bac5;
 }

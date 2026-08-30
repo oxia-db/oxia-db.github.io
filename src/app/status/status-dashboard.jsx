@@ -9,7 +9,7 @@ const testCases = [
   { id: 'ephemeral', name: 'Ephemeral' },
   { id: 'notification', name: 'Notification' },
   { id: 'sequences', name: 'Sequences' },
-  { id: 'secondary index', name: 'Secondary Index' },
+  { id: 'secondary-index', name: 'Secondary Index' },
   { id: 'versioning', name: 'Versioning' },
 ]
 
@@ -18,24 +18,50 @@ const testCaseDescriptions = {
   ephemeral: 'Verifies that ephemeral records are removed when their owning client session expires.',
   notification: 'Checks that change notifications are delivered and match committed state changes.',
   sequences: 'Validates monotonically allocated sequence keys and their ordering under concurrent writes.',
-  'secondary index': 'Verifies that secondary-index entries remain consistent with their source records.',
+  'secondary-index': 'Verifies that secondary-index entries remain consistent with their source records.',
   versioning: 'Checks version comparisons and conditional mutations across successive record updates.',
 }
 
 const resultLabels = {
-  failed: 'Correctness failure',
-  inconclusive: 'Inconclusive',
-  noRun: 'No run',
+  passed: 'Passed',
+  failed: 'Failure',
+  not_run: 'Not run',
+}
+
+function normalizeHistory(history = []) {
+  const publishedHistory = history.slice(-DAY_COUNT)
+  const notRunDays = Array.from(
+    { length: DAY_COUNT - publishedHistory.length },
+    () => ({ result: 'not_run' }),
+  )
+
+  return [...notRunDays, ...publishedHistory]
+}
+
+function calculatePassRate(history) {
+  const completedRuns = history.filter(result => result.result !== 'not_run')
+
+  if (completedRuns.length === 0) {
+    return null
+  }
+
+  const passedRuns = completedRuns.filter(result => result.result === 'passed').length
+
+  return `${((passedRuns / completedRuns.length) * 100).toFixed(1)}%`
 }
 
 function createTestCases(overrides = {}) {
-  return testCases.map(testCase => ({
-    id: testCase.id,
-    name: testCase.name,
-    description: testCaseDescriptions[testCase.id],
-    passRate: overrides[testCase.id]?.passRate ?? '100.0%',
-    exceptions: overrides[testCase.id]?.exceptions ?? {},
-  }))
+  return testCases.map(testCase => {
+    const history = normalizeHistory(overrides[testCase.id]?.history)
+
+    return {
+      id: testCase.id,
+      name: testCase.name,
+      description: testCaseDescriptions[testCase.id],
+      passRate: calculatePassRate(history),
+      history,
+    }
+  })
 }
 
 const dashboards = [
@@ -43,126 +69,47 @@ const dashboards = [
     id: 'stable',
     label: 'Stable',
     serverVersion: '0.16.x',
-    updated: 'Aug 31, 2026 at 06:14 UTC',
-    testCases: createTestCases({
-      ephemeral: {
-        passRate: '98.9%',
-        exceptions: {
-          76: {
-            result: 'inconclusive',
-            date: 'Aug 18, 2026',
-            title: 'Session expiry phase timed out',
-            detail: 'The run ended before all ephemeral records could be verified.',
-          },
-        },
-      },
-      sequences: {
-        passRate: '98.9%',
-        exceptions: {
-          61: {
-            result: 'noRun',
-            date: 'Aug 3, 2026',
-            title: 'Scheduled run unavailable',
-            detail: 'The runner did not produce a result for this test case.',
-          },
-        },
-      },
-      'secondary index': {
-        passRate: '98.9%',
-        exceptions: {
-          84: {
-            result: 'failed',
-            date: 'Aug 26, 2026',
-            title: 'Index reconciliation mismatch',
-            detail: 'One secondary-index entry was missing after recovery.',
-          },
-        },
-      },
-    }),
+    updated: null,
+    testCases: createTestCases(),
   },
   {
     id: 'beta',
     label: 'Beta',
     serverVersion: '0.17.x',
-    updated: 'Aug 31, 2026 at 06:36 UTC',
-    testCases: createTestCases({
-      notification: {
-        passRate: '98.9%',
-        exceptions: {
-          80: {
-            result: 'inconclusive',
-            date: 'Aug 22, 2026',
-            title: 'Delivery verification exceeded its deadline',
-            detail: 'The run ended before every notification could be reconciled.',
-          },
-        },
-      },
-      versioning: {
-        passRate: '98.9%',
-        exceptions: {
-          69: {
-            result: 'noRun',
-            date: 'Aug 11, 2026',
-            title: 'Scheduled run unavailable',
-            detail: 'The runner did not produce a result for this test case.',
-          },
-        },
-      },
-    }),
+    updated: null,
+    testCases: createTestCases(),
   },
   {
     id: 'alpha',
     label: 'Alpha',
     serverVersion: 'main',
-    updated: 'Aug 31, 2026 at 07:02 UTC',
-    testCases: createTestCases({
-      'basic-kv': {
-        passRate: '98.9%',
-        exceptions: {
-          83: {
-            result: 'failed',
-            date: 'Aug 25, 2026',
-            title: 'Reference-state checkpoint mismatch',
-            detail: 'The final state differed from the in-memory reference model.',
-          },
-        },
-      },
-      'secondary index': {
-        passRate: '98.9%',
-        exceptions: {
-          72: {
-            result: 'inconclusive',
-            date: 'Aug 14, 2026',
-            title: 'Index observation incomplete',
-            detail: 'The workflow ended before the final index reconciliation completed.',
-          },
-        },
-      },
-    }),
+    updated: null,
+    testCases: createTestCases(),
   },
 ]
 
-function TestHistoryChart({ name, passRate, exceptions }) {
+function TestHistoryChart({ name, passRate, history }) {
+  const passRateLabel = passRate ? `${passRate} pass rate` : 'No completed runs'
+
   return (
     <div
       className={styles.historyChart}
       role="group"
-      aria-label={`${name}: ${passRate} pass rate over the past 90 days`}
+      aria-label={`${name}: ${passRateLabel.toLowerCase()} over the past 90 days`}
     >
       <div className={styles.bars}>
-        {Array.from({ length: DAY_COUNT }, (_, index) => {
-          const exception = exceptions[index]
-          const result = exception?.result ?? 'passed'
+        {history.map((testResult, index) => {
+          const result = testResult.result
           const className = [
             styles.bar,
             styles[result],
-            exception ? styles.exceptionBar : '',
+            result === 'failed' ? styles.exceptionBar : '',
           ].filter(Boolean).join(' ')
 
-          if (exception) {
+          if (result === 'failed') {
             return (
               <button
-                aria-label={`${exception.date}: ${resultLabels[exception.result]}. ${exception.title}. ${exception.detail}`}
+                aria-label={`${testResult.date}: ${resultLabels[result]}. ${testResult.title}. ${testResult.detail}`}
                 className={className}
                 key={index}
                 type="button"
@@ -171,10 +118,10 @@ function TestHistoryChart({ name, passRate, exceptions }) {
                   className={`${styles.tooltip} ${index > 70 ? styles.tooltipRight : ''}`}
                   role="tooltip"
                 >
-                  <time>{exception.date}</time>
-                  <strong>{resultLabels[exception.result]}</strong>
-                  <b>{exception.title}</b>
-                  <span>{exception.detail}</span>
+                  <time>{testResult.date}</time>
+                  <strong>{resultLabels[result]}</strong>
+                  <b>{testResult.title}</b>
+                  <span>{testResult.detail}</span>
                 </span>
               </button>
             )
@@ -186,7 +133,7 @@ function TestHistoryChart({ name, passRate, exceptions }) {
       <div className={styles.chartLabels}>
         <span>90 days ago</span>
         <span className={styles.chartLine} aria-hidden="true" />
-        <span>{passRate} pass rate</span>
+        <span>{passRateLabel}</span>
         <span className={styles.chartLine} aria-hidden="true" />
         <span>Today</span>
       </div>
@@ -195,6 +142,13 @@ function TestHistoryChart({ name, passRate, exceptions }) {
 }
 
 function TestCase({ testCase }) {
+  const latestResult = testCase.history.at(-1).result
+  const latestResultClass = {
+    passed: styles.passing,
+    failed: styles.failing,
+    not_run: styles.notRunStatus,
+  }[latestResult]
+
   return (
     <article className={styles.testCase}>
       <div className={styles.testCaseHeading}>
@@ -207,7 +161,7 @@ function TestCase({ testCase }) {
             </span>
           </span>
         </h3>
-        <span className={styles.passing}>Passing</span>
+        <span className={latestResultClass}>{resultLabels[latestResult]}</span>
       </div>
       <TestHistoryChart {...testCase} />
     </article>
@@ -276,7 +230,7 @@ export default function StatusDashboard() {
       >
         <div className={styles.componentIntro}>
           <strong>Oxia server {dashboard.serverVersion}</strong>
-          <span>Test pass rate over the past 90 days.</span>
+          <span>Completed-run pass rate over the past 90 days.</span>
         </div>
 
         <div className={styles.testCaseList}>
@@ -287,11 +241,12 @@ export default function StatusDashboard() {
 
         <div className={styles.legend} aria-label="Test result legend">
           <span><i className={styles.legendPassed} />Passed</span>
-          <span><i className={styles.legendInconclusive} />Inconclusive</span>
-          <span><i className={styles.legendFailed} />Correctness failure</span>
-          <span><i className={styles.legendNoRun} />No run</span>
+          <span><i className={styles.legendFailed} />Failure</span>
+          <span><i className={styles.legendNotRun} />Not run</span>
         </div>
-        <p className={styles.lastUpdated}>Last updated {dashboard.updated}</p>
+        <p className={styles.lastUpdated}>
+          {dashboard.updated ? `Last updated ${dashboard.updated}` : 'No results published yet.'}
+        </p>
       </div>
     </section>
   )
