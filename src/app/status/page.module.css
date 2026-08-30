@@ -69,13 +69,6 @@
   margin-bottom: 56px;
 }
 
-.sectionTitleRow {
-  display: flex;
-  align-items: baseline;
-  justify-content: space-between;
-  gap: 24px;
-}
-
 .page h2 {
   margin: 0 0 13px;
   color: var(--status-text);
@@ -88,16 +81,6 @@
   max-width: 750px;
   margin: 0;
   color: var(--status-muted);
-}
-
-.sampleBadge {
-  padding: 3px 7px;
-  border-radius: 3px;
-  background: var(--status-soft);
-  color: var(--status-muted);
-  font-size: 12px;
-  letter-spacing: 0.03em;
-  text-transform: uppercase;
 }
 
 .dashboardHeading {
@@ -611,16 +594,6 @@
   .chartLabels span:nth-child(3),
   .chartLabels span:nth-child(4) {
     display: none;
-  }
-
-  .sectionTitleRow {
-    align-items: flex-start;
-    flex-direction: column;
-    gap: 0;
-  }
-
-  .sampleBadge {
-    margin-bottom: 10px;
   }
 
   .dashboardHeading {

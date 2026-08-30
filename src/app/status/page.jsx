@@ -18,10 +18,7 @@ export default function StatusPage() {
 
       <main>
         <section className={styles.about} aria-labelledby="about-title">
-          <div className={styles.sectionTitleRow}>
-            <h2 id="about-title">About This Site</h2>
-            <span className={styles.sampleBadge}>Example data</span>
-          </div>
+          <h2 id="about-title">About This Site</h2>
           <p>
             Daily automated stability tests validate Oxia&apos;s correctness across core data
             behaviors under controlled failure conditions. Chaos Mesh introduces pod
