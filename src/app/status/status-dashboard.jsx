@@ -5,6 +5,7 @@ import styles from './page.module.css'
 
 const DAY_COUNT = 90
 const STATUS_URL = 'https://oxia-db.github.io/chaos/status/v1/summary.json'
+const SMOKE_STATUS_URL = 'https://oxia-db.github.io/chaos/status-smoke/v1/summary.json'
 const channelDefinitions = [
   { id: 'stable', label: 'Stable', fallbackVersion: '0.16.x' },
   { id: 'beta', label: 'Beta', fallbackVersion: '0.17.x' },
@@ -233,6 +234,7 @@ export default function StatusDashboard() {
   const [activeId, setActiveId] = useState('stable')
   const [dashboards, setDashboards] = useState(emptyDashboards)
   const [dataState, setDataState] = useState('loading')
+  const [isPreview, setIsPreview] = useState(false)
   const tabRefs = useRef([])
   const dashboard = dashboards.find(item => item.id === activeId) ?? dashboards[0]
 
@@ -241,7 +243,12 @@ export default function StatusDashboard() {
 
     async function loadStatus() {
       try {
-        const response = await fetch(STATUS_URL, { cache: 'no-store', signal: controller.signal })
+        const preview = new URLSearchParams(window.location.search).get('preview') === 'smoke'
+        setIsPreview(preview)
+        const response = await fetch(preview ? SMOKE_STATUS_URL : STATUS_URL, {
+          cache: 'no-store',
+          signal: controller.signal,
+        })
         if (response.status === 404) {
           setDataState('empty')
           return
@@ -319,7 +326,11 @@ export default function StatusDashboard() {
       >
         <div className={styles.componentIntro}>
           <strong>Oxia server {dashboard.serverVersion}</strong>
-          <span>Completed-run pass rate over the past 90 days.</span>
+          <span>
+            {isPreview
+              ? 'One-minute smoke preview; production stability history is unchanged.'
+              : 'Completed-run pass rate over the past 90 days.'}
+          </span>
         </div>
 
         <div className={styles.testCaseList}>
@@ -337,7 +348,7 @@ export default function StatusDashboard() {
           {dataState === 'loading' && 'Loading published results…'}
           {dataState === 'error' && 'Published results are temporarily unavailable.'}
           {dataState === 'empty' && 'No results published yet.'}
-          {dataState === 'loaded' && `Last updated ${dashboard.updated}`}
+          {dataState === 'loaded' && `${isPreview ? 'Smoke preview · ' : ''}Last updated ${dashboard.updated}`}
         </p>
       </div>
     </section>
