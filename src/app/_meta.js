@@ -10,4 +10,8 @@ export default {
     type: 'page',
     title: 'Blog'
   },
+  status: {
+    type: 'page',
+    title: 'Stability Status'
+  },
 }
