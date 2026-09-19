@@ -15,7 +15,7 @@
 </div></section>
 <div class="tsd-signature"><span class="tsd-signature-keyword">interface</span> <span class="tsd-kind-interface">GetOptions</span> <span class="tsd-signature-symbol">{</span><br/>    <a class="tsd-kind-property" href="#partitionkey">partitionKey</a><span class="tsd-signature-symbol">?:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">;</span><br/>    <a class="tsd-kind-property" href="#comparisontype">comparisonType</a><span class="tsd-signature-symbol">?:</span> <a href="../types/ComparisonType.html" class="tsd-signature-type tsd-kind-type-alias">ComparisonType</a><span class="tsd-signature-symbol">;</span><br/>    <a class="tsd-kind-property" href="#includevalue">includeValue</a><span class="tsd-signature-symbol">?:</span> <span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol">;</span><br/>    <a class="tsd-kind-property" href="#useindex">useIndex</a><span class="tsd-signature-symbol">?:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">;</span><br/><span class="tsd-signature-symbol">}</span></div><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/oxia-db/oxia-client-node/blob/994c30baae6c05fdc14f4dcd4ea9c0d0a91a9b92/src/client.ts#L144">client.ts:144</a></li></ul></aside>
+<li>Defined in <a href="https://github.com/oxia-db/oxia-client-node/blob/7e367b6b948f2605806a6d2e8928164e155c5330/src/client.ts#L144">client.ts:144</a></li></ul></aside>
 <section class="tsd-panel-group tsd-index-group">
 <section class="tsd-panel tsd-index-panel">
 <details class="tsd-index-content tsd-accordion" open><summary class="tsd-accordion-summary tsd-index-summary"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true"><use href="../assets/icons.svg#icon-chevronDown"></use></svg>
@@ -37,7 +37,7 @@
 <div class="tsd-comment tsd-typography"><p>Override shard routing (see <a href="PutOptions.html#partitionkey" class="tsd-kind-property">PutOptions.partitionKey</a>).</p>
 </div><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/oxia-db/oxia-client-node/blob/994c30baae6c05fdc14f4dcd4ea9c0d0a91a9b92/src/client.ts#L146">client.ts:146</a></li></ul></aside></section>
+<li>Defined in <a href="https://github.com/oxia-db/oxia-client-node/blob/7e367b6b948f2605806a6d2e8928164e155c5330/src/client.ts#L146">client.ts:146</a></li></ul></aside></section>
 <section class="tsd-panel tsd-member">
 <h3 class="tsd-anchor-link" id="comparisontype"><code class="tsd-tag">Optional</code><span>comparison<wbr/>Type</span><a href="#comparisontype" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></h3>
 <div class="tsd-signature"><span class="tsd-kind-property">comparisonType</span><span class="tsd-signature-symbol">?:</span> <a href="../types/ComparisonType.html" class="tsd-signature-type tsd-kind-type-alias">ComparisonType</a></div>
@@ -45,7 +45,7 @@
 modes query every shard when no <code>partitionKey</code> is set.</p>
 </div><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/oxia-db/oxia-client-node/blob/994c30baae6c05fdc14f4dcd4ea9c0d0a91a9b92/src/client.ts#L151">client.ts:151</a></li></ul></aside></section>
+<li>Defined in <a href="https://github.com/oxia-db/oxia-client-node/blob/7e367b6b948f2605806a6d2e8928164e155c5330/src/client.ts#L151">client.ts:151</a></li></ul></aside></section>
 <section class="tsd-panel tsd-member">
 <h3 class="tsd-anchor-link" id="includevalue"><code class="tsd-tag">Optional</code><span>include<wbr/>Value</span><a href="#includevalue" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></h3>
 <div class="tsd-signature"><span class="tsd-kind-property">includeValue</span><span class="tsd-signature-symbol">?:</span> <span class="tsd-signature-type">boolean</span></div>
@@ -53,7 +53,7 @@ modes query every shard when no <code>partitionKey</code> is set.</p>
 read). Defaults to <code>true</code>.</p>
 </div><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/oxia-db/oxia-client-node/blob/994c30baae6c05fdc14f4dcd4ea9c0d0a91a9b92/src/client.ts#L156">client.ts:156</a></li></ul></aside></section>
+<li>Defined in <a href="https://github.com/oxia-db/oxia-client-node/blob/7e367b6b948f2605806a6d2e8928164e155c5330/src/client.ts#L156">client.ts:156</a></li></ul></aside></section>
 <section class="tsd-panel tsd-member">
 <h3 class="tsd-anchor-link" id="useindex"><code class="tsd-tag">Optional</code><span>use<wbr/>Index</span><a href="#useindex" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></h3>
 <div class="tsd-signature"><span class="tsd-kind-property">useIndex</span><span class="tsd-signature-symbol">?:</span> <span class="tsd-signature-type">string</span></div>
@@ -62,7 +62,7 @@ is interpreted as a secondary key). Without a <code>partitionKey</code>, the
 lookup is fanned out to every shard.</p>
 </div><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/oxia-db/oxia-client-node/blob/994c30baae6c05fdc14f4dcd4ea9c0d0a91a9b92/src/client.ts#L162">client.ts:162</a></li></ul></aside></section></section></details></div>
+<li>Defined in <a href="https://github.com/oxia-db/oxia-client-node/blob/7e367b6b948f2605806a6d2e8928164e155c5330/src/client.ts#L162">client.ts:162</a></li></ul></aside></section></section></details></div>
 <div class="col-sidebar">
 <div class="page-menu">
 <div class="tsd-navigation settings">
