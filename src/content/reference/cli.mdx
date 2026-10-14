@@ -210,22 +210,107 @@ oxia client sequence-updates /events/ --partition-key /events/
 `oxia admin` groups the operator-facing commands. They connect to the coordinator's
 admin port.
 
-Common flag:
+Common flags:
 
 | Flag | Default | Purpose |
 |---|---|---|
 | `--admin-address` | `localhost:6651` | Coordinator admin address. |
+| `--auth-token` | — | Bearer token for authenticated requests. |
+| `--auth-token-file` | — | Path to a bearer token file for authenticated requests. |
+| `-o, --output` | — | Output format: `json`, `yaml`, `name`, or `table`. |
 
-### `oxia admin list-namespaces`
+### `oxia admin namespace get`
 
-Enumerate configured namespaces. No subcommand-specific flags.
+Get one namespace, or list all namespaces when no namespace name is provided.
 
-### `oxia admin list-nodes`
+```shell
+oxia admin namespace get
+oxia admin namespace get my-namespace
+```
 
-Enumerate storage nodes with their public and internal addresses and metadata. No
-subcommand-specific flags.
+### `oxia admin namespace create`
 
-### `oxia admin split-shard`
+Create a namespace.
+
+```shell
+oxia admin namespace create my-namespace --initial-shards 16 --replication-factor 3
+```
+
+| Flag | Default | Purpose |
+|---|---|---|
+| `--initial-shards` | `0` | Initial shard count. Required. |
+| `--replication-factor` | `0` | Replication factor. Required. |
+| `--notifications` | `true` | Enable notifications for the namespace. |
+| `--key-sorting` | `hierarchical` | Key sort mode: `hierarchical` or `natural`. |
+
+### `oxia admin namespace patch`
+
+Patch mutable namespace settings.
+
+```shell
+oxia admin namespace patch my-namespace --replication-factor 5
+oxia admin namespace patch my-namespace --notifications=false
+```
+
+| Flag | Default | Purpose |
+|---|---|---|
+| `--replication-factor` | `0` | New replication factor. |
+| `--notifications` | `true` | Enable or disable notifications. |
+
+### `oxia admin namespace delete`
+
+Delete a namespace.
+
+```shell
+oxia admin namespace delete my-namespace
+```
+
+### `oxia admin dataserver get`
+
+Get one data server, or list all data servers when no data server name is provided.
+
+```shell
+oxia admin dataserver get
+oxia admin dataserver get server-1
+```
+
+### `oxia admin dataserver create`
+
+Create a data server entry.
+
+```shell
+oxia admin dataserver create server-1 --public server-1.example.com:6648 --internal server-1.example.com:6649
+```
+
+| Flag | Default | Purpose |
+|---|---|---|
+| `--public` | — | Public address for client traffic. Required. |
+| `--internal` | — | Internal address for coordinator and peer traffic. Required. |
+| `--label` | — | Label in `key=value` form. Can be repeated. |
+
+### `oxia admin dataserver patch`
+
+Patch a data server entry. At least one field must be provided.
+
+```shell
+oxia admin dataserver patch server-1 --label zone=us-east-1a
+```
+
+| Flag | Default | Purpose |
+|---|---|---|
+| `--public` | — | New public address. |
+| `--internal` | — | New internal address. |
+| `--label` | — | Replacement labels in `key=value` form. Can be repeated. |
+
+### `oxia admin dataserver delete`
+
+Delete a data server entry.
+
+```shell
+oxia admin dataserver delete server-1
+```
+
+### `oxia admin shard split`
 
 Manually trigger a shard split. Usually reserved for operational tuning; automatic
 splitting is also available.

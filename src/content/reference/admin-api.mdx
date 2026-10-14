@@ -1,0 +1,192 @@
+---
+sidebarTitle: Admin API (Draft)
+---
+
+# Admin API
+
+**Status: Draft.** The admin API is exposed for operator tooling, but the surface is still
+stabilizing. Treat request and response shapes as subject to change until this page is
+promoted out of draft status.
+
+This reference follows the `OxiaAdmin` service in
+[`common/proto/admin.proto`](https://github.com/oxia-db/oxia/blob/main/common/proto/admin.proto)
+and the shared metadata messages in
+[`common/proto/metadata.proto`](https://github.com/oxia-db/oxia/blob/main/common/proto/metadata.proto)
+from `oxia-db/oxia` main at commit
+[`76b16d2`](https://github.com/oxia-db/oxia/commit/76b16d2ef9ebf0a4404f385c90441961bf288bad).
+
+## Service
+
+The `OxiaAdmin` service is served by the coordinator admin endpoint. The default admin
+port is `6651`.
+
+```protobuf
+service OxiaAdmin {
+  rpc ListDataServers(ListDataServersRequest) returns (ListDataServersResponse);
+  rpc GetDataServer(GetDataServerRequest) returns (GetDataServerResponse);
+  rpc CreateDataServer(CreateDataServerRequest) returns (CreateDataServerResponse);
+  rpc PatchDataServer(PatchDataServerRequest) returns (PatchDataServerResponse);
+  rpc DeleteDataServer(DeleteDataServerRequest) returns (DeleteDataServerResponse);
+
+  rpc CreateNamespace(CreateNamespaceRequest) returns (CreateNamespaceResponse);
+  rpc PatchNamespace(PatchNamespaceRequest) returns (PatchNamespaceResponse);
+  rpc DeleteNamespace(DeleteNamespaceRequest) returns (DeleteNamespaceResponse);
+  rpc GetNamespace(GetNamespaceRequest) returns (GetNamespaceResponse);
+  rpc ListNamespaces(ListNamespacesRequest) returns (ListNamespacesResponse);
+
+  rpc SplitShard(SplitShardRequest) returns (SplitShardResponse);
+}
+```
+
+## Data server RPCs
+
+| RPC | Request | Response | Purpose |
+|---|---|---|---|
+| `ListDataServers` | `ListDataServersRequest` | `ListDataServersResponse` | List configured data servers. |
+| `GetDataServer` | `GetDataServerRequest` | `GetDataServerResponse` | Read one data server by name. |
+| `CreateDataServer` | `CreateDataServerRequest` | `CreateDataServerResponse` | Add a data server definition. |
+| `PatchDataServer` | `PatchDataServerRequest` | `PatchDataServerResponse` | Update a data server definition. |
+| `DeleteDataServer` | `DeleteDataServerRequest` | `DeleteDataServerResponse` | Remove a data server definition. |
+
+```protobuf
+message ListDataServersRequest {}
+
+message ListDataServersResponse {
+  repeated DataServer data_servers = 1;
+}
+
+message GetDataServerRequest {
+  string data_server = 1;
+}
+
+message GetDataServerResponse {
+  DataServer data_server = 1;
+}
+
+message CreateDataServerRequest {
+  DataServer data_server = 1;
+}
+
+message CreateDataServerResponse {
+  DataServer data_server = 1;
+}
+
+message PatchDataServerRequest {
+  DataServer data_server = 1;
+}
+
+message PatchDataServerResponse {
+  DataServer data_server = 1;
+}
+
+message DeleteDataServerRequest {
+  string data_server = 1;
+}
+
+message DeleteDataServerResponse {
+  DataServer data_server = 1;
+}
+```
+
+## Namespace RPCs
+
+| RPC | Request | Response | Purpose |
+|---|---|---|---|
+| `CreateNamespace` | `CreateNamespaceRequest` | `CreateNamespaceResponse` | Create a namespace. |
+| `PatchNamespace` | `PatchNamespaceRequest` | `PatchNamespaceResponse` | Update namespace configuration. |
+| `DeleteNamespace` | `DeleteNamespaceRequest` | `DeleteNamespaceResponse` | Delete a namespace. |
+| `GetNamespace` | `GetNamespaceRequest` | `GetNamespaceResponse` | Read one namespace by name. |
+| `ListNamespaces` | `ListNamespacesRequest` | `ListNamespacesResponse` | List configured namespaces. |
+
+```protobuf
+message CreateNamespaceRequest {
+  Namespace namespace = 1;
+}
+
+message CreateNamespaceResponse {
+  Namespace namespace = 1;
+}
+
+message PatchNamespaceRequest {
+  Namespace namespace = 1;
+}
+
+message PatchNamespaceResponse {
+  Namespace namespace = 1;
+}
+
+message DeleteNamespaceRequest {
+  string namespace = 1;
+}
+
+message DeleteNamespaceResponse {
+  Namespace namespace = 1;
+}
+
+message ListNamespacesRequest {}
+
+message ListNamespacesResponse {
+  repeated Namespace namespaces = 1;
+}
+
+message GetNamespaceRequest {
+  string namespace = 1;
+}
+
+message GetNamespaceResponse {
+  Namespace namespace = 1;
+}
+```
+
+## Shard RPCs
+
+`SplitShard` triggers a shard split. The specified shard is split into two child shards at
+the provided split point, or at the midpoint when `split_point` is omitted.
+
+```protobuf
+message SplitShardRequest {
+  string namespace = 1;
+  int64 shard = 2;
+  optional uint32 split_point = 3;
+}
+
+message SplitShardResponse {
+  int64 left_child_shard = 1;
+  int64 right_child_shard = 2;
+}
+```
+
+## Metadata messages
+
+The admin API uses shared metadata messages from `metadata.proto`.
+
+```protobuf
+message DataServerIdentity {
+  optional string name = 1;
+  string public = 2;
+  string internal = 3;
+}
+
+message DataServerMetadata {
+  map<string, string> labels = 1;
+}
+
+message DataServer {
+  DataServerIdentity identity = 1;
+  DataServerMetadata metadata = 2;
+}
+
+message AntiAffinity {
+  repeated string labels = 1;
+  string mode = 2;
+}
+
+message Namespace {
+  string name = 1;
+  uint32 initial_shard_count = 2;
+  uint32 replication_factor = 3;
+  optional bool notifications_enabled = 4;
+  string key_sorting = 5;
+  repeated AntiAffinity anti_affinities = 6;
+}
+```
