@@ -74,6 +74,9 @@ loadScripts(document, 'script');</script>
        IfRecordDoesNotExist</code> found an existing record.
    <li><a href="SessionDoesNotExistException.html" title="class in io.oxia.client.api.exceptions"><code>SessionDoesNotExistException</code></a> — an operation tied to
        an ephemeral session was attempted after the session expired.
+   <li><a href="InvalidArgumentException.html" title="class in io.oxia.client.api.exceptions"><code>InvalidArgumentException</code></a> — the server rejected a put
+       or delete range for an invalid argument, such as a sequential put that doesn't fit its
+       sequence.
    <li><a href="UnsupportedAuthenticationException.html" title="class in io.oxia.client.api.exceptions"><code>UnsupportedAuthenticationException</code></a> — the configured
        authentication plugin could not be loaded.
  </ul></div>
@@ -103,24 +106,28 @@ loadScripts(document, 'script');</script>
 <div class="summary-table two-column-summary">
 <div class="table-header col-first">Class</div>
 <div class="table-header col-last">Description</div>
-<div class="col-first even-row-color class-summary class-summary-tab5"><a href="KeyAlreadyExistsException.html" title="class in io.oxia.client.api.exceptions">KeyAlreadyExistsException</a></div>
+<div class="col-first even-row-color class-summary class-summary-tab5"><a href="InvalidArgumentException.html" title="class in io.oxia.client.api.exceptions">InvalidArgumentException</a></div>
 <div class="col-last even-row-color class-summary class-summary-tab5">
+<div class="block">The server rejected an operation for an invalid argument, and did not apply it.</div>
+</div>
+<div class="col-first odd-row-color class-summary class-summary-tab5"><a href="KeyAlreadyExistsException.html" title="class in io.oxia.client.api.exceptions">KeyAlreadyExistsException</a></div>
+<div class="col-last odd-row-color class-summary class-summary-tab5">
 <div class="block">The key already exists at the server.</div>
 </div>
-<div class="col-first odd-row-color class-summary class-summary-tab5"><a href="OxiaException.html" title="class in io.oxia.client.api.exceptions">OxiaException</a></div>
-<div class="col-last odd-row-color class-summary class-summary-tab5">
+<div class="col-first even-row-color class-summary class-summary-tab5"><a href="OxiaException.html" title="class in io.oxia.client.api.exceptions">OxiaException</a></div>
+<div class="col-last even-row-color class-summary class-summary-tab5">
 <div class="block">A super-class of exceptions describing errors that occurred on an Oxia server.</div>
 </div>
-<div class="col-first even-row-color class-summary class-summary-tab5"><a href="SessionDoesNotExistException.html" title="class in io.oxia.client.api.exceptions">SessionDoesNotExistException</a></div>
-<div class="col-last even-row-color class-summary class-summary-tab5">
+<div class="col-first odd-row-color class-summary class-summary-tab5"><a href="SessionDoesNotExistException.html" title="class in io.oxia.client.api.exceptions">SessionDoesNotExistException</a></div>
+<div class="col-last odd-row-color class-summary class-summary-tab5">
 <div class="block">The session does not exist on the server.</div>
 </div>
-<div class="col-first odd-row-color class-summary class-summary-tab5"><a href="UnexpectedVersionIdException.html" title="class in io.oxia.client.api.exceptions">UnexpectedVersionIdException</a></div>
-<div class="col-last odd-row-color class-summary class-summary-tab5">
+<div class="col-first even-row-color class-summary class-summary-tab5"><a href="UnexpectedVersionIdException.html" title="class in io.oxia.client.api.exceptions">UnexpectedVersionIdException</a></div>
+<div class="col-last even-row-color class-summary class-summary-tab5">
 <div class="block">The versionId at the server did not that match supplied in the call.</div>
 </div>
-<div class="col-first even-row-color class-summary class-summary-tab5"><a href="UnsupportedAuthenticationException.html" title="class in io.oxia.client.api.exceptions">UnsupportedAuthenticationException</a></div>
-<div class="col-last even-row-color class-summary class-summary-tab5">
+<div class="col-first odd-row-color class-summary class-summary-tab5"><a href="UnsupportedAuthenticationException.html" title="class in io.oxia.client.api.exceptions">UnsupportedAuthenticationException</a></div>
+<div class="col-last odd-row-color class-summary class-summary-tab5">
 <div class="block">Unsupported authentication exception thrown by Oxia client.</div>
 </div>
 </div>

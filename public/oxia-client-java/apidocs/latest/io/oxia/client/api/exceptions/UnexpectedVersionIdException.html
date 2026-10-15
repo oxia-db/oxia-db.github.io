@@ -85,7 +85,10 @@ loadScripts(document, 'script');</script>
 <hr>
 <div class="type-signature"><span class="modifiers">public class </span><span class="element-name type-name-label">UnexpectedVersionIdException</span>
 <span class="extends-implements">extends <a href="OxiaException.html" title="class in io.oxia.client.api.exceptions">OxiaException</a></span></div>
-<div class="block">The versionId at the server did not that match supplied in the call.</div>
+<div class="block">The versionId at the server did not that match supplied in the call.
+
+ <p>The exception has no stack trace: it is an expected outcome of a conditional put or delete,
+ created on the client's I/O threads, where the trace would only show transport frames.</div>
 <dl class="notes">
 <dt>See Also:</dt>
 <dd>
