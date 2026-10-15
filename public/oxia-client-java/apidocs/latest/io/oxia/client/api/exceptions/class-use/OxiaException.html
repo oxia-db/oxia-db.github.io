@@ -91,14 +91,34 @@ loadScripts(document, 'script');</script>
 <div class="table-header col-second">Class</div>
 <div class="table-header col-last">Description</div>
 <div class="col-first even-row-color"><code>class&nbsp;</code></div>
-<div class="col-second even-row-color"><code><a href="../InvalidArgumentException.html" class="type-name-link" title="class in io.oxia.client.api.exceptions">InvalidArgumentException</a></code></div>
+<div class="col-second even-row-color"><code><a href="../AlreadyClosedException.html" class="type-name-link" title="class in io.oxia.client.api.exceptions">AlreadyClosedException</a></code></div>
 <div class="col-last even-row-color">
-<div class="block">The server rejected an operation for an invalid argument, and did not apply it.</div>
+<div class="block">The client, or a resource that it uses, has been closed, so the operation was not sent.</div>
 </div>
 <div class="col-first odd-row-color"><code>class&nbsp;</code></div>
-<div class="col-second odd-row-color"><code><a href="../KeyAlreadyExistsException.html" class="type-name-link" title="class in io.oxia.client.api.exceptions">KeyAlreadyExistsException</a></code></div>
+<div class="col-second odd-row-color"><code><a href="../InvalidArgumentException.html" class="type-name-link" title="class in io.oxia.client.api.exceptions">InvalidArgumentException</a></code></div>
 <div class="col-last odd-row-color">
+<div class="block">An operation was rejected for an invalid argument, and was not applied.</div>
+</div>
+<div class="col-first even-row-color"><code>class&nbsp;</code></div>
+<div class="col-second even-row-color"><code><a href="../KeyAlreadyExistsException.html" class="type-name-link" title="class in io.oxia.client.api.exceptions">KeyAlreadyExistsException</a></code></div>
+<div class="col-last even-row-color">
 <div class="block">The key already exists at the server.</div>
+</div>
+<div class="col-first odd-row-color"><code>class&nbsp;</code></div>
+<div class="col-second odd-row-color"><code><a href="../NamespaceNotFoundException.html" class="type-name-link" title="class in io.oxia.client.api.exceptions">NamespaceNotFoundException</a></code></div>
+<div class="col-last odd-row-color">
+<div class="block">The namespace of the client does not exist on the server.</div>
+</div>
+<div class="col-first even-row-color"><code>class&nbsp;</code></div>
+<div class="col-second even-row-color"><code><a href="../RequestTimeoutException.html" class="type-name-link" title="class in io.oxia.client.api.exceptions">RequestTimeoutException</a></code></div>
+<div class="col-last even-row-color">
+<div class="block">The operation did not complete within the request timeout.</div>
+</div>
+<div class="col-first odd-row-color"><code>class&nbsp;</code></div>
+<div class="col-second odd-row-color"><code><a href="../ResourceUnavailableException.html" class="type-name-link" title="class in io.oxia.client.api.exceptions">ResourceUnavailableException</a></code></div>
+<div class="col-last odd-row-color">
+<div class="block">The operation failed while the server was unavailable, e.g.</div>
 </div>
 <div class="col-first even-row-color"><code>class&nbsp;</code></div>
 <div class="col-second even-row-color"><code><a href="../SessionDoesNotExistException.html" class="type-name-link" title="class in io.oxia.client.api.exceptions">SessionDoesNotExistException</a></code></div>
@@ -111,8 +131,13 @@ loadScripts(document, 'script');</script>
 <div class="block">The versionId at the server did not that match supplied in the call.</div>
 </div>
 <div class="col-first even-row-color"><code>class&nbsp;</code></div>
-<div class="col-second even-row-color"><code><a href="../UnsupportedAuthenticationException.html" class="type-name-link" title="class in io.oxia.client.api.exceptions">UnsupportedAuthenticationException</a></code></div>
+<div class="col-second even-row-color"><code><a href="../UnknownException.html" class="type-name-link" title="class in io.oxia.client.api.exceptions">UnknownException</a></code></div>
 <div class="col-last even-row-color">
+<div class="block">An error of the server or of the client transport that has no more specific exception, e.g.</div>
+</div>
+<div class="col-first odd-row-color"><code>class&nbsp;</code></div>
+<div class="col-second odd-row-color"><code><a href="../UnsupportedAuthenticationException.html" class="type-name-link" title="class in io.oxia.client.api.exceptions">UnsupportedAuthenticationException</a></code></div>
+<div class="col-last odd-row-color">
 <div class="block">Unsupported authentication exception thrown by Oxia client.</div>
 </div>
 </div>

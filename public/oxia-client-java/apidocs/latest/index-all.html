@@ -54,6 +54,14 @@ loadScripts(document, 'script');</script>
 <a href="#I:A">A</a>&nbsp;<a href="#I:B">B</a>&nbsp;<a href="#I:C">C</a>&nbsp;<a href="#I:D">D</a>&nbsp;<a href="#I:E">E</a>&nbsp;<a href="#I:G">G</a>&nbsp;<a href="#I:H">H</a>&nbsp;<a href="#I:I">I</a>&nbsp;<a href="#I:K">K</a>&nbsp;<a href="#I:L">L</a>&nbsp;<a href="#I:M">M</a>&nbsp;<a href="#I:N">N</a>&nbsp;<a href="#I:O">O</a>&nbsp;<a href="#I:P">P</a>&nbsp;<a href="#I:R">R</a>&nbsp;<a href="#I:S">S</a>&nbsp;<a href="#I:T">T</a>&nbsp;<a href="#I:U">U</a>&nbsp;<a href="#I:V">V</a>&nbsp;<br><a href="allclasses-index.html">All&nbsp;Classes&nbsp;and&nbsp;Interfaces</a><span class="vertical-separator">|</span><a href="allpackages-index.html">All&nbsp;Packages</a><span class="vertical-separator">|</span><a href="constant-values.html">Constant&nbsp;Field&nbsp;Values</a><span class="vertical-separator">|</span><a href="serialized-form.html">Serialized&nbsp;Form</a>
 <h2 class="title" id="I:A">A</h2>
 <dl class="index">
+<dt><a href="io/oxia/client/api/exceptions/AlreadyClosedException.html" class="type-name-link" title="class in io.oxia.client.api.exceptions">AlreadyClosedException</a> - Exception in <a href="io/oxia/client/api/exceptions/package-summary.html">io.oxia.client.api.exceptions</a></dt>
+<dd>
+<div class="block">The client, or a resource that it uses, has been closed, so the operation was not sent.</div>
+</dd>
+<dt><a href="io/oxia/client/api/exceptions/AlreadyClosedException.html#%3Cinit%3E(java.lang.String,java.lang.Throwable)" class="member-name-link">AlreadyClosedException(String, Throwable)</a> - Constructor for exception <a href="io/oxia/client/api/exceptions/AlreadyClosedException.html" title="class in io.oxia.client.api.exceptions">AlreadyClosedException</a></dt>
+<dd>
+<div class="block">Creates an instance of the exception.</div>
+</dd>
 <dt><a href="io/oxia/client/api/options/PutOption.html#AsEphemeralRecord" class="member-name-link">AsEphemeralRecord</a> - Static variable in interface <a href="io/oxia/client/api/options/PutOption.html" title="interface in io.oxia.client.api.options">PutOption</a></dt>
 <dd>
 <div class="block">Indicates that the record should be treated as ephemeral.</div>
@@ -398,9 +406,13 @@ loadScripts(document, 'script');</script>
 </dd>
 <dt><a href="io/oxia/client/api/exceptions/InvalidArgumentException.html" class="type-name-link" title="class in io.oxia.client.api.exceptions">InvalidArgumentException</a> - Exception in <a href="io/oxia/client/api/exceptions/package-summary.html">io.oxia.client.api.exceptions</a></dt>
 <dd>
-<div class="block">The server rejected an operation for an invalid argument, and did not apply it.</div>
+<div class="block">An operation was rejected for an invalid argument, and was not applied.</div>
 </dd>
 <dt><a href="io/oxia/client/api/exceptions/InvalidArgumentException.html#%3Cinit%3E(java.lang.String)" class="member-name-link">InvalidArgumentException(String)</a> - Constructor for exception <a href="io/oxia/client/api/exceptions/InvalidArgumentException.html" title="class in io.oxia.client.api.exceptions">InvalidArgumentException</a></dt>
+<dd>
+<div class="block">Creates an instance of the exception.</div>
+</dd>
+<dt><a href="io/oxia/client/api/exceptions/InvalidArgumentException.html#%3Cinit%3E(java.lang.String,java.lang.Throwable)" class="member-name-link">InvalidArgumentException(String, Throwable)</a> - Constructor for exception <a href="io/oxia/client/api/exceptions/InvalidArgumentException.html" title="class in io.oxia.client.api.exceptions">InvalidArgumentException</a></dt>
 <dd>
 <div class="block">Creates an instance of the exception.</div>
 </dd>
@@ -549,6 +561,14 @@ loadScripts(document, 'script');</script>
 <dd>
 <div class="block">Specify the Oxia namesace to use for this client instance.</div>
 </dd>
+<dt><a href="io/oxia/client/api/exceptions/NamespaceNotFoundException.html" class="type-name-link" title="class in io.oxia.client.api.exceptions">NamespaceNotFoundException</a> - Exception in <a href="io/oxia/client/api/exceptions/package-summary.html">io.oxia.client.api.exceptions</a></dt>
+<dd>
+<div class="block">The namespace of the client does not exist on the server.</div>
+</dd>
+<dt><a href="io/oxia/client/api/exceptions/NamespaceNotFoundException.html#%3Cinit%3E(java.lang.String,java.lang.Throwable)" class="member-name-link">NamespaceNotFoundException(String, Throwable)</a> - Constructor for exception <a href="io/oxia/client/api/exceptions/NamespaceNotFoundException.html" title="class in io.oxia.client.api.exceptions">NamespaceNotFoundException</a></dt>
+<dd>
+<div class="block">Creates an instance of the exception.</div>
+</dd>
 <dt><a href="io/oxia/client/api/Notification.html" class="type-name-link" title="interface in io.oxia.client.api">Notification</a> - Interface in <a href="io/oxia/client/api/package-summary.html">io.oxia.client.api</a></dt>
 <dd>
 <div class="block">A notification from an Oxia server indicating a change to a record associated with a key.</div>
@@ -611,6 +631,15 @@ loadScripts(document, 'script');</script>
 <dt><a href="io/oxia/client/api/exceptions/OxiaException.html" class="type-name-link" title="class in io.oxia.client.api.exceptions">OxiaException</a> - Exception in <a href="io/oxia/client/api/exceptions/package-summary.html">io.oxia.client.api.exceptions</a></dt>
 <dd>
 <div class="block">A super-class of exceptions describing errors that occurred on an Oxia server.</div>
+</dd>
+<dt><a href="io/oxia/client/api/exceptions/OxiaUncheckedException.html" class="type-name-link" title="class in io.oxia.client.api.exceptions">OxiaUncheckedException</a> - Exception in <a href="io/oxia/client/api/exceptions/package-summary.html">io.oxia.client.api.exceptions</a></dt>
+<dd>
+<div class="block">Wraps a checked exception with an unchecked one, as <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/io/UncheckedIOException.html" title="class or interface in java.io" class="external-link"><code>UncheckedIOException</code></a> does for
+ an <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/io/IOException.html" title="class or interface in java.io" class="external-link"><code>IOException</code></a>.</div>
+</dd>
+<dt><a href="io/oxia/client/api/exceptions/OxiaUncheckedException.html#%3Cinit%3E(java.lang.Throwable)" class="member-name-link">OxiaUncheckedException(Throwable)</a> - Constructor for exception <a href="io/oxia/client/api/exceptions/OxiaUncheckedException.html" title="class in io.oxia.client.api.exceptions">OxiaUncheckedException</a></dt>
+<dd>
+<div class="block">Creates an instance of the exception.</div>
 </dd>
 </dl>
 <h2 class="title" id="I:P">P</h2>
@@ -716,6 +745,22 @@ loadScripts(document, 'script');</script>
 <dd>
 <div class="block">Specify a custom timeout for all requests.</div>
 </dd>
+<dt><a href="io/oxia/client/api/exceptions/RequestTimeoutException.html" class="type-name-link" title="class in io.oxia.client.api.exceptions">RequestTimeoutException</a> - Exception in <a href="io/oxia/client/api/exceptions/package-summary.html">io.oxia.client.api.exceptions</a></dt>
+<dd>
+<div class="block">The operation did not complete within the request timeout.</div>
+</dd>
+<dt><a href="io/oxia/client/api/exceptions/RequestTimeoutException.html#%3Cinit%3E(java.lang.String,java.lang.Throwable)" class="member-name-link">RequestTimeoutException(String, Throwable)</a> - Constructor for exception <a href="io/oxia/client/api/exceptions/RequestTimeoutException.html" title="class in io.oxia.client.api.exceptions">RequestTimeoutException</a></dt>
+<dd>
+<div class="block">Creates an instance of the exception.</div>
+</dd>
+<dt><a href="io/oxia/client/api/exceptions/ResourceUnavailableException.html" class="type-name-link" title="class in io.oxia.client.api.exceptions">ResourceUnavailableException</a> - Exception in <a href="io/oxia/client/api/exceptions/package-summary.html">io.oxia.client.api.exceptions</a></dt>
+<dd>
+<div class="block">The operation failed while the server was unavailable, e.g.</div>
+</dd>
+<dt><a href="io/oxia/client/api/exceptions/ResourceUnavailableException.html#%3Cinit%3E(java.lang.String,java.lang.Throwable)" class="member-name-link">ResourceUnavailableException(String, Throwable)</a> - Constructor for exception <a href="io/oxia/client/api/exceptions/ResourceUnavailableException.html" title="class in io.oxia.client.api.exceptions">ResourceUnavailableException</a></dt>
+<dd>
+<div class="block">Creates an instance of the exception.</div>
+</dd>
 </dl>
 <h2 class="title" id="I:S">S</h2>
 <dl class="index">
@@ -813,6 +858,14 @@ loadScripts(document, 'script');</script>
 <div class="block">The versionId at the server did not that match supplied in the call.</div>
 </dd>
 <dt><a href="io/oxia/client/api/exceptions/UnexpectedVersionIdException.html#%3Cinit%3E(java.lang.String,long)" class="member-name-link">UnexpectedVersionIdException(String, long)</a> - Constructor for exception <a href="io/oxia/client/api/exceptions/UnexpectedVersionIdException.html" title="class in io.oxia.client.api.exceptions">UnexpectedVersionIdException</a></dt>
+<dd>
+<div class="block">Creates an instance of the exception.</div>
+</dd>
+<dt><a href="io/oxia/client/api/exceptions/UnknownException.html" class="type-name-link" title="class in io.oxia.client.api.exceptions">UnknownException</a> - Exception in <a href="io/oxia/client/api/exceptions/package-summary.html">io.oxia.client.api.exceptions</a></dt>
+<dd>
+<div class="block">An error of the server or of the client transport that has no more specific exception, e.g.</div>
+</dd>
+<dt><a href="io/oxia/client/api/exceptions/UnknownException.html#%3Cinit%3E(java.lang.String,java.lang.Throwable)" class="member-name-link">UnknownException(String, Throwable)</a> - Constructor for exception <a href="io/oxia/client/api/exceptions/UnknownException.html" title="class in io.oxia.client.api.exceptions">UnknownException</a></dt>
 <dd>
 <div class="block">Creates an instance of the exception.</div>
 </dd>

@@ -85,9 +85,12 @@ loadScripts(document, 'script');</script>
 <hr>
 <div class="type-signature"><span class="modifiers">public class </span><span class="element-name type-name-label">InvalidArgumentException</span>
 <span class="extends-implements">extends <a href="OxiaException.html" title="class in io.oxia.client.api.exceptions">OxiaException</a></span></div>
-<div class="block">The server rejected an operation for an invalid argument, and did not apply it. For instance:
+<div class="block">An operation was rejected for an invalid argument, and was not applied. For instance:
 
  <ul>
+   <li>an option passed more than once, or options that can't be combined, e.g. a sequential put
+       with an expected version id;
+   <li>a put larger than the maximum request size of 256 MiB;
    <li>a sequential put that doesn't fit the keys already under its prefix: the last one is not a
        key of its sequence, or the deltas overflow the sequence;
    <li>a put with a secondary index name that contains <code>/</code>;
@@ -115,6 +118,11 @@ loadScripts(document, 'script');</script>
 <div class="table-header col-last">Description</div>
 <div class="col-constructor-name even-row-color"><code><a href="#%3Cinit%3E(java.lang.String)" class="member-name-link">InvalidArgumentException</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;message)</code></div>
 <div class="col-last even-row-color">
+<div class="block">Creates an instance of the exception.</div>
+</div>
+<div class="col-constructor-name odd-row-color"><code><a href="#%3Cinit%3E(java.lang.String,java.lang.Throwable)" class="member-name-link">InvalidArgumentException</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;message,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Throwable.html" title="class or interface in java.lang" class="external-link">Throwable</a>&nbsp;cause)</code></div>
+<div class="col-last odd-row-color">
 <div class="block">Creates an instance of the exception.</div>
 </div>
 </div>
@@ -149,6 +157,19 @@ loadScripts(document, 'script');</script>
 <dl class="notes">
 <dt>Parameters:</dt>
 <dd><code>message</code> - the exception message</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="&lt;init&gt;(java.lang.String,java.lang.Throwable)">
+<h3>InvalidArgumentException</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="element-name">InvalidArgumentException</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;message,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Throwable.html" title="class or interface in java.lang" class="external-link">Throwable</a>&nbsp;cause)</span></div>
+<div class="block">Creates an instance of the exception.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>message</code> - the exception message</dd>
+<dd><code>cause</code> - the cause of the exception</dd>
 </dl>
 </section>
 </li>

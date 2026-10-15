@@ -83,8 +83,10 @@ extends <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/ja
 <div class="block">Blocking client for the Oxia service.
 
  <p>Each method blocks the calling thread until the operation completes, fails, or the configured
- request timeout elapses. Errors surface either as a checked <a href="exceptions/OxiaException.html" title="class in io.oxia.client.api.exceptions"><code>OxiaException</code></a> subtype (e.g. <a href="exceptions/UnexpectedVersionIdException.html" title="class in io.oxia.client.api.exceptions"><code>UnexpectedVersionIdException</code></a>) or as a <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/RuntimeException.html" title="class or interface in java.lang" class="external-link"><code>RuntimeException</code></a> for
- transport / unrecoverable failures.
+ request timeout elapses. A method throws the <a href="exceptions/OxiaException.html" title="class in io.oxia.client.api.exceptions"><code>OxiaException</code></a>
+ subtypes that it declares directly (e.g. <a href="exceptions/UnexpectedVersionIdException.html" title="class in io.oxia.client.api.exceptions"><code>UnexpectedVersionIdException</code></a>), and the others in an unchecked
+ <a href="exceptions/OxiaUncheckedException.html" title="class in io.oxia.client.api.exceptions"><code>OxiaUncheckedException</code></a>. Transport / unrecoverable failures
+ surface as a <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/RuntimeException.html" title="class or interface in java.lang" class="external-link"><code>RuntimeException</code></a>.
 
  <p>Instances are created via <a href="OxiaClientBuilder.html#syncClient()"><code>OxiaClientBuilder.syncClient()</code></a> and are safe to share across
  threads. Always close the client when done — preferably via try-with-resources:
@@ -268,6 +270,9 @@ extends <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/ja
      the call.</dd>
 <dd><code><a href="exceptions/KeyAlreadyExistsException.html" title="class in io.oxia.client.api.exceptions">KeyAlreadyExistsException</a></code> - The key already exists on the server and the put was
      conditional on it not existing (via <a href="options/PutOption.html#IfRecordDoesNotExist"><code>PutOption.IfRecordDoesNotExist</code></a>).</dd>
+<dd><code><a href="exceptions/OxiaUncheckedException.html" title="class in io.oxia.client.api.exceptions">OxiaUncheckedException</a></code> - The put failed for another reason. Its cause is, for instance, a
+     <a href="exceptions/SessionDoesNotExistException.html" title="class in io.oxia.client.api.exceptions"><code>SessionDoesNotExistException</code></a> when the session of an ephemeral put (<a href="options/PutOption.html#AsEphemeralRecord"><code>PutOption.AsEphemeralRecord</code></a>) has expired, or an <a href="exceptions/InvalidArgumentException.html" title="class in io.oxia.client.api.exceptions"><code>InvalidArgumentException</code></a> when the
+     server rejected the put, e.g. a sequential put that doesn't fit its sequence.</dd>
 </dl>
 </section>
 </li>
@@ -319,6 +324,9 @@ extends <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/ja
      the range.</dd>
 <dd><code>endKeyExclusive</code> - The key that declares the end of the range, and is <b>excluded</b> from
      the range.</dd>
+<dt>Throws:</dt>
+<dd><code><a href="exceptions/OxiaUncheckedException.html" title="class in io.oxia.client.api.exceptions">OxiaUncheckedException</a></code> - The delete range failed. Its cause is, for instance, an <a href="exceptions/InvalidArgumentException.html" title="class in io.oxia.client.api.exceptions"><code>InvalidArgumentException</code></a> when the server rejected the range, e.g. a range that covers both
+     regular keys and the server's internal keys.</dd>
 </dl>
 </section>
 </li>
@@ -337,6 +345,9 @@ extends <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/ja
 <dd><code>endKeyExclusive</code> - The key that declares the end of the range, and is <b>excluded</b> from
      the range.</dd>
 <dd><code>options</code> - Set <a href="options/DeleteRangeOption.html" title="interface in io.oxia.client.api.options"><code>options</code></a> for the delete range.</dd>
+<dt>Throws:</dt>
+<dd><code><a href="exceptions/OxiaUncheckedException.html" title="class in io.oxia.client.api.exceptions">OxiaUncheckedException</a></code> - The delete range failed. Its cause is, for instance, an <a href="exceptions/InvalidArgumentException.html" title="class in io.oxia.client.api.exceptions"><code>InvalidArgumentException</code></a> when the server rejected the range, e.g. a range that covers both
+     regular keys and the server's internal keys.</dd>
 </dl>
 </section>
 </li>
