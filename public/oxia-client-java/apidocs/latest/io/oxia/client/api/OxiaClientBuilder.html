@@ -542,10 +542,13 @@ loadScripts(document, 'script');</script>
  <p>Defaults are <code>min=100millis, max=30sec</code>.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
-<dd><code>minDelay</code> - the minimum delay between retries</dd>
-<dd><code>maxDelay</code> - the maximum delay between retries</dd>
+<dd><code>minDelay</code> - the minimum delay between retries, greater than zero</dd>
+<dd><code>maxDelay</code> - the maximum delay between retries, greater than <code>minDelay</code></dd>
 <dt>Returns:</dt>
 <dd>the builder instance</dd>
+<dt>Throws:</dt>
+<dd><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/IllegalArgumentException.html" title="class or interface in java.lang" class="external-link">IllegalArgumentException</a></code> - if <code>minDelay</code> is not greater than zero or not less than
+     <code>maxDelay</code></dd>
 </dl>
 </section>
 </li>
