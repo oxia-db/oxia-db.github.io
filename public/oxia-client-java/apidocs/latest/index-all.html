@@ -333,6 +333,8 @@ loadScripts(document, 'script');</script>
 <div class="block">The result of a successful get / range-scan operation.</div>
 </dd>
 <dt><a href="io/oxia/client/api/GetResult.html#%3Cinit%3E(java.lang.String,byte%5B%5D,io.oxia.client.api.Version)" class="member-name-link">GetResult(String, byte[], Version)</a> - Constructor for record class <a href="io/oxia/client/api/GetResult.html" title="class in io.oxia.client.api">GetResult</a></dt>
+<dd>&nbsp;</dd>
+<dt><a href="io/oxia/client/api/GetResult.html#%3Cinit%3E(java.lang.String,byte%5B%5D,io.oxia.client.api.Version,java.util.Optional)" class="member-name-link">GetResult(String, byte[], Version, Optional&lt;String&gt;)</a> - Constructor for record class <a href="io/oxia/client/api/GetResult.html" title="class in io.oxia.client.api">GetResult</a></dt>
 <dd>
 <div class="block">Creates an instance of a <code>GetResult</code> record class.</div>
 </dd>
@@ -770,6 +772,10 @@ loadScripts(document, 'script');</script>
  arbitrary strings and can be used in <a href="io/oxia/client/api/SyncOxiaClient.html#list(java.lang.String,java.lang.String,java.util.Set)"><code>SyncOxiaClient.list(String, String, Set)</code></a> and
  <a href="io/oxia/client/api/SyncOxiaClient.html#rangeScan(java.lang.String,java.lang.String,java.util.Set)"><code>SyncOxiaClient.rangeScan(String, String, Set)</code></a> requests.</div>
 </dd>
+<dt><a href="io/oxia/client/api/GetResult.html#secondaryIndexKey()" class="member-name-link">secondaryIndexKey()</a> - Method in record class <a href="io/oxia/client/api/GetResult.html" title="class in io.oxia.client.api">GetResult</a></dt>
+<dd>
+<div class="block">Returns the value of the <a href="./io/oxia/client/api/GetResult.html#param-secondaryIndexKey"><code>secondaryIndexKey</code></a> record component.</div>
+</dd>
 <dt><a href="io/oxia/client/api/options/PutOption.html#SequenceKeysDeltas(java.util.List)" class="member-name-link">SequenceKeysDeltas(List&lt;Long&gt;)</a> - Static method in interface <a href="io/oxia/client/api/options/PutOption.html" title="interface in io.oxia.client.api.options">PutOption</a></dt>
 <dd>
 <div class="block">SequenceKeysDeltas will request that the final record key to be assigned by the server, based
@@ -884,7 +890,8 @@ loadScripts(document, 'script');</script>
 </dd>
 <dt><a href="io/oxia/client/api/options/GetOption.html#UseIndex(java.lang.String)" class="member-name-link">UseIndex(String)</a> - Static method in interface <a href="io/oxia/client/api/options/GetOption.html" title="interface in io.oxia.client.api.options">GetOption</a></dt>
 <dd>
-<div class="block">UseIndex let the users specify a different index to follow for the list operation</div>
+<div class="block">UseIndex lets the users look up the record by a secondary index: the key of the get is a
+ secondary key.</div>
 </dd>
 <dt><a href="io/oxia/client/api/options/ListOption.html#UseIndex(java.lang.String)" class="member-name-link">UseIndex(String)</a> - Static method in interface <a href="io/oxia/client/api/options/ListOption.html" title="interface in io.oxia.client.api.options">ListOption</a></dt>
 <dd>

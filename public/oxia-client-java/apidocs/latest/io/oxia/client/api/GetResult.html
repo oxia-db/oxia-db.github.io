@@ -80,13 +80,15 @@ loadScripts(document, 'script');</script>
 <section class="class-description" id="class-description">
 <dl class="notes">
 <dt>Record Components:</dt>
-<dd><code><span id="param-key">key</span></code> - the key of the record returned by the server (may differ from the key supplied to
-     <code>get</code> when a non-equal <a href="options/GetOption.html" title="interface in io.oxia.client.api.options"><code>comparison</code></a> is used)</dd>
+<dd><code><span id="param-key">key</span></code> - the primary key of the record returned by the server, also when the read went through
+     a secondary index (may differ from the key supplied to <code>get</code> when a non-equal <a href="options/GetOption.html" title="interface in io.oxia.client.api.options"><code>comparison</code></a> or an index is used)</dd>
 <dd><code><span id="param-value">value</span></code> - the record's value, or an empty byte array if the value was not requested</dd>
 <dd><code><span id="param-version">version</span></code> - metadata describing the record at the time it was read</dd>
+<dd><code><span id="param-secondaryIndexKey">secondaryIndexKey</span></code> - the secondary key that the record was found by, when the read went
+     through a secondary index; empty otherwise</dd>
 </dl>
 <hr>
-<div class="type-signature"><span class="modifiers">public record </span><span class="element-name type-name-label">GetResult</span>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;key, byte[]&nbsp;value, <a href="Version.html" title="class in io.oxia.client.api">Version</a>&nbsp;version)
+<div class="type-signature"><span class="modifiers">public record </span><span class="element-name type-name-label">GetResult</span>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;key, byte[]&nbsp;value, <a href="Version.html" title="class in io.oxia.client.api">Version</a>&nbsp;version, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Optional.html" title="class or interface in java.util" class="external-link">Optional</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;&nbsp;secondaryIndexKey)
 <span class="extends-implements">extends <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Record.html" title="class or interface in java.lang" class="external-link">Record</a></span></div>
 <div class="block">The result of a successful get / range-scan operation.
 
@@ -107,7 +109,12 @@ loadScripts(document, 'script');</script>
 <div class="col-constructor-name even-row-color"><code><a href="#%3Cinit%3E(java.lang.String,byte%5B%5D,io.oxia.client.api.Version)" class="member-name-link">GetResult</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;key,
  byte[]&nbsp;value,
  <a href="Version.html" title="class in io.oxia.client.api">Version</a>&nbsp;version)</code></div>
-<div class="col-last even-row-color">
+<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-constructor-name odd-row-color"><code><a href="#%3Cinit%3E(java.lang.String,byte%5B%5D,io.oxia.client.api.Version,java.util.Optional)" class="member-name-link">GetResult</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;key,
+ byte[]&nbsp;value,
+ <a href="Version.html" title="class in io.oxia.client.api">Version</a>&nbsp;version,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Optional.html" title="class or interface in java.util" class="external-link">Optional</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;&nbsp;secondaryIndexKey)</code></div>
+<div class="col-last odd-row-color">
 <div class="block">Creates an instance of a <code>GetResult</code> record class.</div>
 </div>
 </div>
@@ -139,19 +146,24 @@ loadScripts(document, 'script');</script>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Returns the value of the <a href="#param-key"><code>key</code></a> record component.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>final <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#toString()" class="member-name-link">toString</a>()</code></div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Optional.html" title="class or interface in java.util" class="external-link">Optional</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#secondaryIndexKey()" class="member-name-link">secondaryIndexKey</a>()</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Returns the value of the <a href="#param-secondaryIndexKey"><code>secondaryIndexKey</code></a> record component.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>final <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#toString()" class="member-name-link">toString</a>()</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Returns a string representation of this record class.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>byte[]</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#value()" class="member-name-link">value</a>()</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>byte[]</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#value()" class="member-name-link">value</a>()</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Returns the value of the <a href="#param-value"><code>value</code></a> record component.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="Version.html" title="class in io.oxia.client.api">Version</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#version()" class="member-name-link">version</a>()</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="Version.html" title="class in io.oxia.client.api">Version</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#version()" class="member-name-link">version</a>()</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Returns the value of the <a href="#param-version"><code>version</code></a> record component.</div>
 </div>
 </div>
@@ -177,12 +189,22 @@ loadScripts(document, 'script');</script>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="element-name">GetResult</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;key,
  byte[]&nbsp;value,
  <a href="Version.html" title="class in io.oxia.client.api">Version</a>&nbsp;version)</span></div>
+</section>
+</li>
+<li>
+<section class="detail" id="&lt;init&gt;(java.lang.String,byte[],io.oxia.client.api.Version,java.util.Optional)">
+<h3>GetResult</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="element-name">GetResult</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;key,
+ byte[]&nbsp;value,
+ <a href="Version.html" title="class in io.oxia.client.api">Version</a>&nbsp;version,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Optional.html" title="class or interface in java.util" class="external-link">Optional</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;&nbsp;secondaryIndexKey)</span></div>
 <div class="block">Creates an instance of a <code>GetResult</code> record class.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
 <dd><code>key</code> - the value for the <a href="#param-key"><code>key</code></a> record component</dd>
 <dd><code>value</code> - the value for the <a href="#param-value"><code>value</code></a> record component</dd>
 <dd><code>version</code> - the value for the <a href="#param-version"><code>version</code></a> record component</dd>
+<dd><code>secondaryIndexKey</code> - the value for the <a href="#param-secondaryIndexKey"><code>secondaryIndexKey</code></a> record component</dd>
 </dl>
 </section>
 </li>
@@ -265,6 +287,17 @@ loadScripts(document, 'script');</script>
 <dl class="notes">
 <dt>Returns:</dt>
 <dd>the value of the <a href="#param-version"><code>version</code></a> record component</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="secondaryIndexKey()">
+<h3>secondaryIndexKey</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Optional.html" title="class or interface in java.util" class="external-link">Optional</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;</span>&nbsp;<span class="element-name">secondaryIndexKey</span>()</div>
+<div class="block">Returns the value of the <a href="#param-secondaryIndexKey"><code>secondaryIndexKey</code></a> record component.</div>
+<dl class="notes">
+<dt>Returns:</dt>
+<dd>the value of the <a href="#param-secondaryIndexKey"><code>secondaryIndexKey</code></a> record component</dd>
 </dl>
 </section>
 </li>

@@ -150,7 +150,8 @@ loadScripts(document, 'script');</script>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab1"><code>static <a href="GetOption.html" title="interface in io.oxia.client.api.options">GetOption</a></code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab1"><code><a href="#UseIndex(java.lang.String)" class="member-name-link">UseIndex</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;secondaryIndexName)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab1">
-<div class="block">UseIndex let the users specify a different index to follow for the list operation</div>
+<div class="block">UseIndex lets the users look up the record by a secondary index: the key of the get is a
+ secondary key.</div>
 </div>
 </div>
 </div>
@@ -262,12 +263,14 @@ loadScripts(document, 'script');</script>
 <section class="detail" id="UseIndex(java.lang.String)">
 <h3>UseIndex</h3>
 <div class="member-signature"><span class="modifiers">static</span>&nbsp;<span class="return-type"><a href="GetOption.html" title="interface in io.oxia.client.api.options">GetOption</a></span>&nbsp;<span class="element-name">UseIndex</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;secondaryIndexName)</span></div>
-<div class="block">UseIndex let the users specify a different index to follow for the list operation
+<div class="block">UseIndex lets the users look up the record by a secondary index: the key of the get is a
+ secondary key. The result still has the record's primary key as its key, and the secondary key
+ it was found by as its <a href="../GetResult.html#secondaryIndexKey()"><code>GetResult.secondaryIndexKey()</code></a>.
 
  <p>Note: if the secondary index is not unique, which primary record is returned is undefined.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
-<dd><code>secondaryIndexName</code> - the name of the secondary index to use for the list operation</dd>
+<dd><code>secondaryIndexName</code> - the name of the secondary index to use for the get operation</dd>
 <dt>Returns:</dt>
 <dd>the GetOption.</dd>
 </dl>
