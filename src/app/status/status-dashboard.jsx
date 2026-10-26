@@ -7,8 +7,8 @@ const DAY_COUNT = 90
 const STATUS_URL = 'https://oxia-db.github.io/chaos/status/v1/summary.json'
 const SMOKE_STATUS_URL = 'https://oxia-db.github.io/chaos/status-smoke/v1/summary.json'
 const channelDefinitions = [
-  { id: 'stable', label: 'Stable', fallbackVersion: '0.16.x' },
-  { id: 'beta', label: 'Beta', fallbackVersion: '0.17.x' },
+  { id: 'stable', label: 'Stable', fallbackVersion: '0.18' },
+  { id: 'beta', label: 'Beta', fallbackVersion: 'main' },
 ]
 const testCases = [
   { id: 'basic-kv', name: 'Basic KV' },
