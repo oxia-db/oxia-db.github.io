@@ -406,6 +406,10 @@ loadScripts(document, 'script');</script>
 <dd>
 <div class="block">Creates and returns a GetOption that specifies whether to include a value.</div>
 </dd>
+<dt><a href="io/oxia/client/api/options/RangeScanOption.html#IncludeValue(boolean)" class="member-name-link">IncludeValue(boolean)</a> - Static method in interface <a href="io/oxia/client/api/options/RangeScanOption.html" title="interface in io.oxia.client.api.options">RangeScanOption</a></dt>
+<dd>
+<div class="block">IncludeValue includes or excludes the values of the records.</div>
+</dd>
 <dt><a href="io/oxia/client/api/exceptions/InvalidArgumentException.html" class="type-name-link" title="class in io.oxia.client.api.exceptions">InvalidArgumentException</a> - Exception in <a href="io/oxia/client/api/exceptions/package-summary.html">io.oxia.client.api.exceptions</a></dt>
 <dd>
 <div class="block">An operation was rejected for an invalid argument, and was not applied.</div>
@@ -490,23 +494,37 @@ loadScripts(document, 'script');</script>
 <dl class="index">
 <dt><a href="io/oxia/client/api/AsyncOxiaClient.html#list(java.lang.String,java.lang.String)" class="member-name-link">list(String, String)</a> - Method in interface <a href="io/oxia/client/api/AsyncOxiaClient.html" title="interface in io.oxia.client.api">AsyncOxiaClient</a></dt>
 <dd>
-<div class="block">Lists any existing keys within the specified range.</div>
+<div class="deprecation-block"><span class="deprecated-label">Deprecated, for removal: This API element is subject to removal in a future version.</span>
+<div class="deprecation-comment">Use <a href="io/oxia/client/api/AsyncOxiaClient.html#rangeScan(java.lang.String,java.lang.String,io.oxia.client.api.RangeScanConsumer,java.util.Set)"><code>AsyncOxiaClient.rangeScan(String, String, RangeScanConsumer, Set)</code></a> with <a href="io/oxia/client/api/options/RangeScanOption.html#IncludeValue(boolean)"><code>IncludeValue(false)</code></a>
+     instead, which streams the keys with backpressure and can stop early.</div>
+</div>
 </dd>
 <dt><a href="io/oxia/client/api/SyncOxiaClient.html#list(java.lang.String,java.lang.String)" class="member-name-link">list(String, String)</a> - Method in interface <a href="io/oxia/client/api/SyncOxiaClient.html" title="interface in io.oxia.client.api">SyncOxiaClient</a></dt>
 <dd>
-<div class="block">Lists any existing keys within the specified range.</div>
+<div class="deprecation-block"><span class="deprecated-label">Deprecated, for removal: This API element is subject to removal in a future version.</span>
+<div class="deprecation-comment">Use <a href="io/oxia/client/api/SyncOxiaClient.html#rangeScan(java.lang.String,java.lang.String,java.util.Set)"><code>SyncOxiaClient.rangeScan(String, String, Set)</code></a> with <a href="io/oxia/client/api/options/RangeScanOption.html#IncludeValue(boolean)"><code>IncludeValue(false)</code></a>
+     instead, which streams the keys with backpressure and can stop early.</div>
+</div>
 </dd>
 <dt><a href="io/oxia/client/api/AsyncOxiaClient.html#list(java.lang.String,java.lang.String,java.util.Set)" class="member-name-link">list(String, String, Set&lt;ListOption&gt;)</a> - Method in interface <a href="io/oxia/client/api/AsyncOxiaClient.html" title="interface in io.oxia.client.api">AsyncOxiaClient</a></dt>
 <dd>
-<div class="block">Lists any existing keys within the specified range.</div>
+<div class="deprecation-block"><span class="deprecated-label">Deprecated, for removal: This API element is subject to removal in a future version.</span>
+<div class="deprecation-comment">Use <a href="io/oxia/client/api/AsyncOxiaClient.html#rangeScan(java.lang.String,java.lang.String,io.oxia.client.api.RangeScanConsumer,java.util.Set)"><code>AsyncOxiaClient.rangeScan(String, String, RangeScanConsumer, Set)</code></a> with <a href="io/oxia/client/api/options/RangeScanOption.html#IncludeValue(boolean)"><code>IncludeValue(false)</code></a>
+     instead, which streams the keys with backpressure and can stop early.</div>
+</div>
 </dd>
 <dt><a href="io/oxia/client/api/SyncOxiaClient.html#list(java.lang.String,java.lang.String,java.util.Set)" class="member-name-link">list(String, String, Set&lt;ListOption&gt;)</a> - Method in interface <a href="io/oxia/client/api/SyncOxiaClient.html" title="interface in io.oxia.client.api">SyncOxiaClient</a></dt>
 <dd>
-<div class="block">Lists any existing keys within the specified range.</div>
+<div class="deprecation-block"><span class="deprecated-label">Deprecated, for removal: This API element is subject to removal in a future version.</span>
+<div class="deprecation-comment">Use <a href="io/oxia/client/api/SyncOxiaClient.html#rangeScan(java.lang.String,java.lang.String,java.util.Set)"><code>SyncOxiaClient.rangeScan(String, String, Set)</code></a> with <a href="io/oxia/client/api/options/RangeScanOption.html#IncludeValue(boolean)"><code>IncludeValue(false)</code></a>
+     instead, which streams the keys with backpressure and can stop early.</div>
+</div>
 </dd>
 <dt><a href="io/oxia/client/api/options/ListOption.html" class="type-name-link" title="interface in io.oxia.client.api.options">ListOption</a> - Interface in <a href="io/oxia/client/api/options/package-summary.html">io.oxia.client.api.options</a></dt>
 <dd>
-<div class="block">Options for listing records.</div>
+<div class="deprecation-block"><span class="deprecated-label">Deprecated, for removal: This API element is subject to removal in a future version.</span>
+<div class="deprecation-comment">Use <a href="io/oxia/client/api/options/RangeScanOption.html" title="interface in io.oxia.client.api.options"><code>RangeScanOption</code></a> with a range scan instead.</div>
+</div>
 </dd>
 <dt><a href="io/oxia/client/api/OxiaClientBuilder.html#loadConfig(java.io.File)" class="member-name-link">loadConfig(File)</a> - Method in interface <a href="io/oxia/client/api/OxiaClientBuilder.html" title="interface in io.oxia.client.api">OxiaClientBuilder</a></dt>
 <dd>
@@ -668,6 +686,7 @@ loadScripts(document, 'script');</script>
 </dd>
 <dt><a href="io/oxia/client/api/options/ListOption.html#PartitionKey(java.lang.String)" class="member-name-link">PartitionKey(String)</a> - Static method in interface <a href="io/oxia/client/api/options/ListOption.html" title="interface in io.oxia.client.api.options">ListOption</a></dt>
 <dd>
+<div class="deprecation-block"><span class="deprecated-label">Deprecated.</span></div>
 <div class="block">PartitionKey overrides the partition routing with the specified `partitionKey` instead of the
  regular record key.</div>
 </dd>
@@ -895,6 +914,7 @@ loadScripts(document, 'script');</script>
 </dd>
 <dt><a href="io/oxia/client/api/options/ListOption.html#UseIndex(java.lang.String)" class="member-name-link">UseIndex(String)</a> - Static method in interface <a href="io/oxia/client/api/options/ListOption.html" title="interface in io.oxia.client.api.options">ListOption</a></dt>
 <dd>
+<div class="deprecation-block"><span class="deprecated-label">Deprecated.</span></div>
 <div class="block">UseIndex let the users specify a different index to follow for the list operation</div>
 </dd>
 <dt><a href="io/oxia/client/api/options/RangeScanOption.html#UseIndex(java.lang.String)" class="member-name-link">UseIndex(String)</a> - Static method in interface <a href="io/oxia/client/api/options/RangeScanOption.html" title="interface in io.oxia.client.api.options">RangeScanOption</a></dt>

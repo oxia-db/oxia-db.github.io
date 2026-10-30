@@ -88,14 +88,19 @@ loadScripts(document, 'script');</script>
 <div class="table-header col-second">Method</div>
 <div class="table-header col-last">Description</div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab1"><code>static <a href="RangeScanOption.html" title="interface in io.oxia.client.api.options">RangeScanOption</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab1"><code><a href="#PartitionKey(java.lang.String)" class="member-name-link">PartitionKey</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;partitionKey)</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab1"><code><a href="#IncludeValue(boolean)" class="member-name-link">IncludeValue</a><wbr>(boolean&nbsp;includeValue)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab1">
+<div class="block">IncludeValue includes or excludes the values of the records.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab1"><code>static <a href="RangeScanOption.html" title="interface in io.oxia.client.api.options">RangeScanOption</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab1"><code><a href="#PartitionKey(java.lang.String)" class="member-name-link">PartitionKey</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;partitionKey)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab1">
 <div class="block">PartitionKey overrides the partition routing with the specified `partitionKey` instead of the
  regular record key.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab1"><code>static <a href="RangeScanOption.html" title="interface in io.oxia.client.api.options">RangeScanOption</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab1"><code><a href="#UseIndex(java.lang.String)" class="member-name-link">UseIndex</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;secondaryIndexName)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab1">
+<div class="col-first even-row-color method-summary-table method-summary-table-tab1"><code>static <a href="RangeScanOption.html" title="interface in io.oxia.client.api.options">RangeScanOption</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab1"><code><a href="#UseIndex(java.lang.String)" class="member-name-link">UseIndex</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;secondaryIndexName)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab1">
 <div class="block">UseIndex let the users specify a different index to follow for the range scan operation</div>
 </div>
 </div>
@@ -136,6 +141,21 @@ loadScripts(document, 'script');</script>
 <dl class="notes">
 <dt>Parameters:</dt>
 <dd><code>secondaryIndexName</code> - the name of the secondary index to use</dd>
+<dt>Returns:</dt>
+<dd>the RangeScanOption.</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="IncludeValue(boolean)">
+<h3>IncludeValue</h3>
+<div class="member-signature"><span class="modifiers">static</span>&nbsp;<span class="return-type"><a href="RangeScanOption.html" title="interface in io.oxia.client.api.options">RangeScanOption</a></span>&nbsp;<span class="element-name">IncludeValue</span><wbr><span class="parameters">(boolean&nbsp;includeValue)</span></div>
+<div class="block">IncludeValue includes or excludes the values of the records. Without the values, the range scan
+ returns the key and the version of each record, and the <a href="../GetResult.html#value()"><code>value</code></a> of each result is empty. Older servers still send
+ the values, and the client drops them.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>includeValue</code> - whether to include the values. By default, they are included.</dd>
 <dt>Returns:</dt>
 <dd>the RangeScanOption.</dd>
 </dl>

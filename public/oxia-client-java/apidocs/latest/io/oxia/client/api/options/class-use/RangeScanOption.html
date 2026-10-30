@@ -101,14 +101,19 @@ loadScripts(document, 'script');</script>
 <div class="table-header col-second">Method</div>
 <div class="table-header col-last">Description</div>
 <div class="col-first even-row-color"><code>static <a href="../RangeScanOption.html" title="interface in io.oxia.client.api.options">RangeScanOption</a></code></div>
-<div class="col-second even-row-color"><span class="type-name-label">RangeScanOption.</span><code><a href="../RangeScanOption.html#PartitionKey(java.lang.String)" class="member-name-link">PartitionKey</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;partitionKey)</code></div>
+<div class="col-second even-row-color"><span class="type-name-label">RangeScanOption.</span><code><a href="../RangeScanOption.html#IncludeValue(boolean)" class="member-name-link">IncludeValue</a><wbr>(boolean&nbsp;includeValue)</code></div>
 <div class="col-last even-row-color">
+<div class="block">IncludeValue includes or excludes the values of the records.</div>
+</div>
+<div class="col-first odd-row-color"><code>static <a href="../RangeScanOption.html" title="interface in io.oxia.client.api.options">RangeScanOption</a></code></div>
+<div class="col-second odd-row-color"><span class="type-name-label">RangeScanOption.</span><code><a href="../RangeScanOption.html#PartitionKey(java.lang.String)" class="member-name-link">PartitionKey</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;partitionKey)</code></div>
+<div class="col-last odd-row-color">
 <div class="block">PartitionKey overrides the partition routing with the specified `partitionKey` instead of the
  regular record key.</div>
 </div>
-<div class="col-first odd-row-color"><code>static <a href="../RangeScanOption.html" title="interface in io.oxia.client.api.options">RangeScanOption</a></code></div>
-<div class="col-second odd-row-color"><span class="type-name-label">RangeScanOption.</span><code><a href="../RangeScanOption.html#UseIndex(java.lang.String)" class="member-name-link">UseIndex</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;secondaryIndexName)</code></div>
-<div class="col-last odd-row-color">
+<div class="col-first even-row-color"><code>static <a href="../RangeScanOption.html" title="interface in io.oxia.client.api.options">RangeScanOption</a></code></div>
+<div class="col-second even-row-color"><span class="type-name-label">RangeScanOption.</span><code><a href="../RangeScanOption.html#UseIndex(java.lang.String)" class="member-name-link">UseIndex</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;secondaryIndexName)</code></div>
+<div class="col-last even-row-color">
 <div class="block">UseIndex let the users specify a different index to follow for the range scan operation</div>
 </div>
 </div>

@@ -53,6 +53,7 @@ loadScripts(document, 'script');</script>
 <h2 title="Contents">Contents</h2>
 <ul>
 <li><a href="#for-removal">Terminally Deprecated</a></li>
+<li><a href="#interface">Interfaces</a></li>
 <li><a href="#method">Methods</a></li>
 </ul>
 </div>
@@ -63,10 +64,49 @@ loadScripts(document, 'script');</script>
 <div class="summary-table two-column-summary">
 <div class="table-header col-first">Element</div>
 <div class="table-header col-last">Description</div>
-<div class="col-summary-item-name even-row-color"><a href="io/oxia/client/api/OxiaClientBuilder.html#batchLinger(java.time.Duration)">io.oxia.client.api.OxiaClientBuilder.batchLinger<wbr>(Duration)</a></div>
+<div class="col-summary-item-name even-row-color"><a href="io/oxia/client/api/AsyncOxiaClient.html#list(java.lang.String,java.lang.String)">io.oxia.client.api.AsyncOxiaClient.list<wbr>(String, String)</a></div>
 <div class="col-last even-row-color">
+<div class="deprecation-comment">Use <a href="io/oxia/client/api/AsyncOxiaClient.html#rangeScan(java.lang.String,java.lang.String,io.oxia.client.api.RangeScanConsumer,java.util.Set)"><code>AsyncOxiaClient.rangeScan(String, String, RangeScanConsumer, Set)</code></a> with <a href="io/oxia/client/api/options/RangeScanOption.html#IncludeValue(boolean)"><code>IncludeValue(false)</code></a>
+     instead, which streams the keys with backpressure and can stop early.</div>
+</div>
+<div class="col-summary-item-name odd-row-color"><a href="io/oxia/client/api/AsyncOxiaClient.html#list(java.lang.String,java.lang.String,java.util.Set)">io.oxia.client.api.AsyncOxiaClient.list<wbr>(String, String, Set&lt;ListOption&gt;)</a></div>
+<div class="col-last odd-row-color">
+<div class="deprecation-comment">Use <a href="io/oxia/client/api/AsyncOxiaClient.html#rangeScan(java.lang.String,java.lang.String,io.oxia.client.api.RangeScanConsumer,java.util.Set)"><code>AsyncOxiaClient.rangeScan(String, String, RangeScanConsumer, Set)</code></a> with <a href="io/oxia/client/api/options/RangeScanOption.html#IncludeValue(boolean)"><code>IncludeValue(false)</code></a>
+     instead, which streams the keys with backpressure and can stop early.</div>
+</div>
+<div class="col-summary-item-name even-row-color"><a href="io/oxia/client/api/options/ListOption.html" title="interface in io.oxia.client.api.options">io.oxia.client.api.options.ListOption</a></div>
+<div class="col-last even-row-color">
+<div class="deprecation-comment">Use <a href="io/oxia/client/api/options/RangeScanOption.html" title="interface in io.oxia.client.api.options"><code>RangeScanOption</code></a> with a range scan instead.</div>
+</div>
+<div class="col-summary-item-name odd-row-color"><a href="io/oxia/client/api/OxiaClientBuilder.html#batchLinger(java.time.Duration)">io.oxia.client.api.OxiaClientBuilder.batchLinger<wbr>(Duration)</a></div>
+<div class="col-last odd-row-color">
 <div class="deprecation-comment">Batching is adaptive: operations are grouped while a batch is in progress and a
      batch is flushed as soon as no more operations are pending, so this setting has no effect.</div>
+</div>
+<div class="col-summary-item-name even-row-color"><a href="io/oxia/client/api/SyncOxiaClient.html#list(java.lang.String,java.lang.String)">io.oxia.client.api.SyncOxiaClient.list<wbr>(String, String)</a></div>
+<div class="col-last even-row-color">
+<div class="deprecation-comment">Use <a href="io/oxia/client/api/SyncOxiaClient.html#rangeScan(java.lang.String,java.lang.String,java.util.Set)"><code>SyncOxiaClient.rangeScan(String, String, Set)</code></a> with <a href="io/oxia/client/api/options/RangeScanOption.html#IncludeValue(boolean)"><code>IncludeValue(false)</code></a>
+     instead, which streams the keys with backpressure and can stop early.</div>
+</div>
+<div class="col-summary-item-name odd-row-color"><a href="io/oxia/client/api/SyncOxiaClient.html#list(java.lang.String,java.lang.String,java.util.Set)">io.oxia.client.api.SyncOxiaClient.list<wbr>(String, String, Set&lt;ListOption&gt;)</a></div>
+<div class="col-last odd-row-color">
+<div class="deprecation-comment">Use <a href="io/oxia/client/api/SyncOxiaClient.html#rangeScan(java.lang.String,java.lang.String,java.util.Set)"><code>SyncOxiaClient.rangeScan(String, String, Set)</code></a> with <a href="io/oxia/client/api/options/RangeScanOption.html#IncludeValue(boolean)"><code>IncludeValue(false)</code></a>
+     instead, which streams the keys with backpressure and can stop early.</div>
+</div>
+</div>
+</div>
+</li>
+</ul>
+<ul class="block-list">
+<li>
+<div id="interface">
+<div class="caption"><span>Deprecated Interfaces</span></div>
+<div class="summary-table two-column-summary">
+<div class="table-header col-first">Interface</div>
+<div class="table-header col-last">Description</div>
+<div class="col-summary-item-name even-row-color"><a href="io/oxia/client/api/options/ListOption.html" title="interface in io.oxia.client.api.options">io.oxia.client.api.options.ListOption</a></div>
+<div class="col-last even-row-color">
+<div class="deprecation-comment">Use <a href="io/oxia/client/api/options/RangeScanOption.html" title="interface in io.oxia.client.api.options"><code>RangeScanOption</code></a> with a range scan instead.</div>
 </div>
 </div>
 </div>
@@ -79,10 +119,30 @@ loadScripts(document, 'script');</script>
 <div class="summary-table two-column-summary">
 <div class="table-header col-first">Method</div>
 <div class="table-header col-last">Description</div>
+<div class="col-summary-item-name even-row-color"><a href="io/oxia/client/api/AsyncOxiaClient.html#list(java.lang.String,java.lang.String)">io.oxia.client.api.AsyncOxiaClient.list<wbr>(String, String)</a></div>
+<div class="col-last even-row-color">
+<div class="deprecation-comment">Use <a href="io/oxia/client/api/AsyncOxiaClient.html#rangeScan(java.lang.String,java.lang.String,io.oxia.client.api.RangeScanConsumer,java.util.Set)"><code>AsyncOxiaClient.rangeScan(String, String, RangeScanConsumer, Set)</code></a> with <a href="io/oxia/client/api/options/RangeScanOption.html#IncludeValue(boolean)"><code>IncludeValue(false)</code></a>
+     instead, which streams the keys with backpressure and can stop early.</div>
+</div>
+<div class="col-summary-item-name odd-row-color"><a href="io/oxia/client/api/AsyncOxiaClient.html#list(java.lang.String,java.lang.String,java.util.Set)">io.oxia.client.api.AsyncOxiaClient.list<wbr>(String, String, Set&lt;ListOption&gt;)</a></div>
+<div class="col-last odd-row-color">
+<div class="deprecation-comment">Use <a href="io/oxia/client/api/AsyncOxiaClient.html#rangeScan(java.lang.String,java.lang.String,io.oxia.client.api.RangeScanConsumer,java.util.Set)"><code>AsyncOxiaClient.rangeScan(String, String, RangeScanConsumer, Set)</code></a> with <a href="io/oxia/client/api/options/RangeScanOption.html#IncludeValue(boolean)"><code>IncludeValue(false)</code></a>
+     instead, which streams the keys with backpressure and can stop early.</div>
+</div>
 <div class="col-summary-item-name even-row-color"><a href="io/oxia/client/api/OxiaClientBuilder.html#batchLinger(java.time.Duration)">io.oxia.client.api.OxiaClientBuilder.batchLinger<wbr>(Duration)</a></div>
 <div class="col-last even-row-color">
 <div class="deprecation-comment">Batching is adaptive: operations are grouped while a batch is in progress and a
      batch is flushed as soon as no more operations are pending, so this setting has no effect.</div>
+</div>
+<div class="col-summary-item-name odd-row-color"><a href="io/oxia/client/api/SyncOxiaClient.html#list(java.lang.String,java.lang.String)">io.oxia.client.api.SyncOxiaClient.list<wbr>(String, String)</a></div>
+<div class="col-last odd-row-color">
+<div class="deprecation-comment">Use <a href="io/oxia/client/api/SyncOxiaClient.html#rangeScan(java.lang.String,java.lang.String,java.util.Set)"><code>SyncOxiaClient.rangeScan(String, String, Set)</code></a> with <a href="io/oxia/client/api/options/RangeScanOption.html#IncludeValue(boolean)"><code>IncludeValue(false)</code></a>
+     instead, which streams the keys with backpressure and can stop early.</div>
+</div>
+<div class="col-summary-item-name even-row-color"><a href="io/oxia/client/api/SyncOxiaClient.html#list(java.lang.String,java.lang.String,java.util.Set)">io.oxia.client.api.SyncOxiaClient.list<wbr>(String, String, Set&lt;ListOption&gt;)</a></div>
+<div class="col-last even-row-color">
+<div class="deprecation-comment">Use <a href="io/oxia/client/api/SyncOxiaClient.html#rangeScan(java.lang.String,java.lang.String,java.util.Set)"><code>SyncOxiaClient.rangeScan(String, String, Set)</code></a> with <a href="io/oxia/client/api/options/RangeScanOption.html#IncludeValue(boolean)"><code>IncludeValue(false)</code></a>
+     instead, which streams the keys with backpressure and can stop early.</div>
 </div>
 </div>
 </div>

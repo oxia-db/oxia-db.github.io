@@ -79,14 +79,20 @@ loadScripts(document, 'script');</script>
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;endKeyExclusive,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Set.html" title="class or interface in java.util" class="external-link">Set</a>&lt;<a href="../ListOption.html" title="interface in io.oxia.client.api.options">ListOption</a>&gt;&nbsp;options)</code></div>
 <div class="col-last even-row-color">
-<div class="block">Lists any existing keys within the specified range.</div>
+<div class="block"><span class="deprecated-label">Deprecated, for removal: This API element is subject to removal in a future version.</span>
+<div class="deprecation-comment">Use <a href="../../AsyncOxiaClient.html#rangeScan(java.lang.String,java.lang.String,io.oxia.client.api.RangeScanConsumer,java.util.Set)"><code>AsyncOxiaClient.rangeScan(String, String, RangeScanConsumer, Set)</code></a> with <a href="../RangeScanOption.html#IncludeValue(boolean)"><code>IncludeValue(false)</code></a>
+     instead, which streams the keys with backpressure and can stop early.</div>
+</div>
 </div>
 <div class="col-first odd-row-color"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;</code></div>
 <div class="col-second odd-row-color"><span class="type-name-label">SyncOxiaClient.</span><code><a href="../../SyncOxiaClient.html#list(java.lang.String,java.lang.String,java.util.Set)" class="member-name-link">list</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;startKeyInclusive,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;endKeyExclusive,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Set.html" title="class or interface in java.util" class="external-link">Set</a>&lt;<a href="../ListOption.html" title="interface in io.oxia.client.api.options">ListOption</a>&gt;&nbsp;options)</code></div>
 <div class="col-last odd-row-color">
-<div class="block">Lists any existing keys within the specified range.</div>
+<div class="block"><span class="deprecated-label">Deprecated, for removal: This API element is subject to removal in a future version.</span>
+<div class="deprecation-comment">Use <a href="../../SyncOxiaClient.html#rangeScan(java.lang.String,java.lang.String,java.util.Set)"><code>SyncOxiaClient.rangeScan(String, String, Set)</code></a> with <a href="../RangeScanOption.html#IncludeValue(boolean)"><code>IncludeValue(false)</code></a>
+     instead, which streams the keys with backpressure and can stop early.</div>
+</div>
 </div>
 </div>
 </section>
@@ -102,12 +108,14 @@ loadScripts(document, 'script');</script>
 <div class="col-first even-row-color"><code>static <a href="../ListOption.html" title="interface in io.oxia.client.api.options">ListOption</a></code></div>
 <div class="col-second even-row-color"><span class="type-name-label">ListOption.</span><code><a href="../ListOption.html#PartitionKey(java.lang.String)" class="member-name-link">PartitionKey</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;partitionKey)</code></div>
 <div class="col-last even-row-color">
+<div class="block"><span class="deprecated-label">Deprecated, for removal: This API element is subject to removal in a future version.</span></div>
 <div class="block">PartitionKey overrides the partition routing with the specified `partitionKey` instead of the
  regular record key.</div>
 </div>
 <div class="col-first odd-row-color"><code>static <a href="../ListOption.html" title="interface in io.oxia.client.api.options">ListOption</a></code></div>
 <div class="col-second odd-row-color"><span class="type-name-label">ListOption.</span><code><a href="../ListOption.html#UseIndex(java.lang.String)" class="member-name-link">UseIndex</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;secondaryIndexName)</code></div>
 <div class="col-last odd-row-color">
+<div class="block"><span class="deprecated-label">Deprecated, for removal: This API element is subject to removal in a future version.</span></div>
 <div class="block">UseIndex let the users specify a different index to follow for the list operation</div>
 </div>
 </div>
