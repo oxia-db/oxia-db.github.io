@@ -13,6 +13,7 @@ export default {
   reference: {
     title: 'Reference',
   },
+  tools: '',
   architecture: '',
   correctness: '',
   consensus: '',

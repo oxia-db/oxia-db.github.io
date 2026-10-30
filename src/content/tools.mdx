@@ -1,0 +1,33 @@
+---
+sidebarTitle: Third-Party Tools
+---
+
+# Third-Party Tools
+
+Tools outside the Oxia project that work with an Oxia cluster. They are maintained by their own
+authors, not by the Oxia maintainers.
+
+## LibreDB Studio
+
+[LibreDB Studio](https://github.com/libredb/libredb-studio) is an open source (MIT) web database
+IDE that you run yourself, with Docker or `npx`, and use from the browser. Its Oxia connection
+talks to the Oxia gRPC client API directly and is read only: it does not put, delete, watch
+notifications or open sessions.
+
+What it reads:
+
+- The shards of the namespace, in the object tree
+- Single records with `get`, including the `floor`, `ceiling`, `lower` and `higher` comparison
+  types, a partition key and a secondary index
+- Keys with `list`, and keys with their values and metadata with `range-scan`, by range or by
+  prefix
+
+To connect, enter the data server's host and public port (`6648` by default) and the namespace
+(empty means `default`). A cluster that advertises other addresses also needs its data servers'
+public addresses. A server with authentication takes an OIDC token, which is sent only over TLS
+unless the server runs on the same machine.
+
+![A range scan over a key prefix in LibreDB Studio](/tools/libredb-studio-range-scan.png)
+
+The full connection reference is in the
+[Oxia provider documentation](https://github.com/libredb/libredb-studio/blob/main/docs/providers/oxia.md).
