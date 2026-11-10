@@ -32,6 +32,7 @@ loadScripts(document, 'script');</script>
 <li><a href="../OxiaException.html" title="class in io.oxia.client.api.exceptions">Class</a></li>
 <li class="nav-bar-cell1-rev">Use</li>
 <li><a href="../package-tree.html">Tree</a></li>
+<li><a href="../../../../../../deprecated-list.html">Deprecated</a></li>
 <li><a href="../../../../../../index-all.html">Index</a></li>
 <li><a href="../../../../../../help-doc.html#use">Help</a></li>
 </ul>
@@ -60,7 +61,7 @@ loadScripts(document, 'script');</script>
 </div>
 <div class="col-first odd-row-color"><a href="#io.oxia.client.api.exceptions">io.oxia.client.api.exceptions</a></div>
 <div class="col-last odd-row-color">
-<div class="block">Defines the exceptions that can be thrown by the Oxia client.</div>
+<div class="block">Checked exceptions raised by the Oxia client.</div>
 </div>
 </div>
 <section class="class-uses">
@@ -90,19 +91,49 @@ loadScripts(document, 'script');</script>
 <div class="table-header col-second">Class</div>
 <div class="table-header col-last">Description</div>
 <div class="col-first even-row-color"><code>class&nbsp;</code></div>
+<div class="col-second even-row-color"><code><a href="../AlreadyClosedException.html" class="type-name-link" title="class in io.oxia.client.api.exceptions">AlreadyClosedException</a></code></div>
+<div class="col-last even-row-color">
+<div class="block">The client, or a resource that it uses, has been closed, so the operation was not sent.</div>
+</div>
+<div class="col-first odd-row-color"><code>class&nbsp;</code></div>
+<div class="col-second odd-row-color"><code><a href="../InvalidArgumentException.html" class="type-name-link" title="class in io.oxia.client.api.exceptions">InvalidArgumentException</a></code></div>
+<div class="col-last odd-row-color">
+<div class="block">An operation was rejected for an invalid argument, and was not applied.</div>
+</div>
+<div class="col-first even-row-color"><code>class&nbsp;</code></div>
 <div class="col-second even-row-color"><code><a href="../KeyAlreadyExistsException.html" class="type-name-link" title="class in io.oxia.client.api.exceptions">KeyAlreadyExistsException</a></code></div>
 <div class="col-last even-row-color">
 <div class="block">The key already exists at the server.</div>
 </div>
 <div class="col-first odd-row-color"><code>class&nbsp;</code></div>
-<div class="col-second odd-row-color"><code><a href="../SessionDoesNotExistException.html" class="type-name-link" title="class in io.oxia.client.api.exceptions">SessionDoesNotExistException</a></code></div>
+<div class="col-second odd-row-color"><code><a href="../NamespaceNotFoundException.html" class="type-name-link" title="class in io.oxia.client.api.exceptions">NamespaceNotFoundException</a></code></div>
 <div class="col-last odd-row-color">
-<div class="block">The session does not exist on the server.</div>
+<div class="block">The namespace of the client does not exist on the server.</div>
 </div>
 <div class="col-first even-row-color"><code>class&nbsp;</code></div>
-<div class="col-second even-row-color"><code><a href="../UnexpectedVersionIdException.html" class="type-name-link" title="class in io.oxia.client.api.exceptions">UnexpectedVersionIdException</a></code></div>
+<div class="col-second even-row-color"><code><a href="../RequestTimeoutException.html" class="type-name-link" title="class in io.oxia.client.api.exceptions">RequestTimeoutException</a></code></div>
 <div class="col-last even-row-color">
+<div class="block">The operation did not complete within the request timeout.</div>
+</div>
+<div class="col-first odd-row-color"><code>class&nbsp;</code></div>
+<div class="col-second odd-row-color"><code><a href="../ResourceUnavailableException.html" class="type-name-link" title="class in io.oxia.client.api.exceptions">ResourceUnavailableException</a></code></div>
+<div class="col-last odd-row-color">
+<div class="block">The operation failed while the server was unavailable, e.g.</div>
+</div>
+<div class="col-first even-row-color"><code>class&nbsp;</code></div>
+<div class="col-second even-row-color"><code><a href="../SessionDoesNotExistException.html" class="type-name-link" title="class in io.oxia.client.api.exceptions">SessionDoesNotExistException</a></code></div>
+<div class="col-last even-row-color">
+<div class="block">The session does not exist on the server.</div>
+</div>
+<div class="col-first odd-row-color"><code>class&nbsp;</code></div>
+<div class="col-second odd-row-color"><code><a href="../UnexpectedVersionIdException.html" class="type-name-link" title="class in io.oxia.client.api.exceptions">UnexpectedVersionIdException</a></code></div>
+<div class="col-last odd-row-color">
 <div class="block">The versionId at the server did not that match supplied in the call.</div>
+</div>
+<div class="col-first even-row-color"><code>class&nbsp;</code></div>
+<div class="col-second even-row-color"><code><a href="../UnknownException.html" class="type-name-link" title="class in io.oxia.client.api.exceptions">UnknownException</a></code></div>
+<div class="col-last even-row-color">
+<div class="block">An error of the server or of the client transport that has no more specific exception, e.g.</div>
 </div>
 <div class="col-first odd-row-color"><code>class&nbsp;</code></div>
 <div class="col-second odd-row-color"><code><a href="../UnsupportedAuthenticationException.html" class="type-name-link" title="class in io.oxia.client.api.exceptions">UnsupportedAuthenticationException</a></code></div>

@@ -15,7 +15,7 @@ The versioning is usually used for **Optimistic Concurrency Control (OCC)**. Ins
 
 ## Using Versioning
 
-<Tabs items={['Go', 'Java', 'Python', 'Node.js']}>
+<Tabs items={['Go', 'Java', 'Python', 'Node.js', 'Rust']}>
     <Tabs.Tab>
         ```go
         // read version
@@ -71,6 +71,18 @@ The versioning is usually used for **Optimistic Concurrency Control (OCC)**. Ins
 
         // case-2: expect by version
         await client.put('a', 'a2', { expectedVersionId: version.versionId });
+        ```
+    </Tabs.Tab>
+    <Tabs.Tab>
+        ```rust
+        // read version
+        let record = client.get("a").await?;
+
+        // case-1: expect not exists
+        client.put("a", "a2").expected_record_not_exists().await?;
+
+        // case-2: expect by version
+        client.put("a", "a2").expected_version_id(record.version.version_id).await?;
         ```
     </Tabs.Tab>
 </Tabs>

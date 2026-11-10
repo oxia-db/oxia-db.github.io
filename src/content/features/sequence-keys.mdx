@@ -30,7 +30,7 @@ are routed to the same shard.
 
 ## Using sequence keys
 
-<Tabs items={['Go', 'Java', 'Python', 'Node.js', 'CLI']}>
+<Tabs items={['Go', 'Java', 'Python', 'Node.js', 'Rust', 'CLI']}>
     <Tabs.Tab>
         ```go
         // Write a record with a server-assigned sequence key.
@@ -73,6 +73,18 @@ are routed to the same shard.
         ```
     </Tabs.Tab>
     <Tabs.Tab>
+        ```rust
+        // Write a record with a server-assigned sequence key.
+        // The final key will be something like "/events/00000000000000000001"
+        let res = client
+            .put("/events/", "event-data")
+            .partition_key("/events/")
+            .sequence_key_deltas([1])
+            .await?;
+        println!("Inserted at: {}", res.key);
+        ```
+    </Tabs.Tab>
+    <Tabs.Tab>
         ```shell
         $ oxia client put /events/ -c --partition-key /events/ --sequence-keys-deltas 1 <<< "event-data"
         ```
@@ -99,7 +111,7 @@ insertedKey, _, err := client.Put(context.Background(),
 Clients can subscribe to receive updates whenever new sequence keys are generated for a given
 prefix. This is useful for consumers that need to react to new entries.
 
-<Tabs items={['Go', 'Java', 'Python', 'Node.js', 'CLI']}>
+<Tabs items={['Go', 'Java', 'Python', 'Node.js', 'Rust', 'CLI']}>
     <Tabs.Tab>
         ```go
         ch, err := client.GetSequenceUpdates(context.Background(),
@@ -137,6 +149,14 @@ prefix. This is useful for consumers that need to react to new entries.
           }
         } finally {
           updates.close();
+        }
+        ```
+    </Tabs.Tab>
+    <Tabs.Tab>
+        ```rust
+        let mut updates = client.sequence_updates("/events/", "/events/").await?;
+        while let Some(key) = updates.recv().await {
+            println!("New sequence key: {}", key);
         }
         ```
     </Tabs.Tab>

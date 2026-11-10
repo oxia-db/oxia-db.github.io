@@ -11,7 +11,7 @@ of failures.
 
 ## Subscribing to notifications
 
- <Tabs items={['Go', 'Java', 'Python', 'Node.js', 'CLI']}>
+ <Tabs items={['Go', 'Java', 'Python', 'Node.js', 'Rust', 'CLI']}>
         <Tabs.Tab>
             ```go
             notifications, err := client.GetNotifications()
@@ -44,6 +44,14 @@ of failures.
               }
             } finally {
               notifications.close();
+            }
+            ```
+        </Tabs.Tab>
+        <Tabs.Tab>
+            ```rust
+            let mut notifications = client.notifications().await?;
+            while let Some(notification) = notifications.recv().await {
+                println!("{notification}");
             }
             ```
         </Tabs.Tab>

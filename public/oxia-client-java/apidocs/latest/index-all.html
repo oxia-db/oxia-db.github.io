@@ -32,6 +32,7 @@ loadScripts(document, 'script');</script>
 <li>Class</li>
 <li>Use</li>
 <li><a href="overview-tree.html">Tree</a></li>
+<li><a href="deprecated-list.html">Deprecated</a></li>
 <li class="nav-bar-cell1-rev">Index</li>
 <li><a href="help-doc.html#index">Help</a></li>
 </ul>
@@ -53,6 +54,14 @@ loadScripts(document, 'script');</script>
 <a href="#I:A">A</a>&nbsp;<a href="#I:B">B</a>&nbsp;<a href="#I:C">C</a>&nbsp;<a href="#I:D">D</a>&nbsp;<a href="#I:E">E</a>&nbsp;<a href="#I:G">G</a>&nbsp;<a href="#I:H">H</a>&nbsp;<a href="#I:I">I</a>&nbsp;<a href="#I:K">K</a>&nbsp;<a href="#I:L">L</a>&nbsp;<a href="#I:M">M</a>&nbsp;<a href="#I:N">N</a>&nbsp;<a href="#I:O">O</a>&nbsp;<a href="#I:P">P</a>&nbsp;<a href="#I:R">R</a>&nbsp;<a href="#I:S">S</a>&nbsp;<a href="#I:T">T</a>&nbsp;<a href="#I:U">U</a>&nbsp;<a href="#I:V">V</a>&nbsp;<br><a href="allclasses-index.html">All&nbsp;Classes&nbsp;and&nbsp;Interfaces</a><span class="vertical-separator">|</span><a href="allpackages-index.html">All&nbsp;Packages</a><span class="vertical-separator">|</span><a href="constant-values.html">Constant&nbsp;Field&nbsp;Values</a><span class="vertical-separator">|</span><a href="serialized-form.html">Serialized&nbsp;Form</a>
 <h2 class="title" id="I:A">A</h2>
 <dl class="index">
+<dt><a href="io/oxia/client/api/exceptions/AlreadyClosedException.html" class="type-name-link" title="class in io.oxia.client.api.exceptions">AlreadyClosedException</a> - Exception in <a href="io/oxia/client/api/exceptions/package-summary.html">io.oxia.client.api.exceptions</a></dt>
+<dd>
+<div class="block">The client, or a resource that it uses, has been closed, so the operation was not sent.</div>
+</dd>
+<dt><a href="io/oxia/client/api/exceptions/AlreadyClosedException.html#%3Cinit%3E(java.lang.String,java.lang.Throwable)" class="member-name-link">AlreadyClosedException(String, Throwable)</a> - Constructor for exception <a href="io/oxia/client/api/exceptions/AlreadyClosedException.html" title="class in io.oxia.client.api.exceptions">AlreadyClosedException</a></dt>
+<dd>
+<div class="block">Creates an instance of the exception.</div>
+</dd>
 <dt><a href="io/oxia/client/api/options/PutOption.html#AsEphemeralRecord" class="member-name-link">AsEphemeralRecord</a> - Static variable in interface <a href="io/oxia/client/api/options/PutOption.html" title="interface in io.oxia.client.api.options">PutOption</a></dt>
 <dd>
 <div class="block">Indicates that the record should be treated as ephemeral.</div>
@@ -63,11 +72,15 @@ loadScripts(document, 'script');</script>
 </dd>
 <dt><a href="io/oxia/client/api/AsyncOxiaClient.html" class="type-name-link" title="interface in io.oxia.client.api">AsyncOxiaClient</a> - Interface in <a href="io/oxia/client/api/package-summary.html">io.oxia.client.api</a></dt>
 <dd>
-<div class="block">Asynchronous client for the Oxia service.</div>
+<div class="block">Non-blocking client for the Oxia service.</div>
 </dd>
 <dt><a href="io/oxia/client/api/OxiaClientBuilder.html#authentication(io.oxia.client.api.Authentication)" class="member-name-link">authentication(Authentication)</a> - Method in interface <a href="io/oxia/client/api/OxiaClientBuilder.html" title="interface in io.oxia.client.api">OxiaClientBuilder</a></dt>
 <dd>
 <div class="block">Configure the authentication plugin and its parameters.</div>
+</dd>
+<dt><a href="io/oxia/client/api/SharedResources.Builder.html#authentication(io.oxia.client.api.Authentication)" class="member-name-link">authentication(Authentication)</a> - Method in interface <a href="io/oxia/client/api/SharedResources.Builder.html" title="interface in io.oxia.client.api">SharedResources.Builder</a></dt>
+<dd>
+<div class="block">Configure the authentication used by the shared connections.</div>
 </dd>
 <dt><a href="io/oxia/client/api/OxiaClientBuilder.html#authentication(java.lang.String,java.lang.String)" class="member-name-link">authentication(String, String)</a> - Method in interface <a href="io/oxia/client/api/OxiaClientBuilder.html" title="interface in io.oxia.client.api">OxiaClientBuilder</a></dt>
 <dd>
@@ -80,9 +93,29 @@ loadScripts(document, 'script');</script>
 </dl>
 <h2 class="title" id="I:B">B</h2>
 <dl class="index">
+<dt><a href="io/oxia/client/api/OxiaClientBuilder.html#batchingThreads(int)" class="member-name-link">batchingThreads(int)</a> - Method in interface <a href="io/oxia/client/api/OxiaClientBuilder.html" title="interface in io.oxia.client.api">OxiaClientBuilder</a></dt>
+<dd>
+<div class="block">Specify the number of threads dedicated to assembling operation batches, shared by all the
+ shards.</div>
+</dd>
+<dt><a href="io/oxia/client/api/SharedResources.Builder.html#batchingThreads(int)" class="member-name-link">batchingThreads(int)</a> - Method in interface <a href="io/oxia/client/api/SharedResources.Builder.html" title="interface in io.oxia.client.api">SharedResources.Builder</a></dt>
+<dd>
+<div class="block">Set the number of shared batch-assembly threads (reads and writes each get this many).</div>
+</dd>
 <dt><a href="io/oxia/client/api/OxiaClientBuilder.html#batchLinger(java.time.Duration)" class="member-name-link">batchLinger(Duration)</a> - Method in interface <a href="io/oxia/client/api/OxiaClientBuilder.html" title="interface in io.oxia.client.api">OxiaClientBuilder</a></dt>
 <dd>
-<div class="block">Specify the maximum time to wait for a batch to be sent.</div>
+<div class="deprecation-block"><span class="deprecated-label">Deprecated, for removal: This API element is subject to removal in a future version.</span>
+<div class="deprecation-comment">Batching is adaptive: operations are grouped while a batch is in progress and a
+     batch is flushed as soon as no more operations are pending, so this setting has no effect.</div>
+</div>
+</dd>
+<dt><a href="io/oxia/client/api/SharedResources.Builder.html#build()" class="member-name-link">build()</a> - Method in interface <a href="io/oxia/client/api/SharedResources.Builder.html" title="interface in io.oxia.client.api">SharedResources.Builder</a></dt>
+<dd>
+<div class="block">Build the <a href="io/oxia/client/api/SharedResources.html" title="interface in io.oxia.client.api"><code>SharedResources</code></a> pool.</div>
+</dd>
+<dt><a href="io/oxia/client/api/SharedResources.html#builder()" class="member-name-link">builder()</a> - Static method in interface <a href="io/oxia/client/api/SharedResources.html" title="interface in io.oxia.client.api">SharedResources</a></dt>
+<dd>
+<div class="block">Create a new builder for a <a href="io/oxia/client/api/SharedResources.html" title="interface in io.oxia.client.api"><code>SharedResources</code></a> pool.</div>
 </dd>
 </dl>
 <h2 class="title" id="I:C">C</h2>
@@ -98,6 +131,18 @@ loadScripts(document, 'script');</script>
 <dt><a href="io/oxia/client/api/OxiaClientBuilder.html#clientIdentifier(java.util.function.Supplier)" class="member-name-link">clientIdentifier(Supplier&lt;String&gt;)</a> - Method in interface <a href="io/oxia/client/api/OxiaClientBuilder.html" title="interface in io.oxia.client.api">OxiaClientBuilder</a></dt>
 <dd>
 <div class="block">Specify the client identifier for this client instance.</div>
+</dd>
+<dt><a href="io/oxia/client/api/CloseableIterable.html#close()" class="member-name-link">close()</a> - Method in interface <a href="io/oxia/client/api/CloseableIterable.html" title="interface in io.oxia.client.api">CloseableIterable</a></dt>
+<dd>
+<div class="block">Releases any resources held by this iterable, cancelling iteration in progress.</div>
+</dd>
+<dt><a href="io/oxia/client/api/SharedResources.html#close()" class="member-name-link">close()</a> - Method in interface <a href="io/oxia/client/api/SharedResources.html" title="interface in io.oxia.client.api">SharedResources</a></dt>
+<dd>
+<div class="block">Release the shared executor, connections and shard-assignment streams.</div>
+</dd>
+<dt><a href="io/oxia/client/api/CloseableIterable.html" class="type-name-link" title="interface in io.oxia.client.api">CloseableIterable</a>&lt;<a href="io/oxia/client/api/CloseableIterable.html" title="type parameter in CloseableIterable">T</a>&gt; - Interface in <a href="io/oxia/client/api/package-summary.html">io.oxia.client.api</a></dt>
+<dd>
+<div class="block">An <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Iterable.html" title="class or interface in java.lang" class="external-link"><code>Iterable</code></a> that holds resources which must be released by calling <a href="io/oxia/client/api/CloseableIterable.html#close()"><code>CloseableIterable.close()</code></a>.</div>
 </dd>
 <dt><a href="io/oxia/client/api/options/GetOption.html#ComparisonCeiling" class="member-name-link">ComparisonCeiling</a> - Static variable in interface <a href="io/oxia/client/api/options/GetOption.html" title="interface in io.oxia.client.api.options">GetOption</a></dt>
 <dd>
@@ -132,13 +177,25 @@ loadScripts(document, 'script');</script>
 <dd>
 <div class="block">Configure the connection backoff policy.</div>
 </dd>
+<dt><a href="io/oxia/client/api/SharedResources.Builder.html#connectionBackoff(java.time.Duration,java.time.Duration)" class="member-name-link">connectionBackoff(Duration, Duration)</a> - Method in interface <a href="io/oxia/client/api/SharedResources.Builder.html" title="interface in io.oxia.client.api">SharedResources.Builder</a></dt>
+<dd>
+<div class="block">Configure the connection backoff policy for the shared connections.</div>
+</dd>
 <dt><a href="io/oxia/client/api/OxiaClientBuilder.html#connectionKeepAliveTime(java.time.Duration)" class="member-name-link">connectionKeepAliveTime(Duration)</a> - Method in interface <a href="io/oxia/client/api/OxiaClientBuilder.html" title="interface in io.oxia.client.api">OxiaClientBuilder</a></dt>
 <dd>
 <div class="block">Configure the keep alive interval for the connection.</div>
 </dd>
+<dt><a href="io/oxia/client/api/SharedResources.Builder.html#connectionKeepAliveTime(java.time.Duration)" class="member-name-link">connectionKeepAliveTime(Duration)</a> - Method in interface <a href="io/oxia/client/api/SharedResources.Builder.html" title="interface in io.oxia.client.api">SharedResources.Builder</a></dt>
+<dd>
+<div class="block">Configure the keep-alive interval for the shared connections.</div>
+</dd>
 <dt><a href="io/oxia/client/api/OxiaClientBuilder.html#connectionKeepAliveTimeout(java.time.Duration)" class="member-name-link">connectionKeepAliveTimeout(Duration)</a> - Method in interface <a href="io/oxia/client/api/OxiaClientBuilder.html" title="interface in io.oxia.client.api">OxiaClientBuilder</a></dt>
 <dd>
 <div class="block">Configure the keep alive timeout for the connection.</div>
+</dd>
+<dt><a href="io/oxia/client/api/SharedResources.Builder.html#connectionKeepAliveTimeout(java.time.Duration)" class="member-name-link">connectionKeepAliveTimeout(Duration)</a> - Method in interface <a href="io/oxia/client/api/SharedResources.Builder.html" title="interface in io.oxia.client.api">SharedResources.Builder</a></dt>
+<dd>
+<div class="block">Configure the keep-alive timeout for the shared connections.</div>
 </dd>
 <dt><a href="io/oxia/client/api/OxiaClientBuilder.html#create(java.lang.String)" class="member-name-link">create(String)</a> - Static method in interface <a href="io/oxia/client/api/OxiaClientBuilder.html" title="interface in io.oxia.client.api">OxiaClientBuilder</a></dt>
 <dd>
@@ -193,12 +250,20 @@ loadScripts(document, 'script');</script>
 <dd>
 <div class="block">Options for deleting a range of records.</div>
 </dd>
+<dt><a href="io/oxia/client/api/OxiaClientBuilder.html#disableSubscriptionMaxAge()" class="member-name-link">disableSubscriptionMaxAge()</a> - Method in interface <a href="io/oxia/client/api/OxiaClientBuilder.html" title="interface in io.oxia.client.api">OxiaClientBuilder</a></dt>
+<dd>
+<div class="block">Disable the maximum age for long-lived subscriptions.</div>
+</dd>
 </dl>
 <h2 class="title" id="I:E">E</h2>
 <dl class="index">
 <dt><a href="io/oxia/client/api/OxiaClientBuilder.html#enableTls(boolean)" class="member-name-link">enableTls(boolean)</a> - Method in interface <a href="io/oxia/client/api/OxiaClientBuilder.html" title="interface in io.oxia.client.api">OxiaClientBuilder</a></dt>
 <dd>
 <div class="block">Configures whether to enable TLS (Transport Layer Security) for the client connection.</div>
+</dd>
+<dt><a href="io/oxia/client/api/SharedResources.Builder.html#enableTls(boolean)" class="member-name-link">enableTls(boolean)</a> - Method in interface <a href="io/oxia/client/api/SharedResources.Builder.html" title="interface in io.oxia.client.api">SharedResources.Builder</a></dt>
+<dd>
+<div class="block">Configure whether to enable TLS for the shared connections.</div>
 </dd>
 <dt><a href="io/oxia/client/api/Notification.KeyRangeDelete.html#endKeyExclusive()" class="member-name-link">endKeyExclusive()</a> - Method in record class <a href="io/oxia/client/api/Notification.KeyRangeDelete.html" title="class in io.oxia.client.api">Notification.KeyRangeDelete</a></dt>
 <dd>
@@ -265,9 +330,11 @@ loadScripts(document, 'script');</script>
 </dd>
 <dt><a href="io/oxia/client/api/GetResult.html" class="type-name-link" title="class in io.oxia.client.api">GetResult</a> - Record Class in <a href="io/oxia/client/api/package-summary.html">io.oxia.client.api</a></dt>
 <dd>
-<div class="block">The result of a client get request.</div>
+<div class="block">The result of a successful get / range-scan operation.</div>
 </dd>
 <dt><a href="io/oxia/client/api/GetResult.html#%3Cinit%3E(java.lang.String,byte%5B%5D,io.oxia.client.api.Version)" class="member-name-link">GetResult(String, byte[], Version)</a> - Constructor for record class <a href="io/oxia/client/api/GetResult.html" title="class in io.oxia.client.api">GetResult</a></dt>
+<dd>&nbsp;</dd>
+<dt><a href="io/oxia/client/api/GetResult.html#%3Cinit%3E(java.lang.String,byte%5B%5D,io.oxia.client.api.Version,java.util.Optional)" class="member-name-link">GetResult(String, byte[], Version, Optional&lt;String&gt;)</a> - Constructor for record class <a href="io/oxia/client/api/GetResult.html" title="class in io.oxia.client.api">GetResult</a></dt>
 <dd>
 <div class="block">Creates an instance of a <code>GetResult</code> record class.</div>
 </dd>
@@ -339,17 +406,33 @@ loadScripts(document, 'script');</script>
 <dd>
 <div class="block">Creates and returns a GetOption that specifies whether to include a value.</div>
 </dd>
+<dt><a href="io/oxia/client/api/options/RangeScanOption.html#IncludeValue(boolean)" class="member-name-link">IncludeValue(boolean)</a> - Static method in interface <a href="io/oxia/client/api/options/RangeScanOption.html" title="interface in io.oxia.client.api.options">RangeScanOption</a></dt>
+<dd>
+<div class="block">IncludeValue includes or excludes the values of the records.</div>
+</dd>
+<dt><a href="io/oxia/client/api/exceptions/InvalidArgumentException.html" class="type-name-link" title="class in io.oxia.client.api.exceptions">InvalidArgumentException</a> - Exception in <a href="io/oxia/client/api/exceptions/package-summary.html">io.oxia.client.api.exceptions</a></dt>
+<dd>
+<div class="block">An operation was rejected for an invalid argument, and was not applied.</div>
+</dd>
+<dt><a href="io/oxia/client/api/exceptions/InvalidArgumentException.html#%3Cinit%3E(java.lang.String)" class="member-name-link">InvalidArgumentException(String)</a> - Constructor for exception <a href="io/oxia/client/api/exceptions/InvalidArgumentException.html" title="class in io.oxia.client.api.exceptions">InvalidArgumentException</a></dt>
+<dd>
+<div class="block">Creates an instance of the exception.</div>
+</dd>
+<dt><a href="io/oxia/client/api/exceptions/InvalidArgumentException.html#%3Cinit%3E(java.lang.String,java.lang.Throwable)" class="member-name-link">InvalidArgumentException(String, Throwable)</a> - Constructor for exception <a href="io/oxia/client/api/exceptions/InvalidArgumentException.html" title="class in io.oxia.client.api.exceptions">InvalidArgumentException</a></dt>
+<dd>
+<div class="block">Creates an instance of the exception.</div>
+</dd>
 <dt><a href="io/oxia/client/api/package-summary.html">io.oxia.client.api</a> - package io.oxia.client.api</dt>
 <dd>
 <div class="block">The public API for interacting with Oxia.</div>
 </dd>
 <dt><a href="io/oxia/client/api/exceptions/package-summary.html">io.oxia.client.api.exceptions</a> - package io.oxia.client.api.exceptions</dt>
 <dd>
-<div class="block">Defines the exceptions that can be thrown by the Oxia client.</div>
+<div class="block">Checked exceptions raised by the Oxia client.</div>
 </dd>
 <dt><a href="io/oxia/client/api/options/package-summary.html">io.oxia.client.api.options</a> - package io.oxia.client.api.options</dt>
 <dd>
-<div class="block">The definitions for options that can be passed to the Oxia client operations.</div>
+<div class="block">Per-operation options for the Oxia client.</div>
 </dd>
 <dt><a href="io/oxia/client/api/options/defs/package-summary.html">io.oxia.client.api.options.defs</a> - package io.oxia.client.api.options.defs</dt>
 <dd>&nbsp;</dd>
@@ -411,23 +494,37 @@ loadScripts(document, 'script');</script>
 <dl class="index">
 <dt><a href="io/oxia/client/api/AsyncOxiaClient.html#list(java.lang.String,java.lang.String)" class="member-name-link">list(String, String)</a> - Method in interface <a href="io/oxia/client/api/AsyncOxiaClient.html" title="interface in io.oxia.client.api">AsyncOxiaClient</a></dt>
 <dd>
-<div class="block">Lists any existing keys within the specified range.</div>
+<div class="deprecation-block"><span class="deprecated-label">Deprecated, for removal: This API element is subject to removal in a future version.</span>
+<div class="deprecation-comment">Use <a href="io/oxia/client/api/AsyncOxiaClient.html#rangeScan(java.lang.String,java.lang.String,io.oxia.client.api.RangeScanConsumer,java.util.Set)"><code>AsyncOxiaClient.rangeScan(String, String, RangeScanConsumer, Set)</code></a> with <a href="io/oxia/client/api/options/RangeScanOption.html#IncludeValue(boolean)"><code>IncludeValue(false)</code></a>
+     instead, which streams the keys with backpressure and can stop early.</div>
+</div>
 </dd>
 <dt><a href="io/oxia/client/api/SyncOxiaClient.html#list(java.lang.String,java.lang.String)" class="member-name-link">list(String, String)</a> - Method in interface <a href="io/oxia/client/api/SyncOxiaClient.html" title="interface in io.oxia.client.api">SyncOxiaClient</a></dt>
 <dd>
-<div class="block">Lists any existing keys within the specified range.</div>
+<div class="deprecation-block"><span class="deprecated-label">Deprecated, for removal: This API element is subject to removal in a future version.</span>
+<div class="deprecation-comment">Use <a href="io/oxia/client/api/SyncOxiaClient.html#rangeScan(java.lang.String,java.lang.String,java.util.Set)"><code>SyncOxiaClient.rangeScan(String, String, Set)</code></a> with <a href="io/oxia/client/api/options/RangeScanOption.html#IncludeValue(boolean)"><code>IncludeValue(false)</code></a>
+     instead, which streams the keys with backpressure and can stop early.</div>
+</div>
 </dd>
 <dt><a href="io/oxia/client/api/AsyncOxiaClient.html#list(java.lang.String,java.lang.String,java.util.Set)" class="member-name-link">list(String, String, Set&lt;ListOption&gt;)</a> - Method in interface <a href="io/oxia/client/api/AsyncOxiaClient.html" title="interface in io.oxia.client.api">AsyncOxiaClient</a></dt>
 <dd>
-<div class="block">Lists any existing keys within the specified range.</div>
+<div class="deprecation-block"><span class="deprecated-label">Deprecated, for removal: This API element is subject to removal in a future version.</span>
+<div class="deprecation-comment">Use <a href="io/oxia/client/api/AsyncOxiaClient.html#rangeScan(java.lang.String,java.lang.String,io.oxia.client.api.RangeScanConsumer,java.util.Set)"><code>AsyncOxiaClient.rangeScan(String, String, RangeScanConsumer, Set)</code></a> with <a href="io/oxia/client/api/options/RangeScanOption.html#IncludeValue(boolean)"><code>IncludeValue(false)</code></a>
+     instead, which streams the keys with backpressure and can stop early.</div>
+</div>
 </dd>
 <dt><a href="io/oxia/client/api/SyncOxiaClient.html#list(java.lang.String,java.lang.String,java.util.Set)" class="member-name-link">list(String, String, Set&lt;ListOption&gt;)</a> - Method in interface <a href="io/oxia/client/api/SyncOxiaClient.html" title="interface in io.oxia.client.api">SyncOxiaClient</a></dt>
 <dd>
-<div class="block">Lists any existing keys within the specified range.</div>
+<div class="deprecation-block"><span class="deprecated-label">Deprecated, for removal: This API element is subject to removal in a future version.</span>
+<div class="deprecation-comment">Use <a href="io/oxia/client/api/SyncOxiaClient.html#rangeScan(java.lang.String,java.lang.String,java.util.Set)"><code>SyncOxiaClient.rangeScan(String, String, Set)</code></a> with <a href="io/oxia/client/api/options/RangeScanOption.html#IncludeValue(boolean)"><code>IncludeValue(false)</code></a>
+     instead, which streams the keys with backpressure and can stop early.</div>
+</div>
 </dd>
 <dt><a href="io/oxia/client/api/options/ListOption.html" class="type-name-link" title="interface in io.oxia.client.api.options">ListOption</a> - Interface in <a href="io/oxia/client/api/options/package-summary.html">io.oxia.client.api.options</a></dt>
 <dd>
-<div class="block">Options for listing records.</div>
+<div class="deprecation-block"><span class="deprecated-label">Deprecated, for removal: This API element is subject to removal in a future version.</span>
+<div class="deprecation-comment">Use <a href="io/oxia/client/api/options/RangeScanOption.html" title="interface in io.oxia.client.api.options"><code>RangeScanOption</code></a> with a range scan instead.</div>
+</div>
 </dd>
 <dt><a href="io/oxia/client/api/OxiaClientBuilder.html#loadConfig(java.io.File)" class="member-name-link">loadConfig(File)</a> - Method in interface <a href="io/oxia/client/api/OxiaClientBuilder.html" title="interface in io.oxia.client.api">OxiaClientBuilder</a></dt>
 <dd>
@@ -448,9 +545,26 @@ loadScripts(document, 'script');</script>
 <dd>
 <div class="block">Configure the maximum number of connections to each Oxia server node.</div>
 </dd>
+<dt><a href="io/oxia/client/api/SharedResources.Builder.html#maxConnectionPerNode(int)" class="member-name-link">maxConnectionPerNode(int)</a> - Method in interface <a href="io/oxia/client/api/SharedResources.Builder.html" title="interface in io.oxia.client.api">SharedResources.Builder</a></dt>
+<dd>
+<div class="block">Configure the maximum number of shared connections to each Oxia server node.</div>
+</dd>
+<dt><a href="io/oxia/client/api/OxiaClientBuilder.html#maxPendingBytes(long)" class="member-name-link">maxPendingBytes(long)</a> - Method in interface <a href="io/oxia/client/api/OxiaClientBuilder.html" title="interface in io.oxia.client.api">OxiaClientBuilder</a></dt>
+<dd>
+<div class="block">Specify the maximum total size of the operations that the client has accepted and not yet
+ completed.</div>
+</dd>
+<dt><a href="io/oxia/client/api/OxiaClientBuilder.html#maxReadBatchesInFlight(int)" class="member-name-link">maxReadBatchesInFlight(int)</a> - Method in interface <a href="io/oxia/client/api/OxiaClientBuilder.html" title="interface in io.oxia.client.api">OxiaClientBuilder</a></dt>
+<dd>
+<div class="block">Specify the maximum number of read batches that can be in flight to the server for each shard.</div>
+</dd>
 <dt><a href="io/oxia/client/api/OxiaClientBuilder.html#maxRequestsPerBatch(int)" class="member-name-link">maxRequestsPerBatch(int)</a> - Method in interface <a href="io/oxia/client/api/OxiaClientBuilder.html" title="interface in io.oxia.client.api">OxiaClientBuilder</a></dt>
 <dd>
 <div class="block">Specify the maximum number of requests to include in a batch.</div>
+</dd>
+<dt><a href="io/oxia/client/api/OxiaClientBuilder.html#maxWriteBatchesInFlight(int)" class="member-name-link">maxWriteBatchesInFlight(int)</a> - Method in interface <a href="io/oxia/client/api/OxiaClientBuilder.html" title="interface in io.oxia.client.api">OxiaClientBuilder</a></dt>
+<dd>
+<div class="block">Specify the maximum number of write batches that can be in flight to the server for each shard.</div>
 </dd>
 <dt><a href="io/oxia/client/api/Version.html#modificationsCount()" class="member-name-link">modificationsCount()</a> - Method in record class <a href="io/oxia/client/api/Version.html" title="class in io.oxia.client.api">Version</a></dt>
 <dd>
@@ -466,6 +580,14 @@ loadScripts(document, 'script');</script>
 <dt><a href="io/oxia/client/api/OxiaClientBuilder.html#namespace(java.lang.String)" class="member-name-link">namespace(String)</a> - Method in interface <a href="io/oxia/client/api/OxiaClientBuilder.html" title="interface in io.oxia.client.api">OxiaClientBuilder</a></dt>
 <dd>
 <div class="block">Specify the Oxia namesace to use for this client instance.</div>
+</dd>
+<dt><a href="io/oxia/client/api/exceptions/NamespaceNotFoundException.html" class="type-name-link" title="class in io.oxia.client.api.exceptions">NamespaceNotFoundException</a> - Exception in <a href="io/oxia/client/api/exceptions/package-summary.html">io.oxia.client.api.exceptions</a></dt>
+<dd>
+<div class="block">The namespace of the client does not exist on the server.</div>
+</dd>
+<dt><a href="io/oxia/client/api/exceptions/NamespaceNotFoundException.html#%3Cinit%3E(java.lang.String,java.lang.Throwable)" class="member-name-link">NamespaceNotFoundException(String, Throwable)</a> - Constructor for exception <a href="io/oxia/client/api/exceptions/NamespaceNotFoundException.html" title="class in io.oxia.client.api.exceptions">NamespaceNotFoundException</a></dt>
+<dd>
+<div class="block">Creates an instance of the exception.</div>
 </dd>
 <dt><a href="io/oxia/client/api/Notification.html" class="type-name-link" title="interface in io.oxia.client.api">Notification</a> - Interface in <a href="io/oxia/client/api/package-summary.html">io.oxia.client.api</a></dt>
 <dd>
@@ -495,6 +617,10 @@ loadScripts(document, 'script');</script>
 <dd>
 <div class="block">Registers a callback to receive Oxia <a href="io/oxia/client/api/Notification.html" title="interface in io.oxia.client.api"><code>record change notifications</code></a>.</div>
 </dd>
+<dt><a href="io/oxia/client/api/SharedResources.Builder.html#numWorkerThreads(int)" class="member-name-link">numWorkerThreads(int)</a> - Method in interface <a href="io/oxia/client/api/SharedResources.Builder.html" title="interface in io.oxia.client.api">SharedResources.Builder</a></dt>
+<dd>
+<div class="block">Set the number of threads in the shared background thread pool.</div>
+</dd>
 </dl>
 <h2 class="title" id="I:O">O</h2>
 <dl class="index">
@@ -514,13 +640,26 @@ loadScripts(document, 'script');</script>
 <dd>
 <div class="block">Specify the OpenTelemetry instance to use for this client instance.</div>
 </dd>
+<dt><a href="io/oxia/client/api/SharedResources.Builder.html#openTelemetry(io.opentelemetry.api.OpenTelemetry)" class="member-name-link">openTelemetry(OpenTelemetry)</a> - Method in interface <a href="io/oxia/client/api/SharedResources.Builder.html" title="interface in io.oxia.client.api">SharedResources.Builder</a></dt>
+<dd>
+<div class="block">Configure the OpenTelemetry instance used for shared-resource metrics.</div>
+</dd>
 <dt><a href="io/oxia/client/api/OxiaClientBuilder.html" class="type-name-link" title="interface in io.oxia.client.api">OxiaClientBuilder</a> - Interface in <a href="io/oxia/client/api/package-summary.html">io.oxia.client.api</a></dt>
 <dd>
-<div class="block">Builder for <a href="io/oxia/client/api/SyncOxiaClient.html" title="interface in io.oxia.client.api"><code>SyncOxiaClient</code></a> and <a href="io/oxia/client/api/AsyncOxiaClient.html" title="interface in io.oxia.client.api"><code>AsyncOxiaClient</code></a>.</div>
+<div class="block">Entry point for creating an Oxia client.</div>
 </dd>
 <dt><a href="io/oxia/client/api/exceptions/OxiaException.html" class="type-name-link" title="class in io.oxia.client.api.exceptions">OxiaException</a> - Exception in <a href="io/oxia/client/api/exceptions/package-summary.html">io.oxia.client.api.exceptions</a></dt>
 <dd>
 <div class="block">A super-class of exceptions describing errors that occurred on an Oxia server.</div>
+</dd>
+<dt><a href="io/oxia/client/api/exceptions/OxiaUncheckedException.html" class="type-name-link" title="class in io.oxia.client.api.exceptions">OxiaUncheckedException</a> - Exception in <a href="io/oxia/client/api/exceptions/package-summary.html">io.oxia.client.api.exceptions</a></dt>
+<dd>
+<div class="block">Wraps a checked exception with an unchecked one, as <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/io/UncheckedIOException.html" title="class or interface in java.io" class="external-link"><code>UncheckedIOException</code></a> does for
+ an <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/io/IOException.html" title="class or interface in java.io" class="external-link"><code>IOException</code></a>.</div>
+</dd>
+<dt><a href="io/oxia/client/api/exceptions/OxiaUncheckedException.html#%3Cinit%3E(java.lang.Throwable)" class="member-name-link">OxiaUncheckedException(Throwable)</a> - Constructor for exception <a href="io/oxia/client/api/exceptions/OxiaUncheckedException.html" title="class in io.oxia.client.api.exceptions">OxiaUncheckedException</a></dt>
+<dd>
+<div class="block">Creates an instance of the exception.</div>
 </dd>
 </dl>
 <h2 class="title" id="I:P">P</h2>
@@ -547,6 +686,7 @@ loadScripts(document, 'script');</script>
 </dd>
 <dt><a href="io/oxia/client/api/options/ListOption.html#PartitionKey(java.lang.String)" class="member-name-link">PartitionKey(String)</a> - Static method in interface <a href="io/oxia/client/api/options/ListOption.html" title="interface in io.oxia.client.api.options">ListOption</a></dt>
 <dd>
+<div class="deprecation-block"><span class="deprecated-label">Deprecated.</span></div>
 <div class="block">PartitionKey overrides the partition routing with the specified `partitionKey` instead of the
  regular record key.</div>
 </dd>
@@ -587,7 +727,7 @@ loadScripts(document, 'script');</script>
 </dd>
 <dt><a href="io/oxia/client/api/PutResult.html" class="type-name-link" title="class in io.oxia.client.api">PutResult</a> - Record Class in <a href="io/oxia/client/api/package-summary.html">io.oxia.client.api</a></dt>
 <dd>
-<div class="block">The result of a client get request.</div>
+<div class="block">The result of a successful put operation.</div>
 </dd>
 <dt><a href="io/oxia/client/api/PutResult.html#%3Cinit%3E(java.lang.String,io.oxia.client.api.Version)" class="member-name-link">PutResult(String, Version)</a> - Constructor for record class <a href="io/oxia/client/api/PutResult.html" title="class in io.oxia.client.api">PutResult</a></dt>
 <dd>
@@ -614,8 +754,8 @@ loadScripts(document, 'script');</script>
 </dd>
 <dt><a href="io/oxia/client/api/RangeScanConsumer.html" class="type-name-link" title="interface in io.oxia.client.api">RangeScanConsumer</a> - Interface in <a href="io/oxia/client/api/package-summary.html">io.oxia.client.api</a></dt>
 <dd>
-<div class="block">Interface defining a consumer for Range Scan operations, allowing handling of chunked results,
- errors, or completion signals for a range scan process.</div>
+<div class="block">Callback used by <a href="io/oxia/client/api/AsyncOxiaClient.html#rangeScan(java.lang.String,java.lang.String,io.oxia.client.api.RangeScanConsumer)"><code>AsyncOxiaClient.rangeScan(String, String, RangeScanConsumer)</code></a> to deliver
+ records, errors, and the completion signal for a streaming range scan.</div>
 </dd>
 <dt><a href="io/oxia/client/api/options/RangeScanOption.html" class="type-name-link" title="interface in io.oxia.client.api.options">RangeScanOption</a> - Interface in <a href="io/oxia/client/api/options/package-summary.html">io.oxia.client.api.options</a></dt>
 <dd>
@@ -626,6 +766,22 @@ loadScripts(document, 'script');</script>
 <dd>
 <div class="block">Specify a custom timeout for all requests.</div>
 </dd>
+<dt><a href="io/oxia/client/api/exceptions/RequestTimeoutException.html" class="type-name-link" title="class in io.oxia.client.api.exceptions">RequestTimeoutException</a> - Exception in <a href="io/oxia/client/api/exceptions/package-summary.html">io.oxia.client.api.exceptions</a></dt>
+<dd>
+<div class="block">The operation did not complete within the request timeout.</div>
+</dd>
+<dt><a href="io/oxia/client/api/exceptions/RequestTimeoutException.html#%3Cinit%3E(java.lang.String,java.lang.Throwable)" class="member-name-link">RequestTimeoutException(String, Throwable)</a> - Constructor for exception <a href="io/oxia/client/api/exceptions/RequestTimeoutException.html" title="class in io.oxia.client.api.exceptions">RequestTimeoutException</a></dt>
+<dd>
+<div class="block">Creates an instance of the exception.</div>
+</dd>
+<dt><a href="io/oxia/client/api/exceptions/ResourceUnavailableException.html" class="type-name-link" title="class in io.oxia.client.api.exceptions">ResourceUnavailableException</a> - Exception in <a href="io/oxia/client/api/exceptions/package-summary.html">io.oxia.client.api.exceptions</a></dt>
+<dd>
+<div class="block">The operation failed while the server was unavailable, e.g.</div>
+</dd>
+<dt><a href="io/oxia/client/api/exceptions/ResourceUnavailableException.html#%3Cinit%3E(java.lang.String,java.lang.Throwable)" class="member-name-link">ResourceUnavailableException(String, Throwable)</a> - Constructor for exception <a href="io/oxia/client/api/exceptions/ResourceUnavailableException.html" title="class in io.oxia.client.api.exceptions">ResourceUnavailableException</a></dt>
+<dd>
+<div class="block">Creates an instance of the exception.</div>
+</dd>
 </dl>
 <h2 class="title" id="I:S">S</h2>
 <dl class="index">
@@ -634,6 +790,10 @@ loadScripts(document, 'script');</script>
 <div class="block">SecondaryIndex let the users specify additional keys to index the record Index names are
  arbitrary strings and can be used in <a href="io/oxia/client/api/SyncOxiaClient.html#list(java.lang.String,java.lang.String,java.util.Set)"><code>SyncOxiaClient.list(String, String, Set)</code></a> and
  <a href="io/oxia/client/api/SyncOxiaClient.html#rangeScan(java.lang.String,java.lang.String,java.util.Set)"><code>SyncOxiaClient.rangeScan(String, String, Set)</code></a> requests.</div>
+</dd>
+<dt><a href="io/oxia/client/api/GetResult.html#secondaryIndexKey()" class="member-name-link">secondaryIndexKey()</a> - Method in record class <a href="io/oxia/client/api/GetResult.html" title="class in io.oxia.client.api">GetResult</a></dt>
+<dd>
+<div class="block">Returns the value of the <a href="./io/oxia/client/api/GetResult.html#param-secondaryIndexKey"><code>secondaryIndexKey</code></a> record component.</div>
 </dd>
 <dt><a href="io/oxia/client/api/options/PutOption.html#SequenceKeysDeltas(java.util.List)" class="member-name-link">SequenceKeysDeltas(List&lt;Long&gt;)</a> - Static method in interface <a href="io/oxia/client/api/options/PutOption.html" title="interface in io.oxia.client.api.options">PutOption</a></dt>
 <dd>
@@ -656,9 +816,25 @@ loadScripts(document, 'script');</script>
 <dd>
 <div class="block">Specify the session timeout for this client instance.</div>
 </dd>
+<dt><a href="io/oxia/client/api/OxiaClientBuilder.html#sharedResources(io.oxia.client.api.SharedResources)" class="member-name-link">sharedResources(SharedResources)</a> - Method in interface <a href="io/oxia/client/api/OxiaClientBuilder.html" title="interface in io.oxia.client.api">OxiaClientBuilder</a></dt>
+<dd>
+<div class="block">Build this client on top of a shared <a href="io/oxia/client/api/SharedResources.html" title="interface in io.oxia.client.api"><code>SharedResources</code></a> pool.</div>
+</dd>
+<dt><a href="io/oxia/client/api/SharedResources.html" class="type-name-link" title="interface in io.oxia.client.api">SharedResources</a> - Interface in <a href="io/oxia/client/api/package-summary.html">io.oxia.client.api</a></dt>
+<dd>
+<div class="block">A pool of resources that can be shared by multiple Oxia client instances in the same JVM process.</div>
+</dd>
+<dt><a href="io/oxia/client/api/SharedResources.Builder.html" class="type-name-link" title="interface in io.oxia.client.api">SharedResources.Builder</a> - Interface in <a href="io/oxia/client/api/package-summary.html">io.oxia.client.api</a></dt>
+<dd>
+<div class="block">Builder for a <a href="io/oxia/client/api/SharedResources.html" title="interface in io.oxia.client.api"><code>SharedResources</code></a> pool.</div>
+</dd>
 <dt><a href="io/oxia/client/api/Notification.KeyRangeDelete.html#startKeyInclusive()" class="member-name-link">startKeyInclusive()</a> - Method in record class <a href="io/oxia/client/api/Notification.KeyRangeDelete.html" title="class in io.oxia.client.api">Notification.KeyRangeDelete</a></dt>
 <dd>
 <div class="block">Returns the value of the <a href="./io/oxia/client/api/Notification.KeyRangeDelete.html#param-startKeyInclusive"><code>startKeyInclusive</code></a> record component.</div>
+</dd>
+<dt><a href="io/oxia/client/api/OxiaClientBuilder.html#subscriptionMaxAge(java.time.Duration)" class="member-name-link">subscriptionMaxAge(Duration)</a> - Method in interface <a href="io/oxia/client/api/OxiaClientBuilder.html" title="interface in io.oxia.client.api">OxiaClientBuilder</a></dt>
+<dd>
+<div class="block">Configure the maximum age of long-lived subscriptions.</div>
 </dd>
 <dt><a href="io/oxia/client/api/OxiaClientBuilder.html#syncClient()" class="member-name-link">syncClient()</a> - Method in interface <a href="io/oxia/client/api/OxiaClientBuilder.html" title="interface in io.oxia.client.api">OxiaClientBuilder</a></dt>
 <dd>
@@ -666,7 +842,7 @@ loadScripts(document, 'script');</script>
 </dd>
 <dt><a href="io/oxia/client/api/SyncOxiaClient.html" class="type-name-link" title="interface in io.oxia.client.api">SyncOxiaClient</a> - Interface in <a href="io/oxia/client/api/package-summary.html">io.oxia.client.api</a></dt>
 <dd>
-<div class="block">Synchronous client for the Oxia service.</div>
+<div class="block">Blocking client for the Oxia service.</div>
 </dd>
 </dl>
 <h2 class="title" id="I:T">T</h2>
@@ -710,6 +886,14 @@ loadScripts(document, 'script');</script>
 <dd>
 <div class="block">Creates an instance of the exception.</div>
 </dd>
+<dt><a href="io/oxia/client/api/exceptions/UnknownException.html" class="type-name-link" title="class in io.oxia.client.api.exceptions">UnknownException</a> - Exception in <a href="io/oxia/client/api/exceptions/package-summary.html">io.oxia.client.api.exceptions</a></dt>
+<dd>
+<div class="block">An error of the server or of the client transport that has no more specific exception, e.g.</div>
+</dd>
+<dt><a href="io/oxia/client/api/exceptions/UnknownException.html#%3Cinit%3E(java.lang.String,java.lang.Throwable)" class="member-name-link">UnknownException(String, Throwable)</a> - Constructor for exception <a href="io/oxia/client/api/exceptions/UnknownException.html" title="class in io.oxia.client.api.exceptions">UnknownException</a></dt>
+<dd>
+<div class="block">Creates an instance of the exception.</div>
+</dd>
 <dt><a href="io/oxia/client/api/exceptions/UnsupportedAuthenticationException.html" class="type-name-link" title="class in io.oxia.client.api.exceptions">UnsupportedAuthenticationException</a> - Exception in <a href="io/oxia/client/api/exceptions/package-summary.html">io.oxia.client.api.exceptions</a></dt>
 <dd>
 <div class="block">Unsupported authentication exception thrown by Oxia client.</div>
@@ -725,10 +909,12 @@ loadScripts(document, 'script');</script>
 </dd>
 <dt><a href="io/oxia/client/api/options/GetOption.html#UseIndex(java.lang.String)" class="member-name-link">UseIndex(String)</a> - Static method in interface <a href="io/oxia/client/api/options/GetOption.html" title="interface in io.oxia.client.api.options">GetOption</a></dt>
 <dd>
-<div class="block">UseIndex let the users specify a different index to follow for the list operation</div>
+<div class="block">UseIndex lets the users look up the record by a secondary index: the key of the get is a
+ secondary key.</div>
 </dd>
 <dt><a href="io/oxia/client/api/options/ListOption.html#UseIndex(java.lang.String)" class="member-name-link">UseIndex(String)</a> - Static method in interface <a href="io/oxia/client/api/options/ListOption.html" title="interface in io.oxia.client.api.options">ListOption</a></dt>
 <dd>
+<div class="deprecation-block"><span class="deprecated-label">Deprecated.</span></div>
 <div class="block">UseIndex let the users specify a different index to follow for the list operation</div>
 </dd>
 <dt><a href="io/oxia/client/api/options/RangeScanOption.html#UseIndex(java.lang.String)" class="member-name-link">UseIndex(String)</a> - Static method in interface <a href="io/oxia/client/api/options/RangeScanOption.html" title="interface in io.oxia.client.api.options">RangeScanOption</a></dt>
@@ -760,7 +946,7 @@ loadScripts(document, 'script');</script>
 </dd>
 <dt><a href="io/oxia/client/api/Version.html" class="type-name-link" title="class in io.oxia.client.api">Version</a> - Record Class in <a href="io/oxia/client/api/package-summary.html">io.oxia.client.api</a></dt>
 <dd>
-<div class="block">Oxia record metadata.</div>
+<div class="block">Metadata associated with an Oxia record.</div>
 </dd>
 <dt><a href="io/oxia/client/api/Version.html#%3Cinit%3E(long,long,long,long,java.util.Optional,java.util.Optional)" class="member-name-link">Version(long, long, long, long, Optional&lt;Long&gt;, Optional&lt;String&gt;)</a> - Constructor for record class <a href="io/oxia/client/api/Version.html" title="class in io.oxia.client.api">Version</a></dt>
 <dd>

@@ -36,6 +36,7 @@ loadScripts(document, 'script');</script>
 <li class="nav-bar-cell1-rev">Class</li>
 <li><a href="class-use/SyncOxiaClient.html">Use</a></li>
 <li><a href="package-tree.html">Tree</a></li>
+<li><a href="../../../../deprecated-list.html">Deprecated</a></li>
 <li><a href="../../../../index-all.html">Index</a></li>
 <li><a href="../../../../help-doc.html#class">Help</a></li>
 </ul>
@@ -79,7 +80,35 @@ loadScripts(document, 'script');</script>
 <hr>
 <div class="type-signature"><span class="modifiers">public interface </span><span class="element-name type-name-label">SyncOxiaClient</span><span class="extends-implements">
 extends <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/AutoCloseable.html" title="class or interface in java.lang" class="external-link">AutoCloseable</a></span></div>
-<div class="block">Synchronous client for the Oxia service.</div>
+<div class="block">Blocking client for the Oxia service.
+
+ <p>Each method blocks the calling thread until the operation completes, fails, or the configured
+ request timeout elapses. A method throws the <a href="exceptions/OxiaException.html" title="class in io.oxia.client.api.exceptions"><code>OxiaException</code></a>
+ subtypes that it declares directly (e.g. <a href="exceptions/UnexpectedVersionIdException.html" title="class in io.oxia.client.api.exceptions"><code>UnexpectedVersionIdException</code></a>), and the others in an unchecked
+ <a href="exceptions/OxiaUncheckedException.html" title="class in io.oxia.client.api.exceptions"><code>OxiaUncheckedException</code></a>. Transport / unrecoverable failures
+ surface as a <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/RuntimeException.html" title="class or interface in java.lang" class="external-link"><code>RuntimeException</code></a>.
+
+ <p>Instances are created via <a href="OxiaClientBuilder.html#syncClient()"><code>OxiaClientBuilder.syncClient()</code></a> and are safe to share across
+ threads. Always close the client when done — preferably via try-with-resources:
+
+ <pre><code>
+ try (SyncOxiaClient client = OxiaClientBuilder.create("localhost:6648").syncClient()) {
+     client.put("k", "v".getBytes(StandardCharsets.UTF_8));
+     GetResult r = client.get("k");
+ }
+ </code></pre>
+
+ <p>Operation options (e.g. <a href="options/PutOption.html" title="interface in io.oxia.client.api.options"><code>PutOption</code></a>, <a href="options/GetOption.html" title="interface in io.oxia.client.api.options"><code>GetOption</code></a>) are passed as a <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Set.html" title="class or interface in java.util" class="external-link"><code>Set</code></a>.
+ Pass an empty set or use the no-options overload when no options are needed.</div>
+<dl class="notes">
+<dt>See Also:</dt>
+<dd>
+<ul class="see-list">
+<li><a href="AsyncOxiaClient.html" title="interface in io.oxia.client.api"><code>AsyncOxiaClient</code></a></li>
+<li><a href="OxiaClientBuilder.html" title="interface in io.oxia.client.api"><code>OxiaClientBuilder</code></a></li>
+</ul>
+</dd>
+</dl>
 </section>
 <section class="summary">
 <ul class="summary-list">
@@ -88,7 +117,7 @@ extends <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/ja
 <section class="method-summary" id="method-summary">
 <h2>Method Summary</h2>
 <div id="method-summary-table">
-<div class="table-tabs" role="tablist" aria-orientation="horizontal"><button id="method-summary-table-tab0" role="tab" aria-selected="true" aria-controls="method-summary-table.tabpanel" tabindex="0" onkeydown="switchTab(event)" onclick="show('method-summary-table', 'method-summary-table', 3)" class="active-table-tab">All Methods</button><button id="method-summary-table-tab2" role="tab" aria-selected="false" aria-controls="method-summary-table.tabpanel" tabindex="-1" onkeydown="switchTab(event)" onclick="show('method-summary-table', 'method-summary-table-tab2', 3)" class="table-tab">Instance Methods</button><button id="method-summary-table-tab3" role="tab" aria-selected="false" aria-controls="method-summary-table.tabpanel" tabindex="-1" onkeydown="switchTab(event)" onclick="show('method-summary-table', 'method-summary-table-tab3', 3)" class="table-tab">Abstract Methods</button></div>
+<div class="table-tabs" role="tablist" aria-orientation="horizontal"><button id="method-summary-table-tab0" role="tab" aria-selected="true" aria-controls="method-summary-table.tabpanel" tabindex="0" onkeydown="switchTab(event)" onclick="show('method-summary-table', 'method-summary-table', 3)" class="active-table-tab">All Methods</button><button id="method-summary-table-tab2" role="tab" aria-selected="false" aria-controls="method-summary-table.tabpanel" tabindex="-1" onkeydown="switchTab(event)" onclick="show('method-summary-table', 'method-summary-table-tab2', 3)" class="table-tab">Instance Methods</button><button id="method-summary-table-tab3" role="tab" aria-selected="false" aria-controls="method-summary-table.tabpanel" tabindex="-1" onkeydown="switchTab(event)" onclick="show('method-summary-table', 'method-summary-table-tab3', 3)" class="table-tab">Abstract Methods</button><button id="method-summary-table-tab6" role="tab" aria-selected="false" aria-controls="method-summary-table.tabpanel" tabindex="-1" onkeydown="switchTab(event)" onclick="show('method-summary-table', 'method-summary-table-tab6', 3)" class="table-tab">Deprecated Methods</button></div>
 <div id="method-summary-table.tabpanel" role="tabpanel" aria-labelledby="method-summary-table-tab0">
 <div class="summary-table three-column-summary">
 <div class="table-header col-first">Modifier and Type</div>
@@ -138,18 +167,24 @@ extends <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/ja
 <div class="block">GetSequenceUpdates allows to subscribe to the updates happening on a sequential key The channel
  will report the current latest sequence for a given key.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#list(java.lang.String,java.lang.String)" class="member-name-link">list</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;startKeyInclusive,
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3 method-summary-table-tab6"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3 method-summary-table-tab6"><code><a href="#list(java.lang.String,java.lang.String)" class="member-name-link">list</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;startKeyInclusive,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;endKeyExclusive)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">
-<div class="block">Lists any existing keys within the specified range.</div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3 method-summary-table-tab6">
+<div class="block"><span class="deprecated-label">Deprecated, for removal: This API element is subject to removal in a future version.</span>
+<div class="deprecation-comment">Use <a href="#rangeScan(java.lang.String,java.lang.String,java.util.Set)"><code>rangeScan(String, String, Set)</code></a> with <a href="options/RangeScanOption.html#IncludeValue(boolean)"><code>IncludeValue(false)</code></a>
+     instead, which streams the keys with backpressure and can stop early.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#list(java.lang.String,java.lang.String,java.util.Set)" class="member-name-link">list</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;startKeyInclusive,
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3 method-summary-table-tab6"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3 method-summary-table-tab6"><code><a href="#list(java.lang.String,java.lang.String,java.util.Set)" class="member-name-link">list</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;startKeyInclusive,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;endKeyExclusive,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Set.html" title="class or interface in java.util" class="external-link">Set</a>&lt;<a href="options/ListOption.html" title="interface in io.oxia.client.api.options">ListOption</a>&gt;&nbsp;options)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">
-<div class="block">Lists any existing keys within the specified range.</div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3 method-summary-table-tab6">
+<div class="block"><span class="deprecated-label">Deprecated, for removal: This API element is subject to removal in a future version.</span>
+<div class="deprecation-comment">Use <a href="#rangeScan(java.lang.String,java.lang.String,java.util.Set)"><code>rangeScan(String, String, Set)</code></a> with <a href="options/RangeScanOption.html#IncludeValue(boolean)"><code>IncludeValue(false)</code></a>
+     instead, which streams the keys with backpressure and can stop early.</div>
+</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code>void</code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#notifications(java.util.function.Consumer)" class="member-name-link">notifications</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/function/Consumer.html" title="class or interface in java.util.function" class="external-link">Consumer</a>&lt;<a href="Notification.html" title="interface in io.oxia.client.api">Notification</a>&gt;&nbsp;notificationCallback)</code></div>
@@ -171,13 +206,13 @@ extends <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/ja
 <div class="block">Conditionally associates a value with a key if the server's versionId of the record is as
  specified, at the instant when the put is applied.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Iterable.html" title="class or interface in java.lang" class="external-link">Iterable</a>&lt;<a href="GetResult.html" title="class in io.oxia.client.api">GetResult</a>&gt;</code></div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="CloseableIterable.html" title="interface in io.oxia.client.api">CloseableIterable</a>&lt;<a href="GetResult.html" title="class in io.oxia.client.api">GetResult</a>&gt;</code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#rangeScan(java.lang.String,java.lang.String)" class="member-name-link">rangeScan</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;startKeyInclusive,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;endKeyExclusive)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">
 <div class="block">Scan any existing records within the specified range of keys.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Iterable.html" title="class or interface in java.lang" class="external-link">Iterable</a>&lt;<a href="GetResult.html" title="class in io.oxia.client.api">GetResult</a>&gt;</code></div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="CloseableIterable.html" title="interface in io.oxia.client.api">CloseableIterable</a>&lt;<a href="GetResult.html" title="class in io.oxia.client.api">GetResult</a>&gt;</code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#rangeScan(java.lang.String,java.lang.String,java.util.Set)" class="member-name-link">rangeScan</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;startKeyInclusive,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;endKeyExclusive,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Set.html" title="class or interface in java.util" class="external-link">Set</a>&lt;<a href="options/RangeScanOption.html" title="interface in io.oxia.client.api.options">RangeScanOption</a>&gt;&nbsp;options)</code></div>
@@ -223,10 +258,12 @@ extends <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/ja
 <div class="member-signature"><span class="return-type"><a href="PutResult.html" title="class in io.oxia.client.api">PutResult</a></span>&nbsp;<span class="element-name">put</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;key,
  byte[]&nbsp;value,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Set.html" title="class or interface in java.util" class="external-link">Set</a>&lt;<a href="options/PutOption.html" title="interface in io.oxia.client.api.options">PutOption</a>&gt;&nbsp;options)</span>
-       throws <span class="exceptions"><a href="exceptions/UnexpectedVersionIdException.html" title="class in io.oxia.client.api.exceptions">UnexpectedVersionIdException</a></span></div>
+       throws <span class="exceptions"><a href="exceptions/UnexpectedVersionIdException.html" title="class in io.oxia.client.api.exceptions">UnexpectedVersionIdException</a>,
+<a href="exceptions/KeyAlreadyExistsException.html" title="class in io.oxia.client.api.exceptions">KeyAlreadyExistsException</a></span></div>
 <div class="block">Conditionally associates a value with a key if the server's versionId of the record is as
  specified, at the instant when the put is applied. The put will not be applied if the server's
- versionId of the record does not match the expectation set in the call.</div>
+ versionId of the record does not match the expectation set in the call. If you wish the put to
+ succeed only if the key does not already exist on the server, then pass the <a href="options/PutOption.html#IfRecordDoesNotExist"><code>PutOption.IfRecordDoesNotExist</code></a> value.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
 <dd><code>key</code> - The key with which the value should be associated.</dd>
@@ -237,6 +274,11 @@ extends <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/ja
 <dt>Throws:</dt>
 <dd><code><a href="exceptions/UnexpectedVersionIdException.html" title="class in io.oxia.client.api.exceptions">UnexpectedVersionIdException</a></code> - The versionId at the server did not that match supplied in
      the call.</dd>
+<dd><code><a href="exceptions/KeyAlreadyExistsException.html" title="class in io.oxia.client.api.exceptions">KeyAlreadyExistsException</a></code> - The key already exists on the server and the put was
+     conditional on it not existing (via <a href="options/PutOption.html#IfRecordDoesNotExist"><code>PutOption.IfRecordDoesNotExist</code></a>).</dd>
+<dd><code><a href="exceptions/OxiaUncheckedException.html" title="class in io.oxia.client.api.exceptions">OxiaUncheckedException</a></code> - The put failed for another reason. Its cause is, for instance, a
+     <a href="exceptions/SessionDoesNotExistException.html" title="class in io.oxia.client.api.exceptions"><code>SessionDoesNotExistException</code></a> when the session of an ephemeral put (<a href="options/PutOption.html#AsEphemeralRecord"><code>PutOption.AsEphemeralRecord</code></a>) has expired, or an <a href="exceptions/InvalidArgumentException.html" title="class in io.oxia.client.api.exceptions"><code>InvalidArgumentException</code></a> when the
+     server rejected the put, e.g. a sequential put that doesn't fit its sequence.</dd>
 </dl>
 </section>
 </li>
@@ -281,14 +323,16 @@ extends <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/ja
 <div class="member-signature"><span class="return-type">void</span>&nbsp;<span class="element-name">deleteRange</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;startKeyInclusive,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;endKeyExclusive)</span></div>
 <div class="block">Deletes any records with keys within the specified range. For more information on how keys are
- sorted, check the relevant section in the <a href="https://github.com/streamnative/oxia/blob/main/docs/oxia-key-sorting.md">Oxia
- documentation</a>.</div>
+ sorted, check the relevant section in the <a href="https://oxia-db.github.io/docs/features/oxia-key-sorting">Oxia documentation</a>.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
 <dd><code>startKeyInclusive</code> - The key that declares start of the range, and is <b>included</b> from
      the range.</dd>
 <dd><code>endKeyExclusive</code> - The key that declares the end of the range, and is <b>excluded</b> from
      the range.</dd>
+<dt>Throws:</dt>
+<dd><code><a href="exceptions/OxiaUncheckedException.html" title="class in io.oxia.client.api.exceptions">OxiaUncheckedException</a></code> - The delete range failed. Its cause is, for instance, an <a href="exceptions/InvalidArgumentException.html" title="class in io.oxia.client.api.exceptions"><code>InvalidArgumentException</code></a> when the server rejected the range, e.g. a range that covers both
+     regular keys and the server's internal keys.</dd>
 </dl>
 </section>
 </li>
@@ -299,8 +343,7 @@ extends <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/ja
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;endKeyExclusive,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Set.html" title="class or interface in java.util" class="external-link">Set</a>&lt;<a href="options/DeleteRangeOption.html" title="interface in io.oxia.client.api.options">DeleteRangeOption</a>&gt;&nbsp;options)</span></div>
 <div class="block">Deletes any records with keys within the specified range. For more information on how keys are
- sorted, check the relevant section in the <a href="https://github.com/streamnative/oxia/blob/main/docs/oxia-key-sorting.md">Oxia
- documentation</a>.</div>
+ sorted, check the relevant section in the <a href="https://oxia-db.github.io/docs/features/oxia-key-sorting">Oxia documentation</a>.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
 <dd><code>startKeyInclusive</code> - The key that declares start of the range, and is <b>included</b> from
@@ -308,6 +351,9 @@ extends <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/ja
 <dd><code>endKeyExclusive</code> - The key that declares the end of the range, and is <b>excluded</b> from
      the range.</dd>
 <dd><code>options</code> - Set <a href="options/DeleteRangeOption.html" title="interface in io.oxia.client.api.options"><code>options</code></a> for the delete range.</dd>
+<dt>Throws:</dt>
+<dd><code><a href="exceptions/OxiaUncheckedException.html" title="class in io.oxia.client.api.exceptions">OxiaUncheckedException</a></code> - The delete range failed. Its cause is, for instance, an <a href="exceptions/InvalidArgumentException.html" title="class in io.oxia.client.api.exceptions"><code>InvalidArgumentException</code></a> when the server rejected the range, e.g. a range that covers both
+     regular keys and the server's internal keys.</dd>
 </dl>
 </section>
 </li>
@@ -344,11 +390,15 @@ extends <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/ja
 <li>
 <section class="detail" id="list(java.lang.String,java.lang.String)">
 <h3>list</h3>
-<div class="member-signature"><span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;</span>&nbsp;<span class="element-name">list</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;startKeyInclusive,
+<div class="member-signature"><span class="annotations"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Deprecated.html" title="class or interface in java.lang" class="external-link">@Deprecated</a>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Deprecated.html#forRemoval()" title="class or interface in java.lang" class="external-link">forRemoval</a>=true)
+</span><span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;</span>&nbsp;<span class="element-name">list</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;startKeyInclusive,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;endKeyExclusive)</span></div>
+<div class="deprecation-block"><span class="deprecated-label">Deprecated, for removal: This API element is subject to removal in a future version.</span>
+<div class="deprecation-comment">Use <a href="#rangeScan(java.lang.String,java.lang.String,java.util.Set)"><code>rangeScan(String, String, Set)</code></a> with <a href="options/RangeScanOption.html#IncludeValue(boolean)"><code>IncludeValue(false)</code></a>
+     instead, which streams the keys with backpressure and can stop early.</div>
+</div>
 <div class="block">Lists any existing keys within the specified range. For more information on how keys are
- sorted, check the relevant section in the <a href="https://github.com/streamnative/oxia/blob/main/docs/oxia-key-sorting.md">Oxia
- documentation</a>.</div>
+ sorted, check the relevant section in the <a href="https://oxia-db.github.io/docs/features/oxia-key-sorting">Oxia documentation</a>.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
 <dd><code>startKeyInclusive</code> - The key that declares start of the range, and is <b>included</b> from
@@ -364,12 +414,16 @@ extends <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/ja
 <li>
 <section class="detail" id="list(java.lang.String,java.lang.String,java.util.Set)">
 <h3>list</h3>
-<div class="member-signature"><span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;</span>&nbsp;<span class="element-name">list</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;startKeyInclusive,
+<div class="member-signature"><span class="annotations"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Deprecated.html" title="class or interface in java.lang" class="external-link">@Deprecated</a>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Deprecated.html#forRemoval()" title="class or interface in java.lang" class="external-link">forRemoval</a>=true)
+</span><span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;</span>&nbsp;<span class="element-name">list</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;startKeyInclusive,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;endKeyExclusive,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Set.html" title="class or interface in java.util" class="external-link">Set</a>&lt;<a href="options/ListOption.html" title="interface in io.oxia.client.api.options">ListOption</a>&gt;&nbsp;options)</span></div>
+<div class="deprecation-block"><span class="deprecated-label">Deprecated, for removal: This API element is subject to removal in a future version.</span>
+<div class="deprecation-comment">Use <a href="#rangeScan(java.lang.String,java.lang.String,java.util.Set)"><code>rangeScan(String, String, Set)</code></a> with <a href="options/RangeScanOption.html#IncludeValue(boolean)"><code>IncludeValue(false)</code></a>
+     instead, which streams the keys with backpressure and can stop early.</div>
+</div>
 <div class="block">Lists any existing keys within the specified range. For more information on how keys are
- sorted, check the relevant section in the <a href="https://github.com/streamnative/oxia/blob/main/docs/oxia-key-sorting.md">Oxia
- documentation</a>.</div>
+ sorted, check the relevant section in the <a href="https://oxia-db.github.io/docs/features/oxia-key-sorting">Oxia documentation</a>.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
 <dd><code>startKeyInclusive</code> - The key that declares start of the range, and is <b>included</b> from
@@ -386,9 +440,13 @@ extends <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/ja
 <li>
 <section class="detail" id="rangeScan(java.lang.String,java.lang.String)">
 <h3>rangeScan</h3>
-<div class="member-signature"><span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Iterable.html" title="class or interface in java.lang" class="external-link">Iterable</a>&lt;<a href="GetResult.html" title="class in io.oxia.client.api">GetResult</a>&gt;</span>&nbsp;<span class="element-name">rangeScan</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;startKeyInclusive,
+<div class="member-signature"><span class="return-type"><a href="CloseableIterable.html" title="interface in io.oxia.client.api">CloseableIterable</a>&lt;<a href="GetResult.html" title="class in io.oxia.client.api">GetResult</a>&gt;</span>&nbsp;<span class="element-name">rangeScan</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;startKeyInclusive,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;endKeyExclusive)</span></div>
-<div class="block">Scan any existing records within the specified range of keys.</div>
+<div class="block">Scan any existing records within the specified range of keys.
+
+ <p>The returned iterable holds an active server stream and should be closed (e.g. via
+ try-with-resources) when iteration is abandoned before completion, otherwise the stream is only
+ torn down when iteration runs to its natural end.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
 <dd><code>startKeyInclusive</code> - The key that declares start of the range, and is <b>included</b> from
@@ -403,10 +461,14 @@ extends <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/ja
 <li>
 <section class="detail" id="rangeScan(java.lang.String,java.lang.String,java.util.Set)">
 <h3>rangeScan</h3>
-<div class="member-signature"><span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Iterable.html" title="class or interface in java.lang" class="external-link">Iterable</a>&lt;<a href="GetResult.html" title="class in io.oxia.client.api">GetResult</a>&gt;</span>&nbsp;<span class="element-name">rangeScan</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;startKeyInclusive,
+<div class="member-signature"><span class="return-type"><a href="CloseableIterable.html" title="interface in io.oxia.client.api">CloseableIterable</a>&lt;<a href="GetResult.html" title="class in io.oxia.client.api">GetResult</a>&gt;</span>&nbsp;<span class="element-name">rangeScan</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;startKeyInclusive,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;endKeyExclusive,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Set.html" title="class or interface in java.util" class="external-link">Set</a>&lt;<a href="options/RangeScanOption.html" title="interface in io.oxia.client.api.options">RangeScanOption</a>&gt;&nbsp;options)</span></div>
-<div class="block">Scan any existing records within the specified range of keys.</div>
+<div class="block">Scan any existing records within the specified range of keys.
+
+ <p>The returned iterable holds an active server stream and should be closed (e.g. via
+ try-with-resources) when iteration is abandoned before completion, otherwise the stream is only
+ torn down when iteration runs to its natural end.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
 <dd><code>startKeyInclusive</code> - The key that declares start of the range, and is <b>included</b> from

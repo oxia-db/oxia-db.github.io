@@ -36,6 +36,7 @@ loadScripts(document, 'script');</script>
 <li class="nav-bar-cell1-rev">Class</li>
 <li><a href="class-use/RangeScanConsumer.html">Use</a></li>
 <li><a href="package-tree.html">Tree</a></li>
+<li><a href="../../../../deprecated-list.html">Deprecated</a></li>
 <li><a href="../../../../index-all.html">Index</a></li>
 <li><a href="../../../../help-doc.html#class">Help</a></li>
 </ul>
@@ -74,8 +75,25 @@ loadScripts(document, 'script');</script>
 <section class="class-description" id="class-description">
 <hr>
 <div class="type-signature"><span class="modifiers">public interface </span><span class="element-name type-name-label">RangeScanConsumer</span></div>
-<div class="block">Interface defining a consumer for Range Scan operations, allowing handling of chunked results,
- errors, or completion signals for a range scan process.</div>
+<div class="block">Callback used by <a href="AsyncOxiaClient.html#rangeScan(java.lang.String,java.lang.String,io.oxia.client.api.RangeScanConsumer)"><code>AsyncOxiaClient.rangeScan(String, String, RangeScanConsumer)</code></a> to deliver
+ records, errors, and the completion signal for a streaming range scan.
+
+ <p>Exactly one of <a href="#onError(java.lang.Throwable)"><code>onError(Throwable)</code></a> or <a href="#onCompleted()"><code>onCompleted()</code></a> is invoked per scan, and
+ always after the final <a href="#onNext(io.oxia.client.api.GetResult)"><code>onNext(GetResult)</code></a> call. Returning <code>false</code> from <code>
+ onNext</code> stops iteration early; the underlying server stream is cancelled and <a href="#onCompleted()"><code>onCompleted()</code></a> is invoked once.
+
+ <pre><code>
+ client.rangeScan("a", "z", new RangeScanConsumer() {
+     public boolean onNext(GetResult result) {
+         process(result);
+         return true; // return false to abort iteration early
+     }
+     public void onError(Throwable t) { log.warn("scan failed", t); }
+     public void onCompleted() { log.info("scan finished"); }
+ });
+ </code></pre>
+
+ <p>For a synchronous, iterator-style alternative, see <a href="SyncOxiaClient.html#rangeScan(java.lang.String,java.lang.String)"><code>SyncOxiaClient.rangeScan(String, String)</code></a> which returns a <a href="CloseableIterable.html" title="interface in io.oxia.client.api"><code>CloseableIterable</code></a>.</div>
 </section>
 <section class="summary">
 <ul class="summary-list">
@@ -100,7 +118,7 @@ loadScripts(document, 'script');</script>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">
 <div class="block">Invoked when an error occurs during the range scan operation.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code>void</code></div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code>boolean</code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#onNext(io.oxia.client.api.GetResult)" class="member-name-link">onNext</a><wbr>(<a href="GetResult.html" title="class in io.oxia.client.api">GetResult</a>&nbsp;result)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">
 <div class="block">Invoked for each record returned by the range scan operation.</div>
@@ -122,11 +140,14 @@ loadScripts(document, 'script');</script>
 <li>
 <section class="detail" id="onNext(io.oxia.client.api.GetResult)">
 <h3>onNext</h3>
-<div class="member-signature"><span class="return-type">void</span>&nbsp;<span class="element-name">onNext</span><wbr><span class="parameters">(<a href="GetResult.html" title="class in io.oxia.client.api">GetResult</a>&nbsp;result)</span></div>
+<div class="member-signature"><span class="return-type">boolean</span>&nbsp;<span class="element-name">onNext</span><wbr><span class="parameters">(<a href="GetResult.html" title="class in io.oxia.client.api">GetResult</a>&nbsp;result)</span></div>
 <div class="block">Invoked for each record returned by the range scan operation.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
 <dd><code>result</code> - The GetResult for the record.</dd>
+<dt>Returns:</dt>
+<dd><code>true</code> to keep receiving records, <code>false</code> to stop the iteration. When
+     <code>false</code> is returned, the underlying server stream is cancelled, no further <a href="#onNext(io.oxia.client.api.GetResult)"><code>onNext(io.oxia.client.api.GetResult)</code></a> invocations will be made, and <a href="#onCompleted()"><code>onCompleted()</code></a> will be invoked once.</dd>
 </dl>
 </section>
 </li>

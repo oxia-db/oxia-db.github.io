@@ -6,4 +6,12 @@ export default {
     type: 'page',
     title: 'Documentation'
   },
+  blog: {
+    type: 'page',
+    title: 'Blog'
+  },
+  status: {
+    type: 'page',
+    title: 'Status'
+  },
 }
