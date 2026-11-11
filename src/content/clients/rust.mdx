@@ -7,13 +7,16 @@ sidebarTitle: Rust
 
 ## Installing Rust client SDK
 
-```shell
-cargo add oxia-client
+```toml
+[dependencies]
+oxia-client = "0.3"
+compio = { version = "0.19", features = ["macros"] }
 ```
 
 The crate is `oxia-client`; the import root is `oxia`. The client is asynchronous
-and runs on the [Tokio](https://tokio.rs) runtime. API documentation is available
-at https://docs.rs/oxia-client.
+and runs on a [compio](https://github.com/compio-rs/compio) runtime, which the
+application supplies — see [Runtime](#runtime). It needs Rust 1.99 or later
+(edition 2024). API documentation is available at https://docs.rs/oxia-client.
 
 Optional Cargo features (all off by default):
 
@@ -22,19 +25,43 @@ Optional Cargo features (all off by default):
 | `tls` | TLS connections, including custom CA and mutual TLS — see [TLS](#tls). |
 | `otel` | Report client metrics through OpenTelemetry — see [Metrics](#metrics). |
 
+Token [authentication](#authentication) needs no feature; it is always available.
+
+## Runtime
+
+The client is single-threaded, for a thread-per-core design: it runs on a
+[compio](https://github.com/compio-rs/compio) runtime (io_uring on Linux, falling
+back to polling where io_uring is unavailable, as in most containers) and lives on
+the thread that built it. Building a client outside a compio runtime fails.
+
+The client, its request builders and its subscriptions are neither `Send` nor
+`Sync`. The tasks of the client's thread share it by cloning it; a clone cannot be
+moved to another thread.
+
+- **To use more cores, run one client per thread**, each in its own runtime. An
+  `OxiaClientBuilder` is `Send` and `Clone`, so clone it into each thread. Each
+  client has its own connections, sessions and batches.
+- **Never block the client's thread** — all of the client's work runs on it. Run
+  blocking work with `compio::runtime::spawn_blocking`.
+- **An application on another runtime, such as Tokio,** runs the client on a thread
+  of its own with a compio runtime, and sends it work over channels.
+- **Dropping the runtime without calling `close`** tears the client down abruptly,
+  as dropping the client does: queued operations are not flushed, and ephemeral
+  records linger until their session times out.
+
 ## Client API
 
 ### Initializing the client
 
 To use the Oxia client, create a client instance. It is cheap to clone (all clones
-share one set of connections, batchers and sessions), safe to share across tasks,
-and valid until it is explicitly closed. Every operation returns a request builder:
-chain options onto it and `.await` it directly.
+share one set of connections, batchers and sessions), shared by the tasks of its
+thread by cloning it, and valid until it is explicitly closed. Every operation
+returns a request builder: chain options onto it and `.await` it directly.
 
 ```rust
 use oxia::OxiaClient;
 
-#[tokio::main]
+#[compio::main]
 async fn main() -> Result<(), oxia::OxiaError> {
     let client = OxiaClient::connect("localhost:6648").await?;
 
@@ -70,6 +97,10 @@ Available client options (see [`OxiaClientBuilder`](https://docs.rs/oxia-client/
 | `identity` | Stable client identity attached to ephemeral records. | Random UUID |
 | `batch_max_size` | Maximum size of a batched request. | `128 KiB` |
 | `max_requests_per_batch` | Maximum number of operations in a batch. | `1000` |
+| `max_in_flight_bytes` | Bytes the client holds for the writes in flight (their keys and values). While the budget is used up a `put` waits, rather than the client growing without limit; `0` disables it. Reads are not accounted for. | `64 MiB` |
+| `max_write_batches_in_flight` | Write batches a shard may have outstanding before further operations accumulate in the open batch. | `4` |
+| `max_read_batches_in_flight` | The same, for a shard's read RPCs. | `4` |
+| `auth_token` / `auth_token_provider` | Token [authentication](#authentication). | No credentials |
 | `tls` | [TLS](#tls) settings: custom CA, mutual TLS, domain-name override. Requires the `tls` Cargo feature. | Plaintext (or TLS with system roots for an `https://` address) |
 | `meter_provider` | OpenTelemetry meter provider to report [metrics](#metrics) through. Requires the `otel` Cargo feature. | Global provider |
 
@@ -157,6 +188,9 @@ client
     .await?;
 ```
 
+`delete` also accepts `partition_key`, which must match the one the record was
+written with.
+
 ### Deleting a range of records
 
 Delete all records whose keys fall within `[min, max)`:
@@ -183,8 +217,14 @@ let keys = client.list("/users/", "/users//").partition_key("/users/").await?;
 let by_email = client.list("", "\u{ffff}").use_index("email").await?;
 ```
 
-Keys come back in Oxia's slash-aware key order. For a very large range, use
+Keys come back in the key sorting of their namespace: hierarchical by default (the
+keys with fewer `/` first, then by their bytes), or natural (by their bytes) — see
+[key sorting](../features/oxia-key-sorting.mdx). For a very large range, use
 `.stream().await?` to obtain an ordered async `Stream` instead of collecting a `Vec`.
+
+`list` also accepts `end_inclusive`, which makes the range `[min, max]`, and
+`include_internal_keys`, which stops Oxia's own internal keys from being filtered
+out of the result.
 
 ### Scanning records
 
@@ -199,8 +239,9 @@ for record in client.range_scan("/users/", "/users//").await? {
 let by_email = client.range_scan("", "\u{ffff}").use_index("email").await?;
 ```
 
-Like `list`, `range_scan` accepts `partition_key` and `use_index`, and offers
-`.stream().await?` for an ordered, memory-bounded async stream.
+Like `list`, `range_scan` accepts `partition_key`, `use_index`, `end_inclusive` and
+`include_internal_keys`, and offers `.stream().await?` for an ordered,
+memory-bounded async stream.
 
 ### Sessions and ephemerals
 
@@ -227,8 +268,36 @@ while let Some(key) = updates.recv().await {
 }
 ```
 
+Both builders accept `buffer_size`, the subscription's channel capacity (default
+`100`); when the buffer is full, delivery applies backpressure to the per-shard
+listeners.
+
 See [notifications](../features/notifications.mdx) and
 [sequence keys](../features/sequence-keys.mdx) for semantics.
+
+### Authentication
+
+The client can present a bearer token on every request. This needs no Cargo
+feature. Pass a fixed token:
+
+```rust
+let client = OxiaClient::builder()
+    .service_address("localhost:6648")
+    .auth_token("my-token")
+    .build()
+    .await?;
+```
+
+For tokens that expire, implement `TokenProvider` and pass it instead, so the
+client fetches a current token for each request:
+
+```rust
+let client = OxiaClient::builder()
+    .service_address("localhost:6648")
+    .auth_token_provider(my_provider)
+    .build()
+    .await?;
+```
 
 ### TLS
 
@@ -292,13 +361,26 @@ let client = OxiaClient::builder()
     .await?;
 ```
 
+The instruments are [nanometer](https://docs.rs/nanometer) histograms, which are
+exported through a `nanometer::Producer` rather than through the meter provider.
+**The application must register one with its metric reader, once**, using
+nanometer's `sdk` feature — without it no histogram is exported. Until an
+OpenTelemetry SDK release carries `MetricProducer` again, that takes an SDK with it
+re-added; see nanometer's README, "Exporting histograms". The first client built in
+a process calibrates nanometer's clock, which takes 10 to 200 ms.
+
 Instruments are reported under the `oxia_client` meter — the same names as the
-Go client — each carrying `type` (`put`, `get`, `delete`, `delete_range`) and
-`result` (`success`, `failure`) attributes:
+Go client. The operation instruments carry `type` (`put`, `get`, `delete`,
+`delete_range`) and `result` (`success`, `failure`) attributes; the batch
+instruments carry `type` (`write`, `read`) and the same `result`:
 
 | Instrument | Unit | Description |
 |---|---|---|
-| `oxia_client_op` | milliseconds | Latency of client operations, measured submit-to-complete (includes internal retries). |
+| `oxia_client_op` | seconds | Latency of client operations, measured submit-to-complete (includes internal retries). |
 | `oxia_client_op_value` | bytes | Value size of operations that carry a value (the value written by a put, or returned by a get). |
+| `oxia_client_batch_total` | seconds | Batch latency from when the batch was created, including the time it spent filling up. |
+| `oxia_client_batch_exec` | seconds | Batch latency from when the batch was first sent, excluding the time it spent filling up. |
+| `oxia_client_batch_value` | bytes | Total size of the values carried by a batch. |
+| `oxia_client_batch_request` | `{request}` | Number of operations in a batch. |
 
 For the complete reference see the [docs.rs API documentation](https://docs.rs/oxia-client).
