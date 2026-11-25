@@ -88,7 +88,7 @@ uniform cells therefore use only runs with an even placement, two leaders per se
 
 Full configurations are disclosed so results can be scrutinized and reproduced; the exact
 Helm values are in the framework repository under
-[`charts/benchmark-stack/comparison`](https://github.com/oxia-db/benchmark/tree/latency-comparison-and-report/charts/benchmark-stack/comparison).
+[`charts/benchmark-stack/comparison`](https://github.com/oxia-db/benchmark/tree/main/charts/benchmark-stack/comparison).
 
 | | |
 |---|---|
@@ -470,9 +470,9 @@ the out-of-the-box operator experience with the stock client, configuration disc
 ## Reproducing these results
 
 - Benchmark framework: [github.com/oxia-db/benchmark](https://github.com/oxia-db/benchmark)
-- Workload definitions: [`conf/workload-ycsb-throughput.yaml`](https://github.com/oxia-db/benchmark/blob/latency-comparison-and-report/conf/workload-ycsb-throughput.yaml) (max throughput), [`conf/workload-uniform-throughput.yaml`](https://github.com/oxia-db/benchmark/blob/latency-comparison-and-report/conf/workload-uniform-throughput.yaml) (uniform scaling), and [`conf/workload-ycsb-latency.yaml`](https://github.com/oxia-db/benchmark/blob/latency-comparison-and-report/conf/workload-ycsb-latency.yaml) (rate-paced latency)
-- Per-system configurations: [`charts/benchmark-stack/comparison`](https://github.com/oxia-db/benchmark/tree/latency-comparison-and-report/charts/benchmark-stack/comparison)
-- Run procedure (settle, freeze the balancer, release the workers together): [`scripts/run-comparison.sh`](https://github.com/oxia-db/benchmark/blob/latency-comparison-and-report/scripts/run-comparison.sh)
+- Workload definitions: [`conf/workload-ycsb-throughput.yaml`](https://github.com/oxia-db/benchmark/blob/main/conf/workload-ycsb-throughput.yaml) (max throughput), [`conf/workload-uniform-throughput.yaml`](https://github.com/oxia-db/benchmark/blob/main/conf/workload-uniform-throughput.yaml) (uniform scaling), and [`conf/workload-ycsb-latency.yaml`](https://github.com/oxia-db/benchmark/blob/main/conf/workload-ycsb-latency.yaml) (rate-paced latency)
+- Per-system configurations: [`charts/benchmark-stack/comparison`](https://github.com/oxia-db/benchmark/tree/main/charts/benchmark-stack/comparison)
+- Run procedure (settle, freeze the balancer, release the workers together): [`scripts/run-comparison.sh`](https://github.com/oxia-db/benchmark/blob/main/scripts/run-comparison.sh)
 - The harness aggregates per-worker results with exact HdrHistogram merging and emits
   `summary.json` / `summary.csv` / an HTML report per run (`report` subcommand).
 
