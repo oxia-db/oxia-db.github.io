@@ -75,11 +75,14 @@ runs. Same operation mixes, delivered at rates that can actually push the server
 | Dataset | 1M keys, 64-byte values, populated by a sequential load phase before every measured run |
 | Workloads | YCSB core: A (50/50 read/update, Zipf), B (95/5, Zipf), C (100% read, Zipf), D (95/5, latest-key distribution) |
 | Run procedure (0.18 runs) | Before measuring, the harness waits for Oxia's shard leadership to settle, then freezes the coordinator's load balancer so that no shard moves during the run. All workers are released together. |
-| Repetitions (0.18 runs) | Oxia insert and YCSB cells are the median of 3–4 runs; the ranges are listed with the results. |
+| Repetitions (0.18 runs) | Oxia insert and YCSB cells are the median of 3–4 runs, and the uniform cells of 2–4 runs with an even leader placement; the ranges are listed with the results. |
 
 In some 6- and 12-server runs the balancer stopped with one server leading three shards
-and another leading one. Those runs were measured with that placement and are included in
-the medians; uneven placement did not predict lower throughput.
+and another leading one. For the insert and YCSB workloads, those runs were measured with
+that placement and are included in the medians; uneven placement did not predict lower
+throughput there. Uniform reads are different: they load every leader equally, so the
+server with three leaders becomes the limit (see "Scaling with cluster size" below). The
+uniform cells therefore use only runs with an even placement, two leaders per server.
 
 ### Per-system configuration
 
@@ -91,7 +94,7 @@ Helm values are in the framework repository under
 |---|---|
 | **Oxia** | **v0.18.0** with Java client 0.10.4 for the throughput, scaling, and latency sections; v0.17 for sessions, capacity, and failure recovery. `replicationFactor: 3`, 2 shards per data server (6 / 12 / 24 shards), WAL fsync before acknowledgment, 2 GiB Pebble read cache. Java client with rate-adaptive read and write batching (bounded per-shard in-flight windows). |
 | **ZooKeeper** | 3.9.3, 3-node ensemble, 2 GiB JVM heap, `snapCount` 1M, transaction log on a dedicated volume (`dataLogDir`), snapshot auto-purge enabled. Its throughput numbers are the July 2026 runs; its latency was re-measured in November. |
-| **etcd** | 3.6.1, 3-node cluster, WAL on a dedicated volume, periodic MVCC auto-compaction (5m), default linearizable reads, jetcd 0.8.6 client. etcd rejects writes once overloaded, so its throughput runs use the per-worker in-flight limit that gave the highest failure-free rate among those tried: 50 for inserts, 500 for YCSB A, B, and D, 100 for YCSB C. |
+| **etcd** | 3.6.1, 3-node cluster, WAL on a dedicated volume, periodic MVCC auto-compaction (5m), default linearizable reads, jetcd 0.8.6 client. etcd rejects writes once overloaded, so its throughput runs use the per-worker in-flight limit that gave the highest failure-free rate among those tried: 75 for inserts, 500 for YCSB A, B, and D, 100 for YCSB C. |
 
 All systems run at equivalent durability: every acknowledged write is fsynced to the
 write-ahead / transaction log on a majority of replicas before the client sees success.
@@ -118,7 +121,7 @@ runs.
 
 | Workload | oxia-3 | oxia-6 | oxia-12 | ZooKeeper | etcd |
 |---|---|---|---|---|---|
-| Insert (load, 100% writes) | 265k | 517k | 895k | 13.5k | 16.7k |
+| Insert (load, 100% writes) | 265k | 517k | 895k | 13.5k | 17.7k |
 | YCSB A (50% reads / 50% updates) | 309k | 499k | 438k | 35.8k | 31.3k |
 | YCSB B (95% reads) | 953k | 1.21M | 1.30M | 104k | 52.6k |
 | YCSB C (100% reads) | 1.69M | 1.97M | 2.01M | 78k | 52.5k |
@@ -139,7 +142,7 @@ Notes on reading the numbers:
 - **Writes scale near-linearly with cluster size**: the insert workload grows
   265k → 517k → 895k ops/s from 3 → 6 → 12 servers (3.4×), because sequential inserts
   use every shard. ZooKeeper and etcd are single consensus groups: adding servers cannot
-  add write throughput, and both sit at 13–17k inserts/s with the same per-node resources.
+  add write throughput, and both sit at 13–18k inserts/s with the same per-node resources.
 - **Hot-key workloads stop scaling, and that is the workload, not the load generators.**
   With the hottest key alone taking 12.4% of operations, throughput is bounded by the few
   shards that hold the hottest keys: YCSB C goes 1.69M → 1.97M → 2.01M, and YCSB A's 6- and
@@ -151,8 +154,8 @@ Notes on reading the numbers:
 - **etcd's load phase.** In the runs behind etcd's YCSB numbers, etcd rejected part of the
   load-phase inserts under overload (about 1.0M of 3.1M attempts succeeded before YCSB A,
   B, and D; 1.47M of 1.8M before YCSB C), so some keys were absent while the measured
-  workloads ran. Its insert row comes from a separate run at 50 in flight per worker, with
-  no rejected operations.
+  workloads ran. Its insert row comes from a separate run at 75 in flight per worker, with
+  no rejected operations (16.7k at 50 in flight; at 100, etcd rejected operations).
 - **etcd reads are linearizable by default** and pay a quorum round-trip; ZooKeeper
   serves reads locally from each node. Both behaviors are kept as shipped.
 
@@ -179,20 +182,31 @@ line keeps climbing while the Zipf line (YCSB C) plateaus.
 
 | Cluster | Write-only (uniform) | Read-only (uniform) | Read-only (Zipf, YCSB C) |
 |---|---|---|---|
-| 3 servers | 130k | 995k | 1.69M |
-| 6 servers | 276k | 1.78M | 1.97M |
-| 12 servers | 485k | 2.51M | 2.01M |
+| 3 servers | 131k | 1.05M | 1.69M |
+| 6 servers | 276k | 1.98M | 1.97M |
+| 12 servers | 493k | 2.51M | 2.01M |
 
-- **Uniform writes scale 3.7× from 3 to 12 servers** (130k → 276k → 485k) and **uniform
-  reads 2.5×** (995k → 1.78M → 2.51M), while the Zipf read workload plateaus
+- **Uniform writes scale 3.8× from 3 to 12 servers** (131k → 276k → 493k) and **uniform
+  reads 2.4×** (1.05M → 1.98M → 2.51M), while the Zipf read workload plateaus
   (1.69M → 1.97M → 2.01M): adding servers adds capacity, but a hot-key workload can only
   use the shards its hot keys land on.
 - Uniform reads start *lower* than Zipf — Zipf re-reads a small hot set that stays in
   cache, whereas uniform touches the whole dataset — but only the uniform curve keeps
-  climbing, and it overtakes Zipf at 12 servers.
-- **These uniform numbers have fewer repetitions than the YCSB table**: one run at 6 and at
-  12 servers, and two at 3 servers, whose read results (862k and 1.13M) differ by 27%.
-  Treat the 3-server read value, and the read multiplier that depends on it, as indicative.
+  climbing: it draws level with Zipf at 6 servers and overtakes it at 12.
+- **Uniform reads depend on leader placement.** With one server leading three shards and
+  another leading one, uniform reads were lower: 1.34M and 1.44M on 6 servers, and 2.37M
+  on 12. Those three runs are left out of the table. Their write rates matched the other
+  runs (273k and 278k on 6 servers, 497k on 12).
+- **The 3-server read value is the least certain**: its four runs span 862k to 1.13M, so
+  treat it, and the read multiplier that depends on it, as indicative.
+
+Range across the uniform runs (lowest – highest), even leader placement only:
+
+| Cluster | Runs | Write-only (uniform) | Read-only (uniform) |
+|---|---|---|---|
+| 3 servers | 4 | 126k – 133k | 862k – 1.13M |
+| 6 servers | 3 | 276k – 279k | 1.78M – 1.98M |
+| 12 servers | 2 | 485k – 500k | 2.51M – 2.51M |
 
 ## Larger servers
 
